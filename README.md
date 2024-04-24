@@ -1,6 +1,6 @@
 #NHPLUS 
 Tasks:
-1. Vermögendsstand muss etfernt werden, aus der Datenbank. 
+1. Vermögendsstand muss etfernt werden, aus der Datenbank [DONE]
 2. Möglichkeit einführen Behandlungen zu Sperren (Sperren Button einführen, für Patienten und alle ihre Daten, nicht einzelne Behandlungen)
 4. Alle Patientendaten sollten gleichzeitig Sperrbar sein -> Siehe 2
 5. Nach 10 Jahren dürfen Daten gelöscht werden. (Täglicher check bei gesperrten Behandlunge / Patienten ob Daten 10 Jahre als sind, wenn ja -> Löschen)
