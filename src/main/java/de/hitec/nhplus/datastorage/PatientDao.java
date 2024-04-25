@@ -8,25 +8,25 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
- * Implements the Interface <code>DaoImp</code>. Overrides methods to generate specific <code>PreparedStatements</code>,
- * to execute the specific SQL Statements.
+ * Implementiert die Schnittstelle <code>DaoImp</code>. Überschreibt Methoden, um bestimmte <code>PreparedStatements</code> zu generieren.
+ * um die spezifischen SQL-Anweisungen auszuführen.
  */
 public class PatientDao extends DaoImp<Patient> {
 
     /**
-     * The constructor initiates an object of <code>PatientDao</code> and passes the connection to its super class.
+     * Der Konstruktor initiiert ein Objekt von <code>PatientDao</code> und übergibt die Verbindung an seine Superklasse.
      *
-     * @param connection Object of <code>Connection</code> to execute the SQL-statements.
+     * @param connection Objekt von <code>Connection</code> zur Ausführung der SQL-Anweisungen.
      */
     public PatientDao(Connection connection) {
         super(connection);
     }
 
     /**
-     * Generates a <code>PreparedStatement</code> to persist the given object of <code>Patient</code>.
+     * Erzeugt ein <code>PreparedStatement</code>, um das angegebene Objekt von <code>Patient</code> beizubehalten.
      *
-     * @param patient Object of <code>Patient</code> to persist.
-     * @return <code>PreparedStatement</code> to insert the given patient.
+     * @param patient Objekt von <code>Patient</code>, das bestehen bleiben soll.
+     * @return <code>PreparedStatement</code> zum Einfügen des angegebenen Patienten.
      */
     @Override
     protected PreparedStatement getCreateStatement(Patient patient) {
@@ -47,10 +47,10 @@ public class PatientDao extends DaoImp<Patient> {
     }
 
     /**
-     * Generates a <code>PreparedStatement</code> to query a patient by a given patient id (pid).
+     * Erzeugt ein <code>PreparedStatement</code>, um einen Patienten anhand einer bestimmten Patienten-ID (PID) abzufragen.
      *
-     * @param pid Patient id to query.
-     * @return <code>PreparedStatement</code> to query the patient.
+     * @param pid Patienten-ID zur Abfrage.
+     * @return <code>PreparedStatement</code> zur Abfrage des Patienten.
      */
     @Override
     protected PreparedStatement getReadByIDStatement(long pid) {
@@ -66,10 +66,10 @@ public class PatientDao extends DaoImp<Patient> {
     }
 
     /**
-     * Maps a <code>ResultSet</code> of one patient to an object of <code>Patient</code>.
+     * Ordnet ein <code>ResultSet</code> eines Patienten einem Objekt von <code>Patient</code> zu.
      *
-     * @param result ResultSet with a single row. Columns will be mapped to an object of class <code>Patient</code>.
-     * @return Object of class <code>Patient</code> with the data from the resultSet.
+     * @param result ResultSet mit einer einzelnen Zeile. Spalten werden einem Objekt der Klasse <code>Patient</code> zugeordnet.
+     * @return Objekt der Klasse <code>Patient</code> mit den Daten aus dem resultSet.
      */
     @Override
     protected Patient getInstanceFromResultSet(ResultSet result) throws SQLException {
@@ -83,9 +83,9 @@ public class PatientDao extends DaoImp<Patient> {
     }
 
     /**
-     * Generates a <code>PreparedStatement</code> to query all patients.
+     * Erzeugt ein <code>PreparedStatement</code> zur Abfrage aller Patienten.
      *
-     * @return <code>PreparedStatement</code> to query all patients.
+     * @return <code>PreparedStatement</code> zur Abfrage aller Patienten.
      */
     @Override
     protected PreparedStatement getReadAllStatement() {
@@ -100,10 +100,10 @@ public class PatientDao extends DaoImp<Patient> {
     }
 
     /**
-     * Maps a <code>ResultSet</code> of all patients to an <code>ArrayList</code> of <code>Patient</code> objects.
+     * Ordnet ein <code>ResultSet</code> aller Patienten einer <code>ArrayList</code> von <code>Patient</code>-Objekten zu.
      *
-     * @param result ResultSet with all rows. The Columns will be mapped to objects of class <code>Patient</code>.
-     * @return <code>ArrayList</code> with objects of class <code>Patient</code> of all rows in the
+     * @param result ResultSet mit allen Zeilen. Die Spalten werden Objekten der Klasse <code>Patient</code> zugeordnet.
+     * @return <code>ArrayList</code> mit Objekten der Klasse <code>Patient</code> aller Zeilen im
      * <code>ResultSet</code>.
      */
     @Override
@@ -120,11 +120,11 @@ public class PatientDao extends DaoImp<Patient> {
     }
 
     /**
-     * Generates a <code>PreparedStatement</code> to update the given patient, identified
-     * by the id of the patient (pid).
+     * Erzeugt ein <code>PreparedStatement</code>, um den angegebenen identifizierten Patienten zu aktualisieren
+     * nach der ID des Patienten (pid).
      *
-     * @param patient Patient object to update.
-     * @return <code>PreparedStatement</code> to update the given patient.
+     * @param patient Patientenobjekt, das aktualisiert werden soll.
+     * @return <code>PreparedStatement</code>, um den angegebenen Patienten zu aktualisieren.
      */
     @Override
     protected PreparedStatement getUpdateStatement(Patient patient) {
@@ -152,10 +152,10 @@ public class PatientDao extends DaoImp<Patient> {
     }
 
     /**
-     * Generates a <code>PreparedStatement</code> to delete a patient with the given id.
+     * Erzeugt ein <code>PreparedStatement</code>, um einen Patienten mit der angegebenen ID zu löschen.
      *
-     * @param pid Id of the patient to delete.
-     * @return <code>PreparedStatement</code> to delete patient with the given id.
+     * @param pid-ID des zu löschenden Patienten.
+     * @return <code>PreparedStatement</code>, um den Patienten mit der angegebenen ID zu löschen.
      */
     @Override
     protected PreparedStatement getDeleteStatement(long pid) {

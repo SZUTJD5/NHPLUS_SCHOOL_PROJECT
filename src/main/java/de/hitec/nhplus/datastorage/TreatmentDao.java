@@ -10,25 +10,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Implements the Interface <code>DaoImp</code>. Overrides methods to generate specific <code>PreparedStatements</code>,
- * to execute the specific SQL Statements.
+ * Implementiert die Schnittstelle <code>DaoImp</code>. Überschreibt Methoden, um bestimmte <code>PreparedStatements</code> zu generieren.
+ * um die spezifischen SQL-Anweisungen auszuführen.
  */
 public class TreatmentDao extends DaoImp<Treatment> {
 
     /**
-     * The constructor initiates an object of <code>TreatmentDao</code> and passes the connection to its super class.
+     * Der Konstruktor initiiert ein Objekt von <code>TreatmentDao</code> und übergibt die Verbindung an seine Superklasse.
      *
-     * @param connection Object of <code>Connection</code> to execute the SQL-statements.
+     * @param connection Objekt von <code>Connection</code> zur Ausführung der SQL-Anweisungen.
      */
     public TreatmentDao(Connection connection) {
         super(connection);
     }
 
     /**
-     * Generates a <code>PreparedStatement</code> to persist the given object of <code>Treatment</code>.
+     * Erzeugt ein <code>PreparedStatement</code>, um das angegebene Objekt von <code>Treatment</code> beizubehalten.
      *
-     * @param treatment Object of <code>Treatment</code> to persist.
-     * @return <code>PreparedStatement</code> to insert the given patient.
+     * @param treatment Objekt von <code>Treatment</code>, das bestehen bleiben soll.
+     * @return <code>PreparedStatement</code> zum Einfügen des angegebenen Patienten.
      */
     @Override
     protected PreparedStatement getCreateStatement(Treatment treatment) {
@@ -50,10 +50,10 @@ public class TreatmentDao extends DaoImp<Treatment> {
     }
 
     /**
-     * Generates a <code>PreparedStatement</code> to query a treatment by a given treatment id (tid).
+     * Erzeugt ein <code>PreparedStatement</code>, um eine Behandlung anhand einer bestimmten Behandlungs-ID (tid) abzufragen.
      *
-     * @param tid Treatment id to query.
-     * @return <code>PreparedStatement</code> to query the treatment.
+     * @param tid Behandlungs-ID zur Abfrage.
+     * @return <code>PreparedStatement</code> zur Abfrage der Behandlung.
      */
     @Override
     protected PreparedStatement getReadByIDStatement(long tid) {
@@ -69,10 +69,10 @@ public class TreatmentDao extends DaoImp<Treatment> {
     }
 
     /**
-     * Maps a <code>ResultSet</code> of one treatment to an object of <code>Treatment</code>.
+     * Ordnet ein <code>ResultSet</code> einer Behandlung einem Objekt von <code>Treatment</code> zu.
      *
-     * @param result ResultSet with a single row. Columns will be mapped to an object of class <code>Treatment</code>.
-     * @return Object of class <code>Treatment</code> with the data from the resultSet.
+     * @param result ResultSet mit einer einzelnen Zeile. Spalten werden einem Objekt der Klasse <code>Treatment</code> zugeordnet.
+     * @return Objekt der Klasse <code>Treatment</code> mit den Daten aus dem resultSet.
      */
     @Override
     protected Treatment getInstanceFromResultSet(ResultSet result) throws SQLException {
@@ -84,9 +84,9 @@ public class TreatmentDao extends DaoImp<Treatment> {
     }
 
     /**
-     * Generates a <code>PreparedStatement</code> to query all treatments.
+     * Erzeugt ein <code>PreparedStatement</code> zur Abfrage aller Behandlungen.
      *
-     * @return <code>PreparedStatement</code> to query all treatments.
+     * @return <code>PreparedStatement</code> zur Abfrage aller Behandlungen.
      */
     @Override
     protected PreparedStatement getReadAllStatement() {
@@ -101,11 +101,11 @@ public class TreatmentDao extends DaoImp<Treatment> {
     }
 
     /**
-     * Maps a <code>ResultSet</code> of all treatments to an <code>ArrayList</code> with objects of class
-     * <code>Treatment</code>.
+     * Ordnet ein <code>ResultSet</code> aller Behandlungen einer <code>ArrayList</code> mit Objekten der Klasse zu
+     * <code>Behandlung</code>.
      *
-     * @param result ResultSet with all rows. The columns will be mapped to objects of class <code>Treatment</code>.
-     * @return <code>ArrayList</code> with objects of class <code>Treatment</code> of all rows in the
+     * @param result ResultSet mit allen Zeilen. Die Spalten werden Objekten der Klasse <code>Treatment</code> zugeordnet.
+     * @return <code>ArrayList</code> mit Objekten der Klasse <code>Treatment</code> aller Zeilen im
      * <code>ResultSet</code>.
      */
     @Override
@@ -123,10 +123,10 @@ public class TreatmentDao extends DaoImp<Treatment> {
     }
 
     /**
-     * Generates a <code>PreparedStatement</code> to query all treatments of a patient with a given patient id (pid).
+     * Erzeugt ein <code>PreparedStatement</code>, um alle Behandlungen eines Patienten mit einer bestimmten Patienten-ID (PID) abzufragen.
      *
-     * @param pid Patient id to query all treatments referencing this id.
-     * @return <code>PreparedStatement</code> to query all treatments of the given patient id (pid).
+     * @param pid Patienten-ID zur Abfrage aller Behandlungen, die auf diese ID verweisen.
+     * @return <code>PreparedStatement</code>, um alle Behandlungen der angegebenen Patienten-ID (PID) abzufragen.
      */
     private PreparedStatement getReadAllTreatmentsOfOnePatientByPid(long pid) {
         PreparedStatement preparedStatement = null;
@@ -141,11 +141,11 @@ public class TreatmentDao extends DaoImp<Treatment> {
     }
 
     /**
-     * Queries all treatments of a given patient id (pid) and maps the results to an <code>ArrayList</code> with
-     * objects of class <code>Treatment</code>.
+     * Fragt alle Behandlungen einer bestimmten Patienten-ID (PID) ab und ordnet die Ergebnisse einer <code>ArrayList</code> zu
+     * Objekte der Klasse <code>Treatment</code>.
      *
-     * @param pid Patient id to query all treatments referencing this id.
-     * @return <code>ArrayList</code> with objects of class <code>Treatment</code> of all rows in the
+     * @param pid Patienten-ID zur Abfrage aller Behandlungen, die auf diese ID verweisen.
+     * @return <code>ArrayList</code> mit Objekten der Klasse <code>Treatment</code> aller Zeilen im
      * <code>ResultSet</code>.
      */
     public List<Treatment> readTreatmentsByPid(long pid) throws SQLException {
@@ -154,11 +154,11 @@ public class TreatmentDao extends DaoImp<Treatment> {
     }
 
     /**
-     * Generates a <code>PreparedStatement</code> to update the given treatment, identified
-     * by the id of the treatment (tid).
+     * Erzeugt ein <code>PreparedStatement</code>, um die angegebene identifizierte Behandlung zu aktualisieren
+     * nach der ID der Behandlung (tid).
      *
-     * @param treatment Treatment object to update.
-     * @return <code>PreparedStatement</code> to update the given treatment.
+     * @param treatment Behandlungsobjekt, das aktualisiert werden soll.
+     * @return <code>PreparedStatement</code>, um die angegebene Behandlung zu aktualisieren.
      */
     @Override
     protected PreparedStatement getUpdateStatement(Treatment treatment) {
@@ -188,10 +188,10 @@ public class TreatmentDao extends DaoImp<Treatment> {
     }
 
     /**
-     * Generates a <code>PreparedStatement</code> to delete a treatment with the given id.
+     * Erzeugt ein <code>PreparedStatement</code> zum Löschen einer Behandlung mit der angegebenen ID.
      *
-     * @param tid Id of the Treatment to delete.
-     * @return <code>PreparedStatement</code> to delete treatment with the given id.
+     * @param tid ID der zu löschenden Behandlung.
+     * @return <code>PreparedStatement</code>, um die Behandlung mit der angegebenen ID zu löschen.
      */
     @Override
     protected PreparedStatement getDeleteStatement(long tid) {
