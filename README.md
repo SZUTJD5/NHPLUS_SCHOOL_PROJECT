@@ -9,10 +9,11 @@ Tasks:
 8. Daten dürfen nicht einfach Löschbar sein. (Löschen button entfernen)
 
 8. Berechtigungen verteilen (z.b. um Behandlungseinträge zu bearbeiten / zu erstellen)
-9. Hover button für Informationen zu jeder Seite (Für Informationen zum Ausfüllen / etc)
-10. Behandlungen sollten vorgeplant werden können. (Z.B. Alle 4 Stunden / Tage idc, Medikament B verabreichen. / Alle 4 Stunden IV Beutel tauschen etc etc)
-11. Behandlungen sollten einen LOG haben über die Person die sie erstellt hat und wer sie potentiell abgeändert hat / was geändert wurde. (Automatischen Log anfügen)
+9. Hover / Button für Informationen zu jeder Seite (Für Informationen zum Ausfüllen / etc)
+10. Behandlungen sollten einen LOG haben über die Person die sie erstellt hat und wer sie potentiell abgeändert hat / was geändert wurde. (Automatischen Log anfügen)
+11. JavaDoc erstellen und Codebschreibung hinzufügen
 
 // Potentiell (nicht teil des MVP)
 12. Anklicktbare vorlagen für wiederkehrende tätigkeiten (Vorgeschriebene Texte werden eingefügt mit Rot makierten Bereichen zum Ausfüllen der Daten)
-13. Datenbanken müssen generell verschlüsselt sein und werden nach Login entschlüsselt.
+13. Datenbanken müssen generell verschlüsselt sein und werden nach Login entschlüsselt. 
+14. Behandlungen sollten vorgeplant werden können. (Z.B. Alle 4 Stunden / Tage idc, Medikament B verabreichen. / Alle 4 Stunden IV Beutel tauschen etc etc)
