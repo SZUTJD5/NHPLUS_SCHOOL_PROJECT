@@ -9,25 +9,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Patients live in a NURSING home and are treated by nurses.
+ * Die Patienten leben in einem Pflegeheim und werden von Pflegekräften behandelt.
  */
+
+/**
+ * Diese Methode initialisiert die Klasse Patient, ertellt relevante Variablen und eine Liste
+ **/
 public class Patient extends Person {
-    private SimpleLongProperty pid;
     private final SimpleStringProperty dateOfBirth;
     private final SimpleStringProperty careLevel;
     private final SimpleStringProperty roomNumber;
     private final List<Treatment> allTreatments = new ArrayList<>();
+    private SimpleLongProperty pid;
 
     /**
-     * Constructor to initiate an object of class <code>Patient</code> with the given parameter. Use this constructor
-     * to initiate objects, which are not persisted yet, because it will not have a patient id (pid).
+     * Der Konstruktor erstellt ein neues Objekt der Klasse Patient mit den Variablen:
+     * @param firstName     Der Vorname des Patienten
+     * @param surname       Der Nachname des Patienten
+     * @param dateOfBirth   Das Geburtsdatum des Patienten.
+     * @param careLevel     Die Pflegestufe des Patienten.
+     * @param roomNumber    Die Zimmernummer des Patienten.
      *
-     * @param firstName First name of the patient.
-     * @param surname Last name of the patient.
-     * @param dateOfBirth Date of birth of the patient.
-     * @param careLevel Care level of the patient.
-     * @param roomNumber Room number of the patient.
-     */
+     * Dieser wird genutzt wenn der Patient noch kein "pid" hat.
+     **/
     public Patient(String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomNumber) {
         super(firstName, surname);
         this.dateOfBirth = new SimpleStringProperty(DateConverter.convertLocalDateToString(dateOfBirth));
@@ -36,16 +40,16 @@ public class Patient extends Person {
     }
 
     /**
-     * Constructor to initiate an object of class <code>Patient</code> with the given parameter. Use this constructor
-     * to initiate objects, which are already persisted and have a patient id (pid).
+     *  Dieser Kontruktor wird genutzt wenn der Patient bereits ein "pid" hat und bereits existietren.
+     *  Er weisst dem Patienten diese Werte zu:
      *
-     * @param pid Patient id.
-     * @param firstName First name of the patient.
-     * @param surname Last name of the patient.
-     * @param dateOfBirth Date of birth of the patient.
-     * @param careLevel Care level of the patient.
-     * @param roomNumber Room number of the patient.
-     */
+     *  @param pid           Patienten ID.
+     *  @param firstName     Der Vorname des Patienten
+     *  @param surname       Der Nachname des Patienten
+     *  @param dateOfBirth   Das Geburtsdatum des Patienten.
+     *  @param careLevel     Die Pflegestufe des Patienten.
+     *  @param roomNumber    Die Zimmernummer des Patienten.
+     **/
     public Patient(long pid, String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomNumber) {
         super(firstName, surname);
         this.pid = new SimpleLongProperty(pid);
@@ -54,61 +58,57 @@ public class Patient extends Person {
         this.roomNumber = new SimpleStringProperty(roomNumber);
     }
 
-    public long getPid() {
+    public long getPid() { // Gibt "pid" des Patienten aus (getter).
         return pid.get();
     }
 
-    public SimpleLongProperty pidProperty() {
+    public SimpleLongProperty pidProperty() { // Gibt "pid" des Patienten als SimpleLongProperty aus.
         return pid;
     }
 
-    public String getDateOfBirth() {
+    public String getDateOfBirth() { // Gibt Geburtsdatum des Patienten aus (getter).
         return dateOfBirth.get();
     }
 
-    public SimpleStringProperty dateOfBirthProperty() {
-        return dateOfBirth;
-    }
-
     /**
-     * Stores the given string as new <code>birthOfDate</code>.
+     * Speichert die angegebene Zeichenfolge als neues <code>birthOfDate</code>.
      *
-     * @param dateOfBirth as string in the following format: YYYY-MM-DD.
+     * @param dateOfBirth als String im folgenden Format: JJJJ-MM-TT.
      */
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(String dateOfBirth) { // Setzt das Geburtsdatum des Patienten auf dem des input Strings (setter).
         this.dateOfBirth.set(dateOfBirth);
     }
 
-    public String getCareLevel() {
+    public SimpleStringProperty dateOfBirthProperty() { // Gibt das Geburtsdatum des Patienten als SimpleLongProperty aus
+        return dateOfBirth;
+    }
+
+    public String getCareLevel() { // Gibt das Pflegelevel des Patienten aus (getter).
         return careLevel.get();
     }
 
-    public SimpleStringProperty careLevelProperty() {
-        return careLevel;
-    }
-
-    public void setCareLevel(String careLevel) {
+    public void setCareLevel(String careLevel) { // Setzt das Pflegelevel des Patienten auf den des Input Strings (setter).
         this.careLevel.set(careLevel);
     }
 
-    public String getRoomNumber() {
+    public SimpleStringProperty careLevelProperty() { // Gibt das Pflegelevel das Patienten als SimpleLongProperty aus
+        return careLevel;
+    }
+
+    public String getRoomNumber() { // Gibt die Zimmernummer des Patienten aus (getter).
         return roomNumber.get();
     }
 
-    public SimpleStringProperty roomNumberProperty() {
-        return roomNumber;
-    }
-
-
-    public void setRoomNumber(String roomNumber) {
+    public void setRoomNumber(String roomNumber) { // Setzt die Zimmernummer des Patienten auf die des Input Strings (setter).
         this.roomNumber.set(roomNumber);
     }
 
+    public SimpleStringProperty roomNumberProperty() { // Gibt die Zimmernummer des Patienten als SimpleLongPropery aus
+        return roomNumber;
+    }
+
     /**
-     * Adds a treatment to the list of treatments, if the list does not already contain the treatment.
-     *
-     * @param treatment Treatment to add.
-     * @return False, if the treatment was already part of the list, else true.
+     * Diese Methode fügt die Behandlung der treatment Tabelle hinzu falls diese noch nich in dieser Enthalten ist.
      */
     public boolean add(Treatment treatment) {
         if (this.allTreatments.contains(treatment)) {
@@ -118,7 +118,7 @@ public class Patient extends Person {
         return true;
     }
 
-    public String toString() {
+    public String toString() { // Gibt die Daten der Klasse als String aus.
         return "Patient" + "\nMNID: " + this.pid +
                 "\nFirstname: " + this.getFirstName() +
                 "\nSurname: " + this.getSurname() +

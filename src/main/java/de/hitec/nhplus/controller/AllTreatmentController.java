@@ -22,60 +22,79 @@ import java.util.ArrayList;
 
 public class AllTreatmentController {
 
+    // Zeigt die Behandlungsdaten an
     @FXML
     private TableView<Treatment> tableView;
 
+    // Zeigt die Behandlungs ID's an
     @FXML
     private TableColumn<Treatment, Integer> columnId;
 
+    // Zeigt die Patienten ID's an
     @FXML
     private TableColumn<Treatment, Integer> columnPid;
 
+    // Zeigt das Datum der Behandlung an
     @FXML
     private TableColumn<Treatment, String> columnDate;
 
+    // Zeit die Zeit an wann die Behandlung begonnen hat
     @FXML
     private TableColumn<Treatment, String> columnBegin;
 
+    // Zeigt die Zeit an wann die Behandlung abgeschlossen wurde
     @FXML
     private TableColumn<Treatment, String> columnEnd;
 
+    // Zeigt die Behandlungsbeschreibung an
     @FXML
     private TableColumn<Treatment, String> columnDescription;
 
+    // ComboBox zur Auswahl von Patienten
     @FXML
     private ComboBox<String> comboBoxPatientSelection;
 
+    // Button zum Löschen von Behandlungen
     @FXML
     private Button buttonDelete;
 
+    // ObservableList Speichert die Behandlungen, welche in der TableView angezeigt werden sollen.
     private final ObservableList<Treatment> treatments = FXCollections.observableArrayList();
     private TreatmentDao dao;
+    // Enthält die Patienten Namen
     private final ObservableList<String> patientSelection = FXCollections.observableArrayList();
+    // Liste aller Patienten
     private ArrayList<Patient> patientList;
 
+    // Initialisierung des Controllers
     public void initialize() {
+        // Ließt alle Behandlungen aus und fügt sie ein
         readAllAndShowInTableView();
+        // Richtet die ComboBox f[r die Patientennamen ein
         comboBoxPatientSelection.setItems(patientSelection);
         comboBoxPatientSelection.getSelectionModel().select(0);
 
+        // Einrichtung der Spalten in der TableView
         this.columnId.setCellValueFactory(new PropertyValueFactory<>("tid"));
         this.columnPid.setCellValueFactory(new PropertyValueFactory<>("pid"));
         this.columnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         this.columnBegin.setCellValueFactory(new PropertyValueFactory<>("begin"));
         this.columnEnd.setCellValueFactory(new PropertyValueFactory<>("end"));
         this.columnDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+        // Einfügung der Spalten in die TableView
         this.tableView.setItems(this.treatments);
 
-        // Disabling the button to delete treatments as long, as no treatment was selected.
+        // Deaktiviert den Löschen Button wenn keine Behandlung selektiert ist.
         this.buttonDelete.setDisable(true);
         this.tableView.getSelectionModel().selectedItemProperty().addListener(
                 (observableValue, oldTreatment, newTreatment) ->
                         AllTreatmentController.this.buttonDelete.setDisable(newTreatment == null));
 
+        // Fügt die Patientennamen und den "alle" Selektor in das Dropdown menue zur auswahl der Patienten ein.
         this.createComboBoxData();
     }
 
+    // Ließt alle Behandlungen aus der Datenbank aus und fügt sie der TablieView an.
     public void readAllAndShowInTableView() {
         this.treatments.clear();
         comboBoxPatientSelection.getSelectionModel().select(0);
@@ -87,6 +106,7 @@ public class AllTreatmentController {
         }
     }
 
+    // Befüllt die ComboBox mit den Patientennamen und dem "alle" Selektor
     private void createComboBoxData() {
         PatientDao dao = DaoFactory.getDaoFactory().createPatientDAO();
         try {
@@ -101,6 +121,7 @@ public class AllTreatmentController {
     }
 
 
+    // Behandelt die selektierte ComboBox
     @FXML
     public void handleComboBox() {
         String selectedPatient = this.comboBoxPatientSelection.getSelectionModel().getSelectedItem();
@@ -134,6 +155,7 @@ public class AllTreatmentController {
         return null;
     }
 
+    // Löscht die selektierte Zeile nach Klick auf den Löschen Button
     @FXML
     public void handleDelete() {
         int index = this.tableView.getSelectionModel().getSelectedIndex();
@@ -146,6 +168,7 @@ public class AllTreatmentController {
         }
     }
 
+    // Fügt eine neuen Behandlung ein. Nutzt die Daten aus den Eingabe Feldern.
     @FXML
     public void handleNewTreatment() {
         try{
@@ -161,6 +184,7 @@ public class AllTreatmentController {
         }
     }
 
+    // Setzt die Zeile auf die geklickt wurde als selektiertes Element
     @FXML
     public void handleMouseClick() {
         tableView.setOnMouseClicked(event -> {
@@ -172,6 +196,7 @@ public class AllTreatmentController {
         });
     }
 
+    // Öffnet das Fenster für eine neue Behandlung
     public void newTreatmentWindow(Patient patient) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/NewTreatmentView.fxml"));
@@ -192,6 +217,7 @@ public class AllTreatmentController {
         }
     }
 
+    // Öffnet das Fenster einer bereits existierenden Behandlung zur auslesung der Details
     public void treatmentWindow(Treatment treatment){
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/TreatmentView.fxml"));

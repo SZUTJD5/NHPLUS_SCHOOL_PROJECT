@@ -15,19 +15,19 @@ import static de.hitec.nhplus.utils.DateConverter.convertStringToLocalDate;
 import static de.hitec.nhplus.utils.DateConverter.convertStringToLocalTime;
 
 /**
- * Call static class provides to static methods to set up and wipe the database. It uses the class ConnectionBuilder
- * and its path to build up the connection to the database. The class is executable. Executing the class will build
- * up a connection to the database and calls setUpDb() to wipe the database, build up a clean database and fill the
- * database with some test data.
+ * Der Aufruf einer statischen Klasse stellt statische Methoden zum Einrichten und Löschen der Datenbank bereit. Es verwendet die Klasse ConnectionBuilder
+ * und dessen Pfad zum Aufbau der Verbindung zur Datenbank. Die Klasse ist ausführbar. Durch Ausführen der Klasse wird erstellt
+ * stellt eine Verbindung zur Datenbank her und ruft setUpDb() auf, um die Datenbank zu löschen, eine saubere Datenbank aufzubauen und die Datenbank zu füllen
+ * Datenbank mit einigen Testdaten.
  */
 public class SetUpDB {
 
     /**
-     * This method wipes the database by dropping the tables. Then the method calls DDL statements to build it up from
-     * scratch and DML statements to fill the database with hard coded test data.
+     * Diese Methode löscht die Datenbank durch Löschen der Tabellen. Dann ruft die Methode DDL-Anweisungen auf, um sie aufzubauen
+     * Scratch- und DML-Anweisungen zum Füllen der Datenbank mit hartcodierten Testdaten.
      */
-    public static void setUpDb() {
-        Connection connection = ConnectionBuilder.getConnection();
+    public static void setUpDb() { // Ablauf der Klasse, ruft die funktionen auf.
+        Connection connection = ConnectionBuilder.getConnection(); // Stellt verbindung zur Datenbank her
         SetUpDB.wipeDb(connection);
         SetUpDB.setUpTablePatient(connection);
         SetUpDB.setUpTableTreatment(connection);
@@ -36,8 +36,8 @@ public class SetUpDB {
     }
 
     /**
-     * This method wipes the database by dropping the tables.
-     */
+     * Löscht / leert vorhandene Datenbanken patient und tratment
+     **/
     public static void wipeDb(Connection connection) {
         try (Statement statement = connection.createStatement()) {
             statement.execute("DROP TABLE patient");
@@ -47,6 +47,9 @@ public class SetUpDB {
         }
     }
 
+    /**
+     *  Erstellt neue Tabelle patient falls keine vorhanden ist, mit den gelisteten Spalten.
+     **/
     private static void setUpTablePatient(Connection connection) {
         final String SQL = "CREATE TABLE IF NOT EXISTS patient (" +
                 "   pid INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -63,6 +66,9 @@ public class SetUpDB {
         }
     }
 
+    /**
+     * Erstellt neue Tabelle treatment falls keine vorhanden ist, mit den gelisteten Spalten.
+     **/
     private static void setUpTableTreatment(Connection connection) {
         final String SQL = "CREATE TABLE IF NOT EXISTS treatment (" +
                 "   tid INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -82,7 +88,9 @@ public class SetUpDB {
         }
     }
 
-
+    /**
+     * Diese Funktion erstellt mehrere Objekte der Klasse Patient und fügt sie der Tabelle patient hinzu.
+     **/
     private static void setUpPatients() {
         try {
             PatientDao dao = DaoFactory.getDaoFactory().createPatientDAO();
@@ -97,6 +105,9 @@ public class SetUpDB {
         }
     }
 
+    /**
+     * Diese Funktion erstellt mehrere Objekte der Klasse Treatment und fügt sie der Tabelle treatment hinzu.
+     **/
     private static void setUpTreatments() {
         try {
             TreatmentDao dao = DaoFactory.getDaoFactory().createTreatmentDao();
@@ -115,6 +126,9 @@ public class SetUpDB {
         }
     }
 
+    /**
+     * Die main Methode wird ausgeführt wenn diese Java Datei ausgeführt wird unf ruft die setUpDb Methode auf.
+     **/
     public static void main(String[] args) {
         SetUpDB.setUpDb();
     }

@@ -21,68 +21,83 @@ import java.time.LocalDate;
 
 
 /**
- * The <code>AllPatientController</code> contains the entire logic of the patient view. It determines which data is displayed and how to react to events.
+ * Der <code>AllPatientController</code> enthält die gesamte Logik der Patientenansicht. Er bestimmt, welche Daten angezeigt werden und wie auf Ereignisse reagiert wird.
  */
 public class AllPatientController {
 
+    // Zeigt die Patientendaten an
     @FXML
     private TableView<Patient> tableView;
 
+    // Zeigt die Patienten ID's an
     @FXML
     private TableColumn<Patient, Integer> columnId;
 
+    // Zeigt den Vornamen der Patienten an
     @FXML
     private TableColumn<Patient, String> columnFirstName;
 
+    // Zeigt die Nachnamen der Patienten an
     @FXML
     private TableColumn<Patient, String> columnSurname;
 
+    // Zeigt die Guburtsdaten der Patienten an
     @FXML
     private TableColumn<Patient, String> columnDateOfBirth;
 
+    // Zeigt das Pflegelevel der Patienten an
     @FXML
     private TableColumn<Patient, String> columnCareLevel;
 
+    // Zeit die Raumnummer der Patienten an
     @FXML
     private TableColumn<Patient, String> columnRoomNumber;
 
+    // Button zum Löschen von Patienten
     @FXML
     private Button buttonDelete;
 
+    // Button zum hinzufügen von Patienten
     @FXML
     private Button buttonAdd;
 
+    // Textfeld zum Eintragen des Nachnamen
     @FXML
     private TextField textFieldSurname;
 
+    // Textfeld zum eintragen des Vornamen
     @FXML
     private TextField textFieldFirstName;
 
+    // Textfeld zum eintragen des Geburtsdautm
     @FXML
     private TextField textFieldDateOfBirth;
 
+    // Textfeld zum eintragen des Pflegelevels
     @FXML
     private TextField textFieldCareLevel;
 
+    // Textfeld zum eintragen der Zimmernummer
     @FXML
     private TextField textFieldRoomNumber;
 
+    // ObservableList speichert die Patienten
     private final ObservableList<Patient> patients = FXCollections.observableArrayList();
     private PatientDao dao;
 
     /**
-     * When <code>initialize()</code> gets called, all fields are already initialized. For example from the FXMLLoader
-     * after loading an FXML-File. At this point of the lifecycle of the Controller, the fields can be accessed and
-     * configured.
+     * Wenn <code>initialize()</code> aufgerufen wird, sind alle Felder bereits initialisiert. Zum Beispiel vom FXMLLoader
+     * nach dem Laden einer FXML-Datei. Zu diesem Zeitpunkt des Controller-Lebenszyklus können die Felder abgerufen und
+     * konfiguriert werden.
      */
     public void initialize() {
         this.readAllAndShowInTableView();
 
         this.columnId.setCellValueFactory(new PropertyValueFactory<>("pid"));
 
-        // CellValueFactory to show property values in TableView
+        // CellValueFactory zeigt Eigenschaftswerte in der TableView an.
         this.columnFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        // CellFactory to write property values from with in the TableView
+        // CellFactory schreibt Eigenschaftswerte in die TableView
         this.columnFirstName.setCellFactory(TextFieldTableCell.forTableColumn());
 
         this.columnSurname.setCellValueFactory(new PropertyValueFactory<>("surname"));
@@ -97,13 +112,13 @@ public class AllPatientController {
         this.columnRoomNumber.setCellValueFactory(new PropertyValueFactory<>("roomNumber"));
         this.columnRoomNumber.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        //Anzeigen der Daten
+        // Fügt die Daten in die TableView ein
         this.tableView.setItems(this.patients);
 
         this.buttonDelete.setDisable(true);
         this.tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Patient>() {
             @Override
-            public void changed(ObservableValue<? extends Patient> observableValue, Patient oldPatient, Patient newPatient) {;
+            public void changed(ObservableValue<? extends Patient> observableValue, Patient oldPatient, Patient newPatient) {
                 AllPatientController.this.buttonDelete.setDisable(newPatient == null);
             }
         });
@@ -119,9 +134,9 @@ public class AllPatientController {
     }
 
     /**
-     * When a cell of the column with first names was changed, this method will be called, to persist the change.
+     * Falls eine Zelle der Spalte mit den Vornamen geändert wurde, wird diese Methode aufgerufen, um die Änderung zu speichern.
      *
-     * @param event Event including the changed object and the change.
+     * @param event Ereignis mit dem geänderten Objekt und der Änderung.
      */
     @FXML
     public void handleOnEditFirstname(TableColumn.CellEditEvent<Patient, String> event) {
@@ -130,9 +145,9 @@ public class AllPatientController {
     }
 
     /**
-     * When a cell of the column with surnames was changed, this method will be called, to persist the change.
+     * Falls eine Zelle der Spalte mit den Nachnamen geändert wurde, wird diese Methode aufgerufen, um die Änderung zu speichern.
      *
-     * @param event Event including the changed object and the change.
+     * @param event Ereignis mit dem geänderten Objekt und der Änderung.
      */
     @FXML
     public void handleOnEditSurname(TableColumn.CellEditEvent<Patient, String> event) {
@@ -141,9 +156,9 @@ public class AllPatientController {
     }
 
     /**
-     * When a cell of the column with dates of birth was changed, this method will be called, to persist the change.
+     * Falls eine Zelle der Spalte mit den Geburtsdaten geändert wurde, wird diese Methode aufgerufen, um die Änderung zu speichern.
      *
-     * @param event Event including the changed object and the change.
+     * @param event Ereignis mit dem geänderten Objekt und der Änderung.
      */
     @FXML
     public void handleOnEditDateOfBirth(TableColumn.CellEditEvent<Patient, String> event) {
@@ -152,9 +167,9 @@ public class AllPatientController {
     }
 
     /**
-     * When a cell of the column with care levels was changed, this method will be called, to persist the change.
+     * Falls eine Zelle der Spalte mit den Pflegestufen geändert wurde, wird diese Methode aufgerufen, um die Änderung zu speichern.
      *
-     * @param event Event including the changed object and the change.
+     * @param event Ereignis mit dem geänderten Objekt und der Änderung.
      */
     @FXML
     public void handleOnEditCareLevel(TableColumn.CellEditEvent<Patient, String> event) {
@@ -163,9 +178,9 @@ public class AllPatientController {
     }
 
     /**
-     * When a cell of the column with room numbers was changed, this method will be called, to persist the change.
+     * Falls eine Zelle der Spalte mit den Zimmernummern geändert wurde, wird diese Methode aufgerufen, um die Änderung zu speichern.
      *
-     * @param event Event including the changed object and the change.
+     * @param event Ereignis mit dem geänderten Objekt und der Änderung.
      */
     @FXML
     public void handleOnEditRoomNumber(TableColumn.CellEditEvent<Patient, String> event){
@@ -174,9 +189,9 @@ public class AllPatientController {
     }
 
     /**
-     * Updates a patient by calling the method <code>update()</code> of {@link PatientDao}.
+     * Updated einen Patienten, indem die Methode <code>update()</code> von {@link PatientDao} aufgerufen wird.
      *
-     * @param event Event including the changed object and the change.
+     * @param event Ereignis mit dem geänderten Objekt und der Änderung.
      */
     private void doUpdate(TableColumn.CellEditEvent<Patient, String> event) {
         try {
@@ -187,8 +202,8 @@ public class AllPatientController {
     }
 
     /**
-     * Reloads all patients to the table by clearing the list of all patients and filling it again by all persisted
-     * patients, delivered by {@link PatientDao}.
+     * Schreibt alle Patienten in die Tabelle, indem die Liste aller Patienten gelöscht und erneut mit allen gespeicherten
+     * Patienten, geliefert von {@link PatientDao}, gefüllt wird.
      */
     private void readAllAndShowInTableView() {
         this.patients.clear();
@@ -201,9 +216,9 @@ public class AllPatientController {
     }
 
     /**
-     * This method handles events fired by the button to delete patients. It calls {@link PatientDao} to delete the
-     * patient from the database and removes the object from the list, which is the data source of the
-     * <code>TableView</code>.
+     * Diese Methode behandelt Ereignisse, die vom Button zum Löschen von Patienten ausgelöst werden. Sie ruft {@link PatientDao} auf, um den
+     * Patienten aus der Datenbank zu löschen und entfernt das Objekt aus der Liste, die die Datenquelle der
+     * <code>TableView</code> ist.
      */
     @FXML
     public void handleDelete() {
@@ -219,9 +234,8 @@ public class AllPatientController {
     }
 
     /**
-     * This method handles the events fired by the button to add a patient. It collects the data from the
-     * <code>TextField</code>s, creates an object of class <code>Patient</code> of it and passes the object to
-     * {@link PatientDao} to persist the data.
+     * Diese Methode behandelt die Ereignisse, die durch den Button zum Hinzufügen eines Patienten ausgelöst werden. Sie sammelt die Daten von den
+     * <code>TextField</code>s, erstellt ein Objekt der Klasse <code>Patient</code> und übergibt das Objekt an {@link PatientDao}, um die Daten zu speichern.
      */
     @FXML
     public void handleAdd() {
@@ -241,7 +255,7 @@ public class AllPatientController {
     }
 
     /**
-     * Clears all contents from all <code>TextField</code>s.
+     * Löscht alle Inhalte aus allen vorhandenen <code>TextField</code>ern.
      */
     private void clearTextfields() {
         this.textFieldFirstName.clear();

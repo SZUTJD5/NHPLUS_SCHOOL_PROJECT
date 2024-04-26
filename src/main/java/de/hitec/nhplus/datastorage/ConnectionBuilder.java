@@ -11,8 +11,12 @@ public class ConnectionBuilder {
     private static final String DB_NAME = "nursingHome.db";
     private static final String URL = "jdbc:sqlite:db/" + DB_NAME;
 
-    private static Connection connection;
+    private static Connection connection; // Verbindung zur Datenbank
 
+    /**
+     *  Diese Methode verbindet sich mit der Datenbank wenn bereits keine andere Verbindung besteht.
+     *  Die Verbindung wird dann zurückgegeben.
+     */
     synchronized public static Connection getConnection() {
         try {
             if (ConnectionBuilder.connection == null) {
@@ -27,6 +31,9 @@ public class ConnectionBuilder {
         return ConnectionBuilder.connection;
     }
 
+    /**
+     * Diese Methode beendet die Verbindung zur Datenbank, falls eine besteht.
+     */
     synchronized public static void closeConnection() {
         try {
             if (ConnectionBuilder.connection != null) {
