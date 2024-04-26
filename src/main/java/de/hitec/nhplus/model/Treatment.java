@@ -17,15 +17,15 @@ public class Treatment {
     private String remarks; // Anmerkungen zur Behandlung
 
     /**
-     * Constructor to initiate an object of class <code>Treatment</code> with the given parameter. Use this constructor
-     * to initiate objects, which are not persisted yet, because it will not have a treatment id (tid).
+     * Konstruktor zum Initiieren eines Objekts der Klasse <code>Treatment</code> mit dem angegebenen Parameter. Verwenden Sie diesen Konstruktor
+     * um Objekte zu initiieren, die noch nicht persistent sind, da sie keine Behandlungs-ID (tid) haben.
      *
-     * @param pid         Id of the treated patient.
-     * @param date        Date of the Treatment.
-     * @param begin       Time of the start of the treatment in format "hh:MM"
-     * @param end         Time of the end of the treatment in format "hh:MM".
-     * @param description Description of the treatment.
-     * @param remarks     Remarks to the treatment.
+     * @param pid Id des behandelten Patienten.
+     * @param date Datum der Behandlung.
+     * @param begin Uhrzeit des Beginns der Behandlung im Format „hh:MM“
+     * @param end Uhrzeit des Behandlungsendes im Format „hh:MM“.
+     * @param description Beschreibung der Behandlung.
+     * @param remarks Bemerkungen zur Behandlung.
      */
     public Treatment(long pid, LocalDate date, LocalTime begin,
                      LocalTime end, String description, String remarks) {
@@ -38,16 +38,16 @@ public class Treatment {
     }
 
     /**
-     * Constructor to initiate an object of class <code>Treatment</code> with the given parameter. Use this constructor
-     * to initiate objects, which are already persisted and have a treatment id (tid).
+     * Konstruktor zum Initiieren eines Objekts der Klasse <code>Treatment</code> mit dem angegebenen Parameter. Verwenden Sie diesen Konstruktor
+     * um Objekte zu initiieren, die bereits persistiert sind und eine Behandlungs-ID (tid) haben.
      *
-     * @param tid         Id of the treatment.
-     * @param pid         Id of the treated patient.
-     * @param date        Date of the Treatment.
-     * @param begin       Time of the start of the treatment in format "hh:MM"
-     * @param end         Time of the end of the treatment in format "hh:MM".
-     * @param description Description of the treatment.
-     * @param remarks     Remarks to the treatment.
+     * @param tid ID der Behandlung.
+     * @param pid Id des behandelten Patienten.
+     * @param date Datum der Behandlung.
+     * @param begin Uhrzeit des Beginns der Behandlung im Format „hh:MM“
+     * @param end Uhrzeit des Behandlungsendes im Format „hh:MM“.
+     * @param description Beschreibung der Behandlung.
+     * @param remarks Bemerkungen zur Behandlung.
      */
     public Treatment(long tid, long pid, LocalDate date, LocalTime begin,
                      LocalTime end, String description, String remarks) {
