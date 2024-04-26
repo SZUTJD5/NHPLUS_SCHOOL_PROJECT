@@ -127,7 +127,7 @@ public class SetUpDB {
     }
 
     /**
-     * Die main Methode wird ausgeführt wenn diese Java Datei ausgeführt wird unf ruft die setIpDb Methode auf.
+     * Die main Methode wird ausgeführt wenn diese Java Datei ausgeführt wird unf ruft die setUpDb Methode auf.
      **/
     public static void main(String[] args) {
         SetUpDB.setUpDb();
