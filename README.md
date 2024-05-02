@@ -6,7 +6,7 @@ Tasks:
 5. - [ ] Nach 10 Jahren dürfen Daten gelöscht werden. (Täglicher check bei gesperrten Behandlunge / Patienten ob Daten 10 Jahre als sind, wenn ja -> Löschen)
 6. - [ ] Login einbauen - für berechtigte Personen (Jede Schwester und Jeder Facharzt erhält einen Login mit verschiedenen Berechtigungen)
 7. - [ ] Pflegermodul ?
-8. - [ ] Daten dürfen nicht einfach Löschbar sein. (Löschen button entfernen)
+8. - [x] Daten dürfen nicht einfach Löschbar sein. (Löschen button entfernen)
 
 8. - [ ] Berechtigungen verteilen (z.b. um Behandlungseinträge zu bearbeiten / zu erstellen)
 9. - [ ] Hover / Button für Informationen zu jeder Seite (Für Informationen zum Ausfüllen / etc)
