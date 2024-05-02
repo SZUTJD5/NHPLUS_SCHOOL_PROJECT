@@ -56,10 +56,6 @@ public class AllTreatmentController {
     @FXML
     private ComboBox<String> comboBoxPatientSelection;
 
-    // Button zum Löschen von Behandlungen
-    @FXML
-    private Button buttonDelete;
-
     // ObservableList Speichert die Behandlungen, welche in der TableView angezeigt werden sollen.
     private final ObservableList<Treatment> treatments = FXCollections.observableArrayList();
     private TreatmentDao dao;
@@ -85,12 +81,6 @@ public class AllTreatmentController {
         this.columnDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         // Einfügung der Spalten in die TableView
         this.tableView.setItems(this.treatments);
-
-        // Deaktiviert den Löschen Button wenn keine Behandlung selektiert ist.
-        this.buttonDelete.setDisable(true);
-        this.tableView.getSelectionModel().selectedItemProperty().addListener(
-                (observableValue, oldTreatment, newTreatment) ->
-                        AllTreatmentController.this.buttonDelete.setDisable(newTreatment == null));
 
         // Fügt die Patientennamen und den "alle" Selektor in das Dropdown menue zur auswahl der Patienten ein.
         this.createComboBoxData();
@@ -157,6 +147,8 @@ public class AllTreatmentController {
         return null;
     }
 
+    /* // MIT SPERREN MECHANIK ERSETZEN!
+
     // Löscht die selektierte Zeile nach Klick auf den Löschen Button
     @FXML
     public void handleDelete() {
@@ -169,6 +161,8 @@ public class AllTreatmentController {
             exception.printStackTrace();
         }
     }
+
+     */
 
     // Fügt eine neuen Behandlung ein. Nutzt die Daten aus den Eingabe Feldern.
     @FXML
