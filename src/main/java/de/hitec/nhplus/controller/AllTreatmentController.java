@@ -22,6 +22,8 @@ import java.util.ArrayList;
 
 public class AllTreatmentController {
 
+    public Button buttonNewTreament;
+
     // Zeigt die Behandlungsdaten an
     @FXML
     private TableView<Treatment> tableView;
