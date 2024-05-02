@@ -1,6 +1,7 @@
 package de.hitec.nhplus.controller;
 
 import de.hitec.nhplus.datastorage.DaoFactory;
+import de.hitec.nhplus.datastorage.DaoImp;
 import de.hitec.nhplus.datastorage.PatientDao;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -116,12 +117,7 @@ public class AllPatientController {
         this.tableView.setItems(this.patients);
 
         this.buttonDelete.setDisable(true);
-        this.tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Patient>() {
-            @Override
-            public void changed(ObservableValue<? extends Patient> observableValue, Patient oldPatient, Patient newPatient) {
-                AllPatientController.this.buttonDelete.setDisable(newPatient == null);
-            }
-        });
+        this.tableView.getSelectionModel().selectedItemProperty().addListener((observableValue, oldPatient, newPatient) -> AllPatientController.this.buttonDelete.setDisable(newPatient == null));
 
         this.buttonAdd.setDisable(true);
         ChangeListener<String> inputNewPatientListener = (observableValue, oldText, newText) ->
@@ -215,11 +211,32 @@ public class AllPatientController {
         }
     }
 
+    /*
+        Neue Methode zum Sperren der Daten. Verschied die Daten aus dieser Tabelle in die "lockedpatient" Tabelle.
+     */
+    @FXML
+    public void handleLock() {
+        Patient selectedItem = this.tableView.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            try {
+                this.dao.updateLockStatus(selectedItem.getPid(), true); // Updated den "locked" Wert des Patients.
+                readAllAndShowInTableView(); // Updatet die Tabelle im Programm
+            } catch (SQLException exception) {
+                exception.printStackTrace();
+            }
+        }
+    }
+
+
+
+
+
     /**
      * Diese Methode behandelt Ereignisse, die vom Button zum Löschen von Patienten ausgelöst werden. Sie ruft {@link PatientDao} auf, um den
      * Patienten aus der Datenbank zu löschen und entfernt das Objekt aus der Liste, die die Datenquelle der
      * <code>TableView</code> ist.
      */
+
     @FXML
     public void handleDelete() {
         Patient selectedItem = this.tableView.getSelectionModel().getSelectedItem();
@@ -233,6 +250,7 @@ public class AllPatientController {
         }
     }
 
+
     /**
      * Diese Methode behandelt die Ereignisse, die durch den Button zum Hinzufügen eines Patienten ausgelöst werden. Sie sammelt die Daten von den
      * <code>TextField</code>s, erstellt ein Objekt der Klasse <code>Patient</code> und übergibt das Objekt an {@link PatientDao}, um die Daten zu speichern.
@@ -245,8 +263,9 @@ public class AllPatientController {
         LocalDate date = DateConverter.convertStringToLocalDate(birthday);
         String careLevel = this.textFieldCareLevel.getText();
         String roomNumber = this.textFieldRoomNumber.getText();
+        String locked = "NO"; // Standart Wert, Patient nicht gesperrt bei erstellung.
         try {
-            this.dao.create(new Patient(firstName, surname, date, careLevel, roomNumber));
+            this.dao.create(new Patient(firstName, surname, date, careLevel, roomNumber, locked));
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
