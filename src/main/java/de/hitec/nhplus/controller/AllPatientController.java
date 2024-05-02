@@ -1,10 +1,9 @@
 package de.hitec.nhplus.controller;
 
 import de.hitec.nhplus.datastorage.DaoFactory;
-import de.hitec.nhplus.datastorage.DaoImp;
 import de.hitec.nhplus.datastorage.PatientDao;
+import de.hitec.nhplus.datastorage.TreatmentDao;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -85,6 +84,7 @@ public class AllPatientController {
     // ObservableList speichert die Patienten
     private final ObservableList<Patient> patients = FXCollections.observableArrayList();
     private PatientDao dao;
+    private TreatmentDao treatmentDao;
 
     /**
      * Wenn <code>initialize()</code> aufgerufen wird, sind alle Felder bereits initialisiert. Zum Beispiel vom FXMLLoader
@@ -204,6 +204,7 @@ public class AllPatientController {
     private void readAllAndShowInTableView() {
         this.patients.clear();
         this.dao = DaoFactory.getDaoFactory().createPatientDAO();
+        this.treatmentDao = DaoFactory.getDaoFactory().createTreatmentDao();
         try {
             this.patients.addAll(this.dao.readAll());
         } catch (SQLException exception) {
@@ -220,16 +221,13 @@ public class AllPatientController {
         if (selectedItem != null) {
             try {
                 this.dao.updateLockStatus(selectedItem.getPid(), true); // Updated den "locked" Wert des Patients.
+                treatmentDao.lockAllPatientTreatments(selectedItem.getPid(), true);
                 readAllAndShowInTableView(); // Updatet die Tabelle im Programm
             } catch (SQLException exception) {
                 exception.printStackTrace();
             }
         }
     }
-
-
-
-
 
     /**
      * Diese Methode behandelt Ereignisse, die vom Button zum Löschen von Patienten ausgelöst werden. Sie ruft {@link PatientDao} auf, um den
