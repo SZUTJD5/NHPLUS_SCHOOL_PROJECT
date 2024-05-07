@@ -8,49 +8,53 @@ import java.time.LocalTime;
 
 // Definition der Treatment-Klasse
 public class Treatment {
-    private long tid; // Behandlungs-ID
     private final long pid; // Finale Patienten-ID
+    private long tid; // Behandlungs-ID
     private LocalDate date; // Datum der Behandlung
     private LocalTime begin; // Startzeit der Behandlung
     private LocalTime end; // Endzeit der Behandlung
     private String description; // Beschreibung der Behandlung
     private String remarks; // Anmerkungen zur Behandlung
+    private boolean locked; // Locked Status
 
     /**
      * Konstruktor zum Initiieren eines Objekts der Klasse <code>Treatment</code> mit dem angegebenen Parameter. Verwenden Sie diesen Konstruktor
      * um Objekte zu initiieren, die noch nicht persistent sind, da sie keine Behandlungs-ID (tid) haben.
      *
-     * @param pid Id des behandelten Patienten.
-     * @param date Datum der Behandlung.
-     * @param begin Uhrzeit des Beginns der Behandlung im Format „hh:MM“
-     * @param end Uhrzeit des Behandlungsendes im Format „hh:MM“.
+     * @param pid         Id des behandelten Patienten.
+     * @param date        Datum der Behandlung.
+     * @param begin       Uhrzeit des Beginns der Behandlung im Format „hh:MM“
+     * @param end         Uhrzeit des Behandlungsendes im Format „hh:MM“.
      * @param description Beschreibung der Behandlung.
-     * @param remarks Bemerkungen zur Behandlung.
+     * @param remarks     Bemerkungen zur Behandlung.
+     * @param locked      Locked Status des Patienten
      */
     public Treatment(long pid, LocalDate date, LocalTime begin,
-                     LocalTime end, String description, String remarks) {
+                     LocalTime end, String description, String remarks, boolean locked) {
         this.pid = pid;
         this.date = date;
         this.begin = begin;
         this.end = end;
         this.description = description;
         this.remarks = remarks;
+        this.locked = locked;
     }
 
     /**
      * Konstruktor zum Initiieren eines Objekts der Klasse <code>Treatment</code> mit dem angegebenen Parameter. Verwenden Sie diesen Konstruktor
      * um Objekte zu initiieren, die bereits persistiert sind und eine Behandlungs-ID (tid) haben.
      *
-     * @param tid ID der Behandlung.
-     * @param pid Id des behandelten Patienten.
-     * @param date Datum der Behandlung.
-     * @param begin Uhrzeit des Beginns der Behandlung im Format „hh:MM“
-     * @param end Uhrzeit des Behandlungsendes im Format „hh:MM“.
+     * @param tid         ID der Behandlung.
+     * @param pid         Id des behandelten Patienten.
+     * @param date        Datum der Behandlung.
+     * @param begin       Uhrzeit des Beginns der Behandlung im Format „hh:MM“
+     * @param end         Uhrzeit des Behandlungsendes im Format „hh:MM“.
      * @param description Beschreibung der Behandlung.
-     * @param remarks Bemerkungen zur Behandlung.
+     * @param remarks     Bemerkungen zur Behandlung.
+     * @param locked      Locked Status des Patienten
      */
     public Treatment(long tid, long pid, LocalDate date, LocalTime begin,
-                     LocalTime end, String description, String remarks) {
+                     LocalTime end, String description, String remarks, boolean locked) {
         this.tid = tid;
         this.pid = pid;
         this.date = date;
@@ -58,6 +62,7 @@ public class Treatment {
         this.end = end;
         this.description = description;
         this.remarks = remarks;
+        this.locked = locked;
     }
 
     // Getter für Behandlungs-ID
@@ -75,24 +80,24 @@ public class Treatment {
         return date.toString();
     }
 
-    // Getter für Startzeit der Behandlung
-    public String getBegin() {
-        return begin.toString();
-    }
-
-    // Getter für Endzeit der Behandlung
-    public String getEnd() {
-        return end.toString();
-    }
-
     // Setter für Datum der Behandlung
     public void setDate(String date) {
         this.date = DateConverter.convertStringToLocalDate(date);
     }
 
+    // Getter für Startzeit der Behandlung
+    public String getBegin() {
+        return begin.toString();
+    }
+
     // Setter für Startzeit der Behandlung
     public void setBegin(String begin) {
         this.begin = DateConverter.convertStringToLocalTime(begin);
+    }
+
+    // Getter für Endzeit der Behandlung
+    public String getEnd() {
+        return end.toString();
     }
 
     // Setter für Endzeit der Behandlung
@@ -118,6 +123,10 @@ public class Treatment {
     // Setter für Anmerkungen zur Behandlung
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public boolean getLocked() {
+        return locked;
     }
 
     // Überschriebene toString-Methode zur Darstellung der Behandlungsinformationen

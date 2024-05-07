@@ -32,14 +32,15 @@ public class PatientDao extends DaoImp<Patient> {
     protected PreparedStatement getCreateStatement(Patient patient) {
         PreparedStatement preparedStatement = null;
         try {
-            final String SQL = "INSERT INTO patient (firstname, surname, dateOfBirth, carelevel, roomnumber) " +
-                    "VALUES (?, ?, ?, ?, ?)";
+            final String SQL = "INSERT INTO patient (firstname, surname, dateOfBirth, carelevel, roomnumber, locked) " +
+                    "VALUES (?, ?, ?, ?, ?, ?)";
             preparedStatement = this.connection.prepareStatement(SQL);
             preparedStatement.setString(1, patient.getFirstName());
             preparedStatement.setString(2, patient.getSurname());
             preparedStatement.setString(3, patient.getDateOfBirth());
             preparedStatement.setString(4, patient.getCareLevel());
             preparedStatement.setString(5, patient.getRoomNumber());
+            preparedStatement.setString(6, patient.getLocked()?"1":"0"); // Set default value for locked
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -56,9 +57,10 @@ public class PatientDao extends DaoImp<Patient> {
     protected PreparedStatement getReadByIDStatement(long pid) {
         PreparedStatement preparedStatement = null;
         try {
-            final String SQL = "SELECT * FROM patient WHERE pid = ?";
+            final String SQL = "SELECT * FROM patient WHERE pid = ? AND locked = ?";
             preparedStatement = this.connection.prepareStatement(SQL);
             preparedStatement.setLong(1, pid);
+            preparedStatement.setBoolean(2, false); // Nur Patienten anzeigen die nicht gesperrt sind.
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -79,7 +81,8 @@ public class PatientDao extends DaoImp<Patient> {
                 result.getString(3),
                 DateConverter.convertStringToLocalDate(result.getString(4)),
                 result.getString(5),
-                result.getString(6));
+                result.getString(6),
+                result.getBoolean(7));
     }
 
     /**
@@ -91,8 +94,9 @@ public class PatientDao extends DaoImp<Patient> {
     protected PreparedStatement getReadAllStatement() {
         PreparedStatement statement = null;
         try {
-            final String SQL = "SELECT * FROM patient";
+            final String SQL = "SELECT * FROM patient WHERE locked = ?";
             statement = this.connection.prepareStatement(SQL);
+            statement.setBoolean(1, false); // Nur Patienten anzeigen die nicht gesperrt sind.
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -113,7 +117,7 @@ public class PatientDao extends DaoImp<Patient> {
             LocalDate date = DateConverter.convertStringToLocalDate(result.getString(4));
             Patient patient = new Patient(result.getInt(1), result.getString(2),
                     result.getString(3), date,
-                    result.getString(5), result.getString(6));
+                    result.getString(5), result.getString(6), result.getBoolean(7));
             list.add(patient);
         }
         return list;
@@ -150,6 +154,23 @@ public class PatientDao extends DaoImp<Patient> {
         }
         return preparedStatement;
     }
+
+    /**
+     * Aktualisiert den Sperrstatus eines Patienten.
+     *
+     * @param pid Die ID des Patienten.
+     * @param locked true, wenn der Patient gesperrt ist, andernfalls false.
+     * @throws SQLException, wenn ein Datenbankzugriffsfehler auftritt.
+     */
+    public void updateLockStatus(long pid, boolean locked) throws SQLException {
+        final String SQL = "UPDATE patient SET locked = ? WHERE pid = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
+            preparedStatement.setBoolean(1, locked); // Wechselt locked auf "1"
+            preparedStatement.setLong(2, pid);
+            preparedStatement.executeUpdate();
+        }
+    }
+
 
     /**
      * Erzeugt ein <code>PreparedStatement</code>, um einen Patienten mit der angegebenen ID zu löschen.

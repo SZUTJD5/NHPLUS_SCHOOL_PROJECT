@@ -95,7 +95,8 @@ public class NewTreatmentController {
         LocalTime end = DateConverter.convertStringToLocalTime(textFieldEnd.getText()); // Konvertieren der eingegebenen Endzeit
         String description = textFieldDescription.getText(); // Abrufen der eingegebenen Behandlungsbeschreibung
         String remarks = textAreaRemarks.getText(); // Abrufen der eingegebenen Bemerkungen
-        Treatment treatment = new Treatment(patient.getPid(), date, begin, end, description, remarks); // Erstellen eines neuen Behandlungsobjekts
+        boolean locked = false;
+        Treatment treatment = new Treatment(patient.getPid(), date, begin, end, description, remarks, locked); // Erstellen eines neuen Behandlungsobjekts
         createTreatment(treatment); // Behandlung in der Datenbank erstellen
         controller.readAllAndShowInTableView(); // Alle Behandlungen neu laden und in der Tabelle anzeigen
         stage.close(); // Fenster schließen

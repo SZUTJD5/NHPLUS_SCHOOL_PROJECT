@@ -2,8 +2,8 @@ package de.hitec.nhplus.controller;
 
 import de.hitec.nhplus.datastorage.DaoFactory;
 import de.hitec.nhplus.datastorage.PatientDao;
+import de.hitec.nhplus.datastorage.TreatmentDao;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -84,6 +84,7 @@ public class AllPatientController {
     // ObservableList speichert die Patienten
     private final ObservableList<Patient> patients = FXCollections.observableArrayList();
     private PatientDao dao;
+    private TreatmentDao treatmentDao;
 
     /**
      * Wenn <code>initialize()</code> aufgerufen wird, sind alle Felder bereits initialisiert. Zum Beispiel vom FXMLLoader
@@ -116,12 +117,7 @@ public class AllPatientController {
         this.tableView.setItems(this.patients);
 
         this.buttonDelete.setDisable(true);
-        this.tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Patient>() {
-            @Override
-            public void changed(ObservableValue<? extends Patient> observableValue, Patient oldPatient, Patient newPatient) {
-                AllPatientController.this.buttonDelete.setDisable(newPatient == null);
-            }
-        });
+        this.tableView.getSelectionModel().selectedItemProperty().addListener((observableValue, oldPatient, newPatient) -> AllPatientController.this.buttonDelete.setDisable(newPatient == null));
 
         this.buttonAdd.setDisable(true);
         ChangeListener<String> inputNewPatientListener = (observableValue, oldText, newText) ->
@@ -208,10 +204,28 @@ public class AllPatientController {
     private void readAllAndShowInTableView() {
         this.patients.clear();
         this.dao = DaoFactory.getDaoFactory().createPatientDAO();
+        this.treatmentDao = DaoFactory.getDaoFactory().createTreatmentDao();
         try {
             this.patients.addAll(this.dao.readAll());
         } catch (SQLException exception) {
             exception.printStackTrace();
+        }
+    }
+
+    /*
+        Neue Methode zum Sperren der Daten. Verschied die Daten aus dieser Tabelle in die "lockedpatient" Tabelle.
+     */
+    @FXML
+    public void handleLock() {
+        Patient selectedItem = this.tableView.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            try {
+                this.dao.updateLockStatus(selectedItem.getPid(), true); // Updated den "locked" Wert des Patients.
+                treatmentDao.lockAllPatientTreatments(selectedItem.getPid(), true);
+                readAllAndShowInTableView(); // Updatet die Tabelle im Programm
+            } catch (SQLException exception) {
+                exception.printStackTrace();
+            }
         }
     }
 
@@ -220,6 +234,7 @@ public class AllPatientController {
      * Patienten aus der Datenbank zu löschen und entfernt das Objekt aus der Liste, die die Datenquelle der
      * <code>TableView</code> ist.
      */
+
     @FXML
     public void handleDelete() {
         Patient selectedItem = this.tableView.getSelectionModel().getSelectedItem();
@@ -233,6 +248,7 @@ public class AllPatientController {
         }
     }
 
+
     /**
      * Diese Methode behandelt die Ereignisse, die durch den Button zum Hinzufügen eines Patienten ausgelöst werden. Sie sammelt die Daten von den
      * <code>TextField</code>s, erstellt ein Objekt der Klasse <code>Patient</code> und übergibt das Objekt an {@link PatientDao}, um die Daten zu speichern.
@@ -245,8 +261,9 @@ public class AllPatientController {
         LocalDate date = DateConverter.convertStringToLocalDate(birthday);
         String careLevel = this.textFieldCareLevel.getText();
         String roomNumber = this.textFieldRoomNumber.getText();
+        boolean locked = false; // Standart Wert, Patient nicht gesperrt bei erstellung.
         try {
-            this.dao.create(new Patient(firstName, surname, date, careLevel, roomNumber));
+            this.dao.create(new Patient(firstName, surname, date, careLevel, roomNumber, locked));
         } catch (SQLException exception) {
             exception.printStackTrace();
         }

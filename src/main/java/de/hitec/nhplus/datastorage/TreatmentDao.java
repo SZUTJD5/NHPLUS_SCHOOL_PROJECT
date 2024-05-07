@@ -34,8 +34,8 @@ public class TreatmentDao extends DaoImp<Treatment> {
     protected PreparedStatement getCreateStatement(Treatment treatment) {
         PreparedStatement preparedStatement = null;
         try {
-            final String SQL = "INSERT INTO treatment (pid, treatment_date, begin, end, description, remark) " +
-                    "VALUES (?, ?, ?, ?, ?, ?)";
+            final String SQL = "INSERT INTO treatment (pid, treatment_date, begin, end, description, remark, locked) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
             preparedStatement = this.connection.prepareStatement(SQL);
             preparedStatement.setLong(1, treatment.getPid());
             preparedStatement.setString(2, treatment.getDate());
@@ -43,29 +43,16 @@ public class TreatmentDao extends DaoImp<Treatment> {
             preparedStatement.setString(4, treatment.getEnd());
             preparedStatement.setString(5, treatment.getDescription());
             preparedStatement.setString(6, treatment.getRemarks());
+            preparedStatement.setBoolean(7, treatment.getLocked());
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
         return preparedStatement;
     }
 
-    /**
-     * Erzeugt ein <code>PreparedStatement</code>, um eine Behandlung anhand einer bestimmten Behandlungs-ID (tid) abzufragen.
-     *
-     * @param tid Behandlungs-ID zur Abfrage.
-     * @return <code>PreparedStatement</code> zur Abfrage der Behandlung.
-     */
     @Override
-    protected PreparedStatement getReadByIDStatement(long tid) {
-        PreparedStatement preparedStatement = null;
-        try {
-            final String SQL = "SELECT * FROM treatment WHERE tid = ?";
-            preparedStatement = this.connection.prepareStatement(SQL);
-            preparedStatement.setLong(1, tid);
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-        return preparedStatement;
+    protected PreparedStatement getReadByIDStatement(long key) {
+        return null;
     }
 
     /**
@@ -80,8 +67,19 @@ public class TreatmentDao extends DaoImp<Treatment> {
         LocalTime begin = DateConverter.convertStringToLocalTime(result.getString(4));
         LocalTime end = DateConverter.convertStringToLocalTime(result.getString(5));
         return new Treatment(result.getLong(1), result.getLong(2),
-                date, begin, end, result.getString(6), result.getString(7));
+                date, begin, end, result.getString(6), result.getString(7), result.getBoolean(8));
     }
+
+    @Override
+    protected ArrayList<Treatment> getListFromResultSet(ResultSet set) throws SQLException {
+        ArrayList<Treatment> treatments = new ArrayList<>();
+        while (set.next()) {
+            treatments.add(getInstanceFromResultSet(set));
+        }
+        return treatments;
+    }
+
+
 
     /**
      * Erzeugt ein <code>PreparedStatement</code> zur Abfrage aller Behandlungen.
@@ -92,34 +90,12 @@ public class TreatmentDao extends DaoImp<Treatment> {
     protected PreparedStatement getReadAllStatement() {
         PreparedStatement statement = null;
         try {
-            final String SQL = "SELECT * FROM treatment";
+            final String SQL = "SELECT * FROM treatment WHERE locked IS false";
             statement = this.connection.prepareStatement(SQL);
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
         return statement;
-    }
-
-    /**
-     * Ordnet ein <code>ResultSet</code> aller Behandlungen einer <code>ArrayList</code> mit Objekten der Klasse zu
-     * <code>Behandlung</code>.
-     *
-     * @param result ResultSet mit allen Zeilen. Die Spalten werden Objekten der Klasse <code>Treatment</code> zugeordnet.
-     * @return <code>ArrayList</code> mit Objekten der Klasse <code>Treatment</code> aller Zeilen im
-     * <code>ResultSet</code>.
-     */
-    @Override
-    protected ArrayList<Treatment> getListFromResultSet(ResultSet result) throws SQLException {
-        ArrayList<Treatment> list = new ArrayList<Treatment>();
-        while (result.next()) {
-            LocalDate date = DateConverter.convertStringToLocalDate(result.getString(3));
-            LocalTime begin = DateConverter.convertStringToLocalTime(result.getString(4));
-            LocalTime end = DateConverter.convertStringToLocalTime(result.getString(5));
-            Treatment treatment = new Treatment(result.getLong(1), result.getLong(2),
-                    date, begin, end, result.getString(6), result.getString(7));
-            list.add(treatment);
-        }
-        return list;
     }
 
     /**
@@ -131,7 +107,7 @@ public class TreatmentDao extends DaoImp<Treatment> {
     private PreparedStatement getReadAllTreatmentsOfOnePatientByPid(long pid) {
         PreparedStatement preparedStatement = null;
         try {
-            final String SQL = "SELECT * FROM treatment WHERE pid = ?";
+            final String SQL = "SELECT * FROM treatment WHERE pid = ? AND locked IS false";
             preparedStatement = this.connection.prepareStatement(SQL);
             preparedStatement.setLong(1, pid);
         } catch (SQLException exception) {
@@ -171,7 +147,8 @@ public class TreatmentDao extends DaoImp<Treatment> {
                             "begin = ?, " +
                             "end = ?, " +
                             "description = ?, " +
-                            "remark = ? " +
+                            "remark = ?, " +
+                            "locked = ? " +
                             "WHERE tid = ?";
             preparedStatement = this.connection.prepareStatement(SQL);
             preparedStatement.setLong(1, treatment.getPid());
@@ -180,30 +157,34 @@ public class TreatmentDao extends DaoImp<Treatment> {
             preparedStatement.setString(4, treatment.getEnd());
             preparedStatement.setString(5, treatment.getDescription());
             preparedStatement.setString(6, treatment.getRemarks());
-            preparedStatement.setLong(7, treatment.getTid());
+            preparedStatement.setString(7, String.valueOf(treatment.getLocked()));
+            preparedStatement.setLong(8, treatment.getTid());
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
         return preparedStatement;
     }
 
-    /**
-     * Erzeugt ein <code>PreparedStatement</code> zum Löschen einer Behandlung mit der angegebenen ID.
-     *
-     * @param tid ID der zu löschenden Behandlung.
-     * @return <code>PreparedStatement</code>, um die Behandlung mit der angegebenen ID zu löschen.
-     */
     @Override
-    protected PreparedStatement getDeleteStatement(long tid) {
-        PreparedStatement preparedStatement = null;
+    protected PreparedStatement getDeleteStatement(long key) {
+        return null;
+    }
+
+    /**
+     * Setzt den Wert für "locked" für alle Behandlungen eines Patienten.
+     *
+     * @param pid  Patienten-ID.
+     * @param lock Wert für "locked".
+     */
+    public void lockAllPatientTreatments(long pid, boolean lock) {
         try {
-            final String SQL =
-                    "DELETE FROM treatment WHERE tid = ?";
-            preparedStatement = this.connection.prepareStatement(SQL);
-            preparedStatement.setLong(1, tid);
+            final String SQL = "UPDATE treatment SET locked = ? WHERE pid = ?";
+            PreparedStatement preparedStatement = this.connection.prepareStatement(SQL);
+            preparedStatement.setBoolean(1, lock);
+            preparedStatement.setLong(2, pid);
+            preparedStatement.executeUpdate();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
-        return preparedStatement;
     }
 }

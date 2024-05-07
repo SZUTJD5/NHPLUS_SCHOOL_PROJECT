@@ -9,10 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Die Patienten leben in einem Pflegeheim und werden von Pflegekräften behandelt.
- */
-
-/**
  * Diese Methode initialisiert die Klasse Patient, ertellt relevante Variablen und eine Liste
  **/
 public class Patient extends Person {
@@ -21,6 +17,7 @@ public class Patient extends Person {
     private final SimpleStringProperty roomNumber;
     private final List<Treatment> allTreatments = new ArrayList<>();
     private SimpleLongProperty pid;
+    private boolean locked;
 
     /**
      * Der Konstruktor erstellt ein neues Objekt der Klasse Patient mit den Variablen:
@@ -32,11 +29,12 @@ public class Patient extends Person {
      *
      * Dieser wird genutzt wenn der Patient noch kein "pid" hat.
      **/
-    public Patient(String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomNumber) {
+    public Patient(String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomNumber, boolean locked) {
         super(firstName, surname);
         this.dateOfBirth = new SimpleStringProperty(DateConverter.convertLocalDateToString(dateOfBirth));
         this.careLevel = new SimpleStringProperty(careLevel);
         this.roomNumber = new SimpleStringProperty(roomNumber);
+        this.locked = locked;
     }
 
     /**
@@ -49,21 +47,23 @@ public class Patient extends Person {
      *  @param dateOfBirth   Das Geburtsdatum des Patienten.
      *  @param careLevel     Die Pflegestufe des Patienten.
      *  @param roomNumber    Die Zimmernummer des Patienten.
+     *  @param locked        Ob der Patient gesperrt ist oder nicht.
      **/
-    public Patient(long pid, String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomNumber) {
+    public Patient(long pid, String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomNumber, boolean locked) {
         super(firstName, surname);
         this.pid = new SimpleLongProperty(pid);
         this.dateOfBirth = new SimpleStringProperty(DateConverter.convertLocalDateToString(dateOfBirth));
         this.careLevel = new SimpleStringProperty(careLevel);
         this.roomNumber = new SimpleStringProperty(roomNumber);
+        this.locked = locked;
+    }
+
+    public boolean getLocked() {
+        return locked;
     }
 
     public long getPid() { // Gibt "pid" des Patienten aus (getter).
         return pid.get();
-    }
-
-    public SimpleLongProperty pidProperty() { // Gibt "pid" des Patienten als SimpleLongProperty aus.
-        return pid;
     }
 
     public String getDateOfBirth() { // Gibt Geburtsdatum des Patienten aus (getter).
@@ -79,10 +79,6 @@ public class Patient extends Person {
         this.dateOfBirth.set(dateOfBirth);
     }
 
-    public SimpleStringProperty dateOfBirthProperty() { // Gibt das Geburtsdatum des Patienten als SimpleLongProperty aus
-        return dateOfBirth;
-    }
-
     public String getCareLevel() { // Gibt das Pflegelevel des Patienten aus (getter).
         return careLevel.get();
     }
@@ -91,20 +87,12 @@ public class Patient extends Person {
         this.careLevel.set(careLevel);
     }
 
-    public SimpleStringProperty careLevelProperty() { // Gibt das Pflegelevel das Patienten als SimpleLongProperty aus
-        return careLevel;
-    }
-
     public String getRoomNumber() { // Gibt die Zimmernummer des Patienten aus (getter).
         return roomNumber.get();
     }
 
     public void setRoomNumber(String roomNumber) { // Setzt die Zimmernummer des Patienten auf die des Input Strings (setter).
         this.roomNumber.set(roomNumber);
-    }
-
-    public SimpleStringProperty roomNumberProperty() { // Gibt die Zimmernummer des Patienten als SimpleLongPropery aus
-        return roomNumber;
     }
 
     /**
@@ -125,6 +113,7 @@ public class Patient extends Person {
                 "\nBirthday: " + this.dateOfBirth +
                 "\nCarelevel: " + this.careLevel +
                 "\nRoomnumber: " + this.roomNumber +
+                "\nLocked: " + this.locked +
                 "\n";
     }
 }

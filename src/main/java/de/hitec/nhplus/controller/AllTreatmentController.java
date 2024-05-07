@@ -19,6 +19,7 @@ import de.hitec.nhplus.model.Treatment;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AllTreatmentController {
 
@@ -86,13 +87,16 @@ public class AllTreatmentController {
         this.createComboBoxData();
     }
 
-    // Ließt alle Behandlungen aus der Datenbank aus und fügt sie der TablieView an.
+
+
+    // Ließt alle Behandlungen aus der Datenbank aus und fügt sie der TableView an.
     public void readAllAndShowInTableView() {
-        this.treatments.clear();
         comboBoxPatientSelection.getSelectionModel().select(0);
         this.dao = DaoFactory.getDaoFactory().createTreatmentDao();
         try {
-            this.treatments.addAll(dao.readAll());
+            this.treatments.clear();
+            List<Treatment> retrievedTreatments = dao.readAll();
+            this.treatments.addAll(retrievedTreatments);
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -103,9 +107,9 @@ public class AllTreatmentController {
         PatientDao dao = DaoFactory.getDaoFactory().createPatientDAO();
         try {
             patientList = (ArrayList<Patient>) dao.readAll();
-            this.patientSelection.add("alle");
+            patientSelection.add("alle");
             for (Patient patient: patientList) {
-                this.patientSelection.add(patient.getSurname());
+                patientSelection.add(patient.getSurname());
             }
         } catch (SQLException exception) {
             exception.printStackTrace();
