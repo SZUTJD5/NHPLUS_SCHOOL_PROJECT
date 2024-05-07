@@ -76,7 +76,6 @@ public class TreatmentDao extends DaoImp<Treatment> {
         while (set.next()) {
             treatments.add(getInstanceFromResultSet(set));
         }
-        System.out.println("Total treatments retrieved from DB: " + treatments.size()); // Add this line for debugging
         return treatments;
     }
 
@@ -93,7 +92,6 @@ public class TreatmentDao extends DaoImp<Treatment> {
         try {
             final String SQL = "SELECT * FROM treatment WHERE locked IS false";
             statement = this.connection.prepareStatement(SQL);
-            System.out.println("Executing SQL query: " + statement.toString()); // Add this line for debugging
         } catch (SQLException exception) {
             exception.printStackTrace();
         }

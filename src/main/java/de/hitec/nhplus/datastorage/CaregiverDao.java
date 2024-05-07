@@ -33,12 +33,13 @@ public class CaregiverDao extends DaoImp<Caregiver> {
     protected PreparedStatement getCreateStatement(Caregiver caregiver) {
         PreparedStatement preparedStatement = null;
         try {
-            final String SQL = "INSERT INTO caregiver (firstname, surname, phoneNumber) " +
-                    "VALUES (?, ?, ?)";
+            final String SQL = "INSERT INTO caregiver (firstname, surname, phoneNumber, locked) " +
+                    "VALUES (?, ?, ?, ?)";
             preparedStatement = this.connection.prepareStatement(SQL);
             preparedStatement.setString(1, caregiver.getFirstName());
             preparedStatement.setString(2, caregiver.getSurname());
             preparedStatement.setString(3, caregiver.getPhoneNumber());
+            preparedStatement.setBoolean(4, caregiver.getLocked());
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -76,7 +77,8 @@ public class CaregiverDao extends DaoImp<Caregiver> {
                 result.getInt(1),
                 result.getString(2),
                 result.getString(3),
-                result.getString(4));
+                result.getString(4),
+                result.getBoolean(5));
     }
 
     /**
@@ -88,7 +90,7 @@ public class CaregiverDao extends DaoImp<Caregiver> {
     protected PreparedStatement getReadAllStatement() {
         PreparedStatement statement = null;
         try {
-            final String SQL = "SELECT * FROM caregiver";
+            final String SQL = "SELECT * FROM caregiver WHERE locked IS false";
             statement = this.connection.prepareStatement(SQL);
         } catch (SQLException exception) {
             exception.printStackTrace();
@@ -108,7 +110,7 @@ public class CaregiverDao extends DaoImp<Caregiver> {
         ArrayList<Caregiver> list = new ArrayList<>();
         while (result.next()) {
             Caregiver caregiver = new Caregiver(result.getLong(1), result.getString(2),
-                    result.getString(3), result.getString(4));
+                    result.getString(3), result.getString(4), result.getBoolean(5));
             list.add(caregiver);
         }
         return list;
@@ -129,31 +131,44 @@ public class CaregiverDao extends DaoImp<Caregiver> {
                     "UPDATE caregiver SET " +
                             "firstname = ?, " +
                             "surname = ?, " +
-                            "phoneNumber = ? " +
+                            "phoneNumber = ?, " +
+                            "locked = ? " +
                             "WHERE cid = ?";
             preparedStatement = this.connection.prepareStatement(SQL);
             preparedStatement.setString(1, caregiver.getFirstName());
             preparedStatement.setString(2, caregiver.getSurname());
             preparedStatement.setString(3, caregiver.getPhoneNumber());
+            preparedStatement.setBoolean(4, caregiver.getLocked());
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
         return preparedStatement;
     }
 
+    // Setzt locked auf true
+    public void updateLockStatus(long cid, boolean locked) throws SQLException {
+        final String SQL = "UPDATE caregiver SET locked = ? WHERE cid = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
+            preparedStatement.setBoolean(1, locked); // Wechselt locked auf "1"
+            preparedStatement.setLong(2, cid);
+            preparedStatement.executeUpdate();
+        }
+    }
+
     /**
      * Erzeugt ein <code>PreparedStatement</code>, um einen Angestellten mit der angegebenen ID zu löschen.
      *
-     * @param pid-ID des zu löschenden Angestellten.
+     * @param cid-ID des zu löschenden Angestellten.
      * @return <code>PreparedStatement</code>, um den Angestellten mit der angegebenen ID zu löschen.
      */
+
     @Override
-    protected PreparedStatement getDeleteStatement(long pid) {
+    protected PreparedStatement getDeleteStatement(long cid) {
         PreparedStatement preparedStatement = null;
         try {
             final String SQL = "DELETE FROM caregiver WHERE cid = ?";
             preparedStatement = this.connection.prepareStatement(SQL);
-            preparedStatement.setLong(1, pid);
+            preparedStatement.setLong(1, cid);
         } catch (SQLException exception) {
             exception.printStackTrace();
         }

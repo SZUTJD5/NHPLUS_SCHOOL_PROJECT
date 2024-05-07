@@ -17,7 +17,7 @@ public class Patient extends Person {
     private final SimpleStringProperty roomNumber;
     private final List<Treatment> allTreatments = new ArrayList<>();
     private SimpleLongProperty pid;
-    private final SimpleStringProperty locked;
+    private boolean locked;
 
     /**
      * Der Konstruktor erstellt ein neues Objekt der Klasse Patient mit den Variablen:
@@ -29,12 +29,12 @@ public class Patient extends Person {
      *
      * Dieser wird genutzt wenn der Patient noch kein "pid" hat.
      **/
-    public Patient(String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomNumber, String locked) {
+    public Patient(String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomNumber, boolean locked) {
         super(firstName, surname);
         this.dateOfBirth = new SimpleStringProperty(DateConverter.convertLocalDateToString(dateOfBirth));
         this.careLevel = new SimpleStringProperty(careLevel);
         this.roomNumber = new SimpleStringProperty(roomNumber);
-        this.locked = new SimpleStringProperty(locked);
+        this.locked = locked;
     }
 
     /**
@@ -49,13 +49,17 @@ public class Patient extends Person {
      *  @param roomNumber    Die Zimmernummer des Patienten.
      *  @param locked        Ob der Patient gesperrt ist oder nicht.
      **/
-    public Patient(long pid, String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomNumber, String locked) {
+    public Patient(long pid, String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomNumber, boolean locked) {
         super(firstName, surname);
         this.pid = new SimpleLongProperty(pid);
         this.dateOfBirth = new SimpleStringProperty(DateConverter.convertLocalDateToString(dateOfBirth));
         this.careLevel = new SimpleStringProperty(careLevel);
         this.roomNumber = new SimpleStringProperty(roomNumber);
-        this.locked = new SimpleStringProperty(locked);
+        this.locked = locked;
+    }
+
+    public boolean getLocked() {
+        return locked;
     }
 
     public long getPid() { // Gibt "pid" des Patienten aus (getter).

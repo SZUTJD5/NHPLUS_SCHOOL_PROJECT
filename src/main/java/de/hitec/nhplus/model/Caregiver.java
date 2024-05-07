@@ -1,16 +1,7 @@
 package de.hitec.nhplus.model;
 
-import de.hitec.nhplus.utils.DateConverter;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
-/**
- * Die Angestellten leben in einem Pflegeheim und werden von Pflegekräften behandelt.
- */
 
 /**
  * Diese Methode initialisiert die Klasse Caregiver, ertellt relevante Variablen und eine Liste
@@ -18,6 +9,7 @@ import java.util.List;
 public class Caregiver extends Person {
     private SimpleLongProperty cid;
     private SimpleStringProperty phoneNumber;
+    private boolean locked;
 
     /**
      * Der Konstruktor erstellt ein neues Objekt der Klasse Caregiver mit den Variablen:
@@ -27,9 +19,10 @@ public class Caregiver extends Person {
      *
      * Dieser wird genutzt wenn der Caregiver noch kein "pid" hat.
      **/
-    public Caregiver(String firstName, String surname, String phoneNumber) {
+    public Caregiver(String firstName, String surname, String phoneNumber, boolean locked) {
         super(firstName, surname);
         this.phoneNumber = new SimpleStringProperty(phoneNumber);
+        this.locked = locked;
     }
 
     /**
@@ -40,10 +33,11 @@ public class Caregiver extends Person {
      *  @param firstName     Der Vorname des Angestellten
      *  @param surname       Der Nachname des Angestellten
      **/
-    public Caregiver(long cid, String firstName, String surname, String phoneNumber) {
+    public Caregiver(long cid, String firstName, String surname, String phoneNumber, boolean locked) {
         super(firstName, surname);
         this.cid = new SimpleLongProperty(cid);
         this.phoneNumber = new SimpleStringProperty(phoneNumber);
+        this.locked = locked;
     }
 
     @Override
@@ -66,5 +60,9 @@ public class Caregiver extends Person {
 
     public void setPhoneNumber(String newValue) {
         this.phoneNumber.set(newValue);
+    }
+
+    public boolean getLocked() {
+        return this.locked;
     }
 }

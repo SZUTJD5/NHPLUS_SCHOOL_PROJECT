@@ -40,7 +40,7 @@ public class PatientDao extends DaoImp<Patient> {
             preparedStatement.setString(3, patient.getDateOfBirth());
             preparedStatement.setString(4, patient.getCareLevel());
             preparedStatement.setString(5, patient.getRoomNumber());
-            preparedStatement.setString(6, "NO"); // Set default value for locked
+            preparedStatement.setString(6, patient.getLocked()?"1":"0"); // Set default value for locked
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -60,7 +60,7 @@ public class PatientDao extends DaoImp<Patient> {
             final String SQL = "SELECT * FROM patient WHERE pid = ? AND locked = ?";
             preparedStatement = this.connection.prepareStatement(SQL);
             preparedStatement.setLong(1, pid);
-            preparedStatement.setString(2, "NO"); // Nur Patienten anzeigen die nicht gesperrt sind.
+            preparedStatement.setBoolean(2, false); // Nur Patienten anzeigen die nicht gesperrt sind.
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -82,7 +82,7 @@ public class PatientDao extends DaoImp<Patient> {
                 DateConverter.convertStringToLocalDate(result.getString(4)),
                 result.getString(5),
                 result.getString(6),
-                result.getString(7));
+                result.getBoolean(7));
     }
 
     /**
@@ -96,7 +96,7 @@ public class PatientDao extends DaoImp<Patient> {
         try {
             final String SQL = "SELECT * FROM patient WHERE locked = ?";
             statement = this.connection.prepareStatement(SQL);
-            statement.setString(1, "NO"); // Nur Patienten anzeigen die nicht gesperrt sind.
+            statement.setBoolean(1, false); // Nur Patienten anzeigen die nicht gesperrt sind.
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -117,7 +117,7 @@ public class PatientDao extends DaoImp<Patient> {
             LocalDate date = DateConverter.convertStringToLocalDate(result.getString(4));
             Patient patient = new Patient(result.getInt(1), result.getString(2),
                     result.getString(3), date,
-                    result.getString(5), result.getString(6), result.getString(7));
+                    result.getString(5), result.getString(6), result.getBoolean(7));
             list.add(patient);
         }
         return list;
@@ -165,7 +165,7 @@ public class PatientDao extends DaoImp<Patient> {
     public void updateLockStatus(long pid, boolean locked) throws SQLException {
         final String SQL = "UPDATE patient SET locked = ? WHERE pid = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
-            preparedStatement.setString(1, locked ? "YES" : "NO"); // Wechselt locked auf "YES"
+            preparedStatement.setBoolean(1, locked); // Wechselt locked auf "1"
             preparedStatement.setLong(2, pid);
             preparedStatement.executeUpdate();
         }

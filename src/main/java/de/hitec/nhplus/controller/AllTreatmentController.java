@@ -96,7 +96,6 @@ public class AllTreatmentController {
         try {
             this.treatments.clear();
             List<Treatment> retrievedTreatments = dao.readAll();
-            System.out.println("Total treatments retrieved: " + retrievedTreatments.size()); // Add this line for debugging
             this.treatments.addAll(retrievedTreatments);
         } catch (SQLException exception) {
             exception.printStackTrace();

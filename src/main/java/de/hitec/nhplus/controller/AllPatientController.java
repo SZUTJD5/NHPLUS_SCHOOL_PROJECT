@@ -1,7 +1,6 @@
 package de.hitec.nhplus.controller;
 
 import de.hitec.nhplus.datastorage.DaoFactory;
-import de.hitec.nhplus.datastorage.DaoImp;
 import de.hitec.nhplus.datastorage.PatientDao;
 import de.hitec.nhplus.datastorage.TreatmentDao;
 import javafx.beans.value.ChangeListener;
@@ -262,7 +261,7 @@ public class AllPatientController {
         LocalDate date = DateConverter.convertStringToLocalDate(birthday);
         String careLevel = this.textFieldCareLevel.getText();
         String roomNumber = this.textFieldRoomNumber.getText();
-        String locked = "NO"; // Standart Wert, Patient nicht gesperrt bei erstellung.
+        boolean locked = false; // Standart Wert, Patient nicht gesperrt bei erstellung.
         try {
             this.dao.create(new Patient(firstName, surname, date, careLevel, roomNumber, locked));
         } catch (SQLException exception) {

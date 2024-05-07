@@ -64,7 +64,6 @@ public class AllCaregiverController {
      * konfiguriert werden.
      */
     public void initialize() {
-        System.out.println("Erfolg");
         this.readAllAndShowInTableView();
 
         this.columnId.setCellValueFactory(new PropertyValueFactory<>("cid"));
@@ -150,6 +149,18 @@ public class AllCaregiverController {
         }
     }
 
+    @FXML
+    public void handleLock() {
+        Caregiver selectedItem = this.tableView.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            try {
+                this.dao.updateLockStatus(selectedItem.getCid(), true);
+            } catch (SQLException exception) {
+                exception.printStackTrace();
+            }
+        }
+    }
+
     /**
      * Diese Methode behandelt Ereignisse, die vom Button zum Löschen von Angestellten ausgelöst werden. Sie ruft {@link CaregiverDao} auf, um den
      * Angestellten aus der Datenbank zu löschen und entfernt das Objekt aus der Liste, die die Datenquelle der
@@ -159,12 +170,16 @@ public class AllCaregiverController {
     public void handleDelete() {
         Caregiver selectedItem = this.tableView.getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
+            handleLock();
+            readAllAndShowInTableView();
+            /*
             try {
                 DaoFactory.getDaoFactory().createCaregiverDAO().deleteById(selectedItem.getCid());
                 this.tableView.getItems().remove(selectedItem);
             } catch (SQLException exception) {
                 exception.printStackTrace();
             }
+             */
         }
     }
 
@@ -177,8 +192,9 @@ public class AllCaregiverController {
         String surname = this.textFieldSurname.getText();
         String firstName = this.textFieldFirstName.getText();
         String phoneNumber = this.textFieldPhoneNumber.getText();
+        boolean locked = false;
         try {
-            this.dao.create(new Caregiver(firstName, surname, phoneNumber));
+            this.dao.create(new Caregiver(firstName, surname, phoneNumber, locked));
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
