@@ -69,7 +69,7 @@ public class AllTreatmentController {
     public void initialize() {
         // Ließt alle Behandlungen aus und fügt sie ein
         readAllAndShowInTableView();
-        // Richtet die ComboBox f[r die Patientennamen ein
+        // Richtet die ComboBox für die Patientennamen ein
         comboBoxPatientSelection.setItems(patientSelection);
         comboBoxPatientSelection.getSelectionModel().select(0);
 
