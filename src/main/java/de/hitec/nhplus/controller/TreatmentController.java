@@ -55,7 +55,7 @@ public class TreatmentController {
             this.treatment = treatment;
             showData(); // Anzeigen der Daten des Patienten und der Behandlung
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
     }
 
@@ -90,7 +90,7 @@ public class TreatmentController {
         try {
             dao.update(treatment); // Behandlungsinformationen aktualisieren
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
     }
 

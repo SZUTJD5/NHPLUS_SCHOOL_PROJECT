@@ -26,7 +26,7 @@ public class ConnectionBuilder {
             }
         } catch (SQLException exception) {
             System.out.println("Verbindung zur Datenbank konnte nicht aufgebaut werden!");
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
         return ConnectionBuilder.connection;
     }
@@ -41,7 +41,7 @@ public class ConnectionBuilder {
                 ConnectionBuilder.connection = null;
             }
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
     }
 }

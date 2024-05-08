@@ -98,8 +98,7 @@ public class AllTreatmentController {
             List<Treatment> retrievedTreatments = dao.readAll();
             this.treatments.addAll(retrievedTreatments);
         } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
+            System.setErr(System.err);        }
     }
 
     // Befüllt die ComboBox mit den Patientennamen und dem "alle" Selektor
@@ -112,7 +111,7 @@ public class AllTreatmentController {
                 patientSelection.add(patient.getSurname());
             }
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
     }
 
@@ -128,7 +127,7 @@ public class AllTreatmentController {
             try {
                 this.treatments.addAll(this.dao.readAll());
             } catch (SQLException exception) {
-                exception.printStackTrace();
+                System.setErr(System.err);
             }
         }
 
@@ -137,7 +136,7 @@ public class AllTreatmentController {
             try {
                 this.treatments.addAll(this.dao.readTreatmentsByPid(patient.getPid()));
             } catch (SQLException exception) {
-                exception.printStackTrace();
+                System.setErr(System.err);
             }
         }
     }
@@ -162,7 +161,7 @@ public class AllTreatmentController {
         try {
             dao.deleteById(t.getTid());
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
     }
 
@@ -213,7 +212,7 @@ public class AllTreatmentController {
             stage.setResizable(false);
             stage.showAndWait();
         } catch (IOException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
     }
 
@@ -233,7 +232,7 @@ public class AllTreatmentController {
             stage.setResizable(false);
             stage.showAndWait();
         } catch (IOException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
     }
 }

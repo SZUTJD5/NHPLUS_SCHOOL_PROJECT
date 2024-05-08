@@ -193,8 +193,7 @@ public class AllPatientController {
         try {
             this.dao.update(event.getRowValue());
         } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
+            System.setErr(System.err);        }
     }
 
     /**
@@ -208,7 +207,7 @@ public class AllPatientController {
         try {
             this.patients.addAll(this.dao.readAll());
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
     }
 
@@ -224,7 +223,7 @@ public class AllPatientController {
                 treatmentDao.lockAllPatientTreatments(selectedItem.getPid(), true);
                 readAllAndShowInTableView(); // Updatet die Tabelle im Programm
             } catch (SQLException exception) {
-                exception.printStackTrace();
+                System.setErr(System.err);
             }
         }
     }
@@ -243,7 +242,7 @@ public class AllPatientController {
                 DaoFactory.getDaoFactory().createPatientDAO().deleteById(selectedItem.getPid());
                 this.tableView.getItems().remove(selectedItem);
             } catch (SQLException exception) {
-                exception.printStackTrace();
+                System.setErr(System.err);
             }
         }
     }
@@ -265,7 +264,7 @@ public class AllPatientController {
         try {
             this.dao.create(new Patient(firstName, surname, date, careLevel, roomNumber, locked));
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
         readAllAndShowInTableView();
         clearTextfields();

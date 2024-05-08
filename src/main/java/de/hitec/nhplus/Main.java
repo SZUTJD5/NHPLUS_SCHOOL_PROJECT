@@ -45,7 +45,7 @@ public class Main extends Application {
             });
             // Catch-Block für IOException
         } catch (IOException exception) {
-            exception.printStackTrace(); // Ausgabe der Fehlermeldung
+            System.setErr(System.err); // Ausgabe der Fehlermeldung
         }
     }
 

@@ -26,7 +26,7 @@ public class MainWindowController {
         try {
             mainBorderPane.setCenter(loader.load());
         } catch (IOException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
     }
 
@@ -42,7 +42,7 @@ public class MainWindowController {
         try {
             mainBorderPane.setCenter(loader.load());
         } catch (IOException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
     }
 
@@ -52,7 +52,7 @@ public class MainWindowController {
          try {
              mainBorderPane.setCenter(loader.load());
          } catch (IOException exception) {
-             exception.printStackTrace();
+             System.setErr(System.err);
          }
      }
  }

@@ -20,21 +20,6 @@ public class LoginController {
     public Button buttonLogin;
     // Button zum Login
 
-    /*
-    @FXML
-    private void handleLogin(ActionEvent event) {
-        if (textFieldLoginName.getText().equals(loginName) && textFieldPassword.getText().equals(password)) {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/MainWindowView.fxml"));
-            try {
-                loginBorderPane.setCenter(loader.load());
-            } catch (IOException exception) {
-                exception.printStackTrace();
-            }
-        }
-    }
-
-     */
-
     @FXML
     private void handleLogin() {
         String password = "adminadmin";
@@ -50,7 +35,7 @@ public class LoginController {
                 stage.setScene(scene);
                 stage.sizeToScene();
             } catch (IOException exception) {
-                exception.printStackTrace();
+                System.setErr(System.err);
             }
         }
     }
