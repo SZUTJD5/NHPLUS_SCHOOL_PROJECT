@@ -23,45 +23,36 @@ import java.util.List;
 
 public class AllTreatmentController {
 
+    // ObservableList Speichert die Behandlungen, welche in der TableView angezeigt werden sollen.
+    private final ObservableList<Treatment> treatments = FXCollections.observableArrayList();
+    // Enthält die Patienten Namen
+    private final ObservableList<String> patientSelection = FXCollections.observableArrayList();
     public Button buttonNewTreament;
-
     // Zeigt die Behandlungsdaten an
     @FXML
     private TableView<Treatment> tableView;
-
     // Zeigt die Behandlungs ID's an
     @FXML
     private TableColumn<Treatment, Integer> columnId;
-
     // Zeigt die Patienten ID's an
     @FXML
     private TableColumn<Treatment, Integer> columnPid;
-
     // Zeigt das Datum der Behandlung an
     @FXML
     private TableColumn<Treatment, String> columnDate;
-
     // Zeit die Zeit an wann die Behandlung begonnen hat
     @FXML
     private TableColumn<Treatment, String> columnBegin;
-
     // Zeigt die Zeit an wann die Behandlung abgeschlossen wurde
     @FXML
     private TableColumn<Treatment, String> columnEnd;
-
     // Zeigt die Behandlungsbeschreibung an
     @FXML
     private TableColumn<Treatment, String> columnDescription;
-
     // ComboBox zur Auswahl von Patienten
     @FXML
     private ComboBox<String> comboBoxPatientSelection;
-
-    // ObservableList Speichert die Behandlungen, welche in der TableView angezeigt werden sollen.
-    private final ObservableList<Treatment> treatments = FXCollections.observableArrayList();
     private TreatmentDao dao;
-    // Enthält die Patienten Namen
-    private final ObservableList<String> patientSelection = FXCollections.observableArrayList();
     // Liste aller Patienten
     private ArrayList<Patient> patientList;
 
@@ -87,8 +78,6 @@ public class AllTreatmentController {
         this.createComboBoxData();
     }
 
-
-
     // Ließt alle Behandlungen aus der Datenbank aus und fügt sie der TableView an.
     public void readAllAndShowInTableView() {
         comboBoxPatientSelection.getSelectionModel().select(0);
@@ -98,7 +87,8 @@ public class AllTreatmentController {
             List<Treatment> retrievedTreatments = dao.readAll();
             this.treatments.addAll(retrievedTreatments);
         } catch (SQLException exception) {
-            System.setErr(System.err);        }
+            System.setErr(System.err);
+        }
     }
 
     // Befüllt die ComboBox mit den Patientennamen und dem "alle" Selektor
@@ -107,7 +97,7 @@ public class AllTreatmentController {
         try {
             patientList = (ArrayList<Patient>) dao.readAll();
             patientSelection.add("alle");
-            for (Patient patient: patientList) {
+            for (Patient patient : patientList) {
                 patientSelection.add(patient.getSurname());
             }
         } catch (SQLException exception) {
@@ -132,7 +122,7 @@ public class AllTreatmentController {
         }
 
         Patient patient = searchInList(selectedPatient);
-        if (patient !=null) {
+        if (patient != null) {
             try {
                 this.treatments.addAll(this.dao.readTreatmentsByPid(patient.getPid()));
             } catch (SQLException exception) {
@@ -170,11 +160,11 @@ public class AllTreatmentController {
     // Fügt eine neuen Behandlung ein. Nutzt die Daten aus den Eingabe Feldern.
     @FXML
     public void handleNewTreatment() {
-        try{
+        try {
             String selectedPatient = this.comboBoxPatientSelection.getSelectionModel().getSelectedItem();
             Patient patient = searchInList(selectedPatient);
             newTreatmentWindow(patient);
-        } catch (NullPointerException exception){
+        } catch (NullPointerException exception) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information");
             alert.setHeaderText("Patient für die Behandlung fehlt!");
@@ -217,7 +207,7 @@ public class AllTreatmentController {
     }
 
     // Öffnet das Fenster einer bereits existierenden Behandlung zur auslesung der Details
-    public void treatmentWindow(Treatment treatment){
+    public void treatmentWindow(Treatment treatment) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/TreatmentView.fxml"));
             AnchorPane pane = loader.load();

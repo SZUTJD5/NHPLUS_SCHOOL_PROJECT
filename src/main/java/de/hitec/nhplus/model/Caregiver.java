@@ -7,8 +7,8 @@ import javafx.beans.property.SimpleStringProperty;
  * Diese Methode initialisiert die Klasse Caregiver, ertellt relevante Variablen und eine Liste
  **/
 public class Caregiver extends Person {
+    private final SimpleStringProperty phoneNumber;
     private SimpleLongProperty cid;
-    private SimpleStringProperty phoneNumber;
     private boolean locked;
 
     /**
@@ -60,5 +60,9 @@ public class Caregiver extends Person {
 
     public boolean getLocked() {
         return this.locked;
+    }
+
+    public String getName() {
+        return this.getSurname() + ", " + this.getFirstName();
     }
 }
