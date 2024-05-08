@@ -48,18 +48,10 @@ public class SetUpDB {
     }
 
     /**
-     *  Erstellt neue Tabelle patient falls keine vorhanden ist, mit den gelisteten Spalten.
+     * Erstellt neue Tabelle patient falls keine vorhanden ist, mit den gelisteten Spalten.
      **/
     private static void setUpTablePatient(Connection connection) {
-        final String SQL = "CREATE TABLE IF NOT EXISTS patient (" +
-                "   pid INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "   firstname TEXT NOT NULL, " +
-                "   surname TEXT NOT NULL, " +
-                "   dateOfBirth TEXT NOT NULL, " +
-                "   carelevel TEXT NOT NULL, " +
-                "   roomnumber TEXT NOT NULL, " +
-                "   locked TEXT" +
-                ");";
+        final String SQL = "CREATE TABLE IF NOT EXISTS patient (" + "   pid INTEGER PRIMARY KEY AUTOINCREMENT, " + "   firstname TEXT NOT NULL, " + "   surname TEXT NOT NULL, " + "   dateOfBirth TEXT NOT NULL, " + "   carelevel TEXT NOT NULL, " + "   roomnumber TEXT NOT NULL, " + "   locked TEXT" + ");";
         try (Statement statement = connection.createStatement()) {
             statement.execute(SQL);
         } catch (SQLException exception) {
@@ -71,17 +63,7 @@ public class SetUpDB {
      * Erstellt neue Tabelle treatment falls keine vorhanden ist, mit den gelisteten Spalten.
      **/
     private static void setUpTableTreatment(Connection connection) {
-        final String SQL = "CREATE TABLE IF NOT EXISTS treatment (" +
-                "   tid INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "   pid INTEGER NOT NULL, " +
-                "   treatment_date TEXT NOT NULL, " +
-                "   begin TEXT NOT NULL, " +
-                "   end TEXT NOT NULL, " +
-                "   description TEXT NOT NULL, " +
-                "   remark TEXT NOT NULL," +
-                "   FOREIGN KEY (pid) REFERENCES patient (pid) ON DELETE CASCADE, " +
-                "   locked TEXT NOT NULL" +
-                ");";
+        final String SQL = "CREATE TABLE IF NOT EXISTS treatment (" + "   tid INTEGER PRIMARY KEY AUTOINCREMENT, " + "   pid INTEGER NOT NULL, " + "   treatment_date TEXT NOT NULL, " + "   begin TEXT NOT NULL, " + "   end TEXT NOT NULL, " + "   description TEXT NOT NULL, " + "   remark TEXT NOT NULL," + "   FOREIGN KEY (pid) REFERENCES patient (pid) ON DELETE CASCADE, " + "   locked TEXT NOT NULL" + ");";
 
         try (Statement statement = connection.createStatement()) {
             statement.execute(SQL);

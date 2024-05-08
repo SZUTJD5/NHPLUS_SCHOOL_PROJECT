@@ -20,6 +20,9 @@ import java.time.LocalTime;
 // Controller-Klasse für das Hinzufügen einer neuen Behandlung
 public class NewTreatmentController {
 
+    @FXML
+    private ComboBox<String> comboBoxCaregiverSelection;
+
     // FXML-Felder, die mit den FXML-Elementen im zugehörigen FXML-Datei verbunden sind
     @FXML
     private Label labelFirstName;
@@ -59,8 +62,7 @@ public class NewTreatmentController {
         // Button "Add" deaktivieren, bis gültige Eingaben vorhanden sind
         this.buttonAdd.setDisable(true);
         // Listener für Eingabefelder hinzufügen, um die Aktivierung des "Add"-Buttons zu überwachen
-        ChangeListener<String> inputNewPatientListener = (observableValue, oldText, newText) ->
-                NewTreatmentController.this.buttonAdd.setDisable(NewTreatmentController.this.areInputDataInvalid());
+        ChangeListener<String> inputNewPatientListener = (observableValue, oldText, newText) -> NewTreatmentController.this.buttonAdd.setDisable(NewTreatmentController.this.areInputDataInvalid());
         this.textFieldBegin.textProperty().addListener(inputNewPatientListener);
         this.textFieldEnd.textProperty().addListener(inputNewPatientListener);
         this.textFieldDescription.textProperty().addListener(inputNewPatientListener);

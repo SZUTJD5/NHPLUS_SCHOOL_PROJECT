@@ -29,8 +29,7 @@ public class Treatment {
      * @param remarks     Bemerkungen zur Behandlung.
      * @param locked      Locked Status des Patienten
      */
-    public Treatment(long pid, LocalDate date, LocalTime begin,
-                     LocalTime end, String description, String remarks, boolean locked) {
+    public Treatment(long pid, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks, boolean locked) {
         this.pid = pid;
         this.date = date;
         this.begin = begin;
@@ -53,8 +52,7 @@ public class Treatment {
      * @param remarks     Bemerkungen zur Behandlung.
      * @param locked      Locked Status des Patienten
      */
-    public Treatment(long tid, long pid, LocalDate date, LocalTime begin,
-                     LocalTime end, String description, String remarks, boolean locked) {
+    public Treatment(long tid, long pid, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks, boolean locked) {
         this.tid = tid;
         this.pid = pid;
         this.date = date;
@@ -131,12 +129,6 @@ public class Treatment {
 
     // Überschriebene toString-Methode zur Darstellung der Behandlungsinformationen
     public String toString() {
-        return "\nBehandlung" + "\nTID: " + this.tid +
-                "\nPID: " + this.pid +
-                "\nDate: " + this.date +
-                "\nBegin: " + this.begin +
-                "\nEnd: " + this.end +
-                "\nDescription: " + this.description +
-                "\nRemarks: " + this.remarks + "\n";
+        return "\nBehandlung" + "\nTID: " + this.tid + "\nPID: " + this.pid + "\nDate: " + this.date + "\nBegin: " + this.begin + "\nEnd: " + this.end + "\nDescription: " + this.description + "\nRemarks: " + this.remarks + "\n";
     }
 }

@@ -14,8 +14,8 @@ public class ConnectionBuilder {
     private static Connection connection; // Verbindung zur Datenbank
 
     /**
-     *  Diese Methode verbindet sich mit der Datenbank wenn bereits keine andere Verbindung besteht.
-     *  Die Verbindung wird dann zurückgegeben.
+     * Diese Methode verbindet sich mit der Datenbank wenn bereits keine andere Verbindung besteht.
+     * Die Verbindung wird dann zurückgegeben.
      */
     synchronized public static Connection getConnection() {
         try {

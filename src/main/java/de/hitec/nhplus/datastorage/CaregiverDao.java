@@ -33,8 +33,7 @@ public class CaregiverDao extends DaoImp<Caregiver> {
     protected PreparedStatement getCreateStatement(Caregiver caregiver) {
         PreparedStatement preparedStatement = null;
         try {
-            final String SQL = "INSERT INTO caregiver (firstname, surname, phoneNumber, locked) " +
-                    "VALUES (?, ?, ?, ?)";
+            final String SQL = "INSERT INTO caregiver (firstname, surname, phoneNumber, locked) " + "VALUES (?, ?, ?, ?)";
             preparedStatement = this.connection.prepareStatement(SQL);
             preparedStatement.setString(1, caregiver.getFirstName());
             preparedStatement.setString(2, caregiver.getSurname());
@@ -73,12 +72,7 @@ public class CaregiverDao extends DaoImp<Caregiver> {
      */
     @Override
     protected Caregiver getInstanceFromResultSet(ResultSet result) throws SQLException {
-        return new Caregiver(
-                result.getInt(1),
-                result.getString(2),
-                result.getString(3),
-                result.getString(4),
-                result.getBoolean(5));
+        return new Caregiver(result.getInt(1), result.getString(2), result.getString(3), result.getString(4), result.getBoolean(5));
     }
 
     /**
@@ -109,8 +103,7 @@ public class CaregiverDao extends DaoImp<Caregiver> {
     protected ArrayList<Caregiver> getListFromResultSet(ResultSet result) throws SQLException {
         ArrayList<Caregiver> list = new ArrayList<>();
         while (result.next()) {
-            Caregiver caregiver = new Caregiver(result.getLong(1), result.getString(2),
-                    result.getString(3), result.getString(4), result.getBoolean(5));
+            Caregiver caregiver = new Caregiver(result.getLong(1), result.getString(2), result.getString(3), result.getString(4), result.getBoolean(5));
             list.add(caregiver);
         }
         return list;
@@ -127,13 +120,7 @@ public class CaregiverDao extends DaoImp<Caregiver> {
     protected PreparedStatement getUpdateStatement(Caregiver caregiver) {
         PreparedStatement preparedStatement = null;
         try {
-            final String SQL =
-                    "UPDATE caregiver SET " +
-                            "firstname = ?, " +
-                            "surname = ?, " +
-                            "phoneNumber = ?, " +
-                            "locked = ? " +
-                            "WHERE cid = ?";
+            final String SQL = "UPDATE caregiver SET " + "firstname = ?, " + "surname = ?, " + "phoneNumber = ?, " + "locked = ? " + "WHERE cid = ?";
             preparedStatement = this.connection.prepareStatement(SQL);
             preparedStatement.setString(1, caregiver.getFirstName());
             preparedStatement.setString(2, caregiver.getSurname());

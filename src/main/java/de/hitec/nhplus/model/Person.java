@@ -22,14 +22,14 @@ public abstract class Person {
         return firstName.get();
     }
 
-    // Getter für den Vorname als SimpleStringProperty
-    public SimpleStringProperty firstNameProperty() {
-        return firstName;
-    }
-
     // Setter für den Vorname
     public void setFirstName(String firstName) {
         this.firstName.set(firstName);
+    }
+
+    // Getter für den Vorname als SimpleStringProperty
+    public SimpleStringProperty firstNameProperty() {
+        return firstName;
     }
 
     // Getter für den Nachname
@@ -37,13 +37,13 @@ public abstract class Person {
         return surname.get();
     }
 
-    // Getter für den Nachname als SimpleStringProperty
-    public SimpleStringProperty surnameProperty() {
-        return surname;
-    }
-
     // Setter für den Nachname
     public void setSurname(String surname) {
         this.surname.set(surname);
+    }
+
+    // Getter für den Nachname als SimpleStringProperty
+    public SimpleStringProperty surnameProperty() {
+        return surname;
     }
 }

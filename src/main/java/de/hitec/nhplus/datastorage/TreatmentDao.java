@@ -34,8 +34,7 @@ public class TreatmentDao extends DaoImp<Treatment> {
     protected PreparedStatement getCreateStatement(Treatment treatment) {
         PreparedStatement preparedStatement = null;
         try {
-            final String SQL = "INSERT INTO treatment (pid, treatment_date, begin, end, description, remark, locked) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            final String SQL = "INSERT INTO treatment (pid, treatment_date, begin, end, description, remark, locked) " + "VALUES (?, ?, ?, ?, ?, ?, ?)";
             preparedStatement = this.connection.prepareStatement(SQL);
             preparedStatement.setLong(1, treatment.getPid());
             preparedStatement.setString(2, treatment.getDate());
@@ -66,8 +65,7 @@ public class TreatmentDao extends DaoImp<Treatment> {
         LocalDate date = DateConverter.convertStringToLocalDate(result.getString(3));
         LocalTime begin = DateConverter.convertStringToLocalTime(result.getString(4));
         LocalTime end = DateConverter.convertStringToLocalTime(result.getString(5));
-        return new Treatment(result.getLong(1), result.getLong(2),
-                date, begin, end, result.getString(6), result.getString(7), result.getBoolean(8));
+        return new Treatment(result.getLong(1), result.getLong(2), date, begin, end, result.getString(6), result.getString(7), result.getBoolean(8));
     }
 
     @Override
@@ -78,7 +76,6 @@ public class TreatmentDao extends DaoImp<Treatment> {
         }
         return treatments;
     }
-
 
 
     /**
@@ -111,7 +108,8 @@ public class TreatmentDao extends DaoImp<Treatment> {
             preparedStatement = this.connection.prepareStatement(SQL);
             preparedStatement.setLong(1, pid);
         } catch (SQLException exception) {
-            System.setErr(System.err);        }
+            System.setErr(System.err);
+        }
         return preparedStatement;
     }
 
@@ -139,16 +137,7 @@ public class TreatmentDao extends DaoImp<Treatment> {
     protected PreparedStatement getUpdateStatement(Treatment treatment) {
         PreparedStatement preparedStatement = null;
         try {
-            final String SQL =
-                    "UPDATE treatment SET " +
-                            "pid = ?, " +
-                            "treatment_date = ?, " +
-                            "begin = ?, " +
-                            "end = ?, " +
-                            "description = ?, " +
-                            "remark = ?, " +
-                            "locked = ? " +
-                            "WHERE tid = ?";
+            final String SQL = "UPDATE treatment SET " + "pid = ?, " + "treatment_date = ?, " + "begin = ?, " + "end = ?, " + "description = ?, " + "remark = ?, " + "locked = ? " + "WHERE tid = ?";
             preparedStatement = this.connection.prepareStatement(SQL);
             preparedStatement.setLong(1, treatment.getPid());
             preparedStatement.setString(2, treatment.getDate());

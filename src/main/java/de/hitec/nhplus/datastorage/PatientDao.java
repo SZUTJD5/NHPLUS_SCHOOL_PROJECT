@@ -32,17 +32,17 @@ public class PatientDao extends DaoImp<Patient> {
     protected PreparedStatement getCreateStatement(Patient patient) {
         PreparedStatement preparedStatement = null;
         try {
-            final String SQL = "INSERT INTO patient (firstname, surname, dateOfBirth, carelevel, roomnumber, locked) " +
-                    "VALUES (?, ?, ?, ?, ?, ?)";
+            final String SQL = "INSERT INTO patient (firstname, surname, dateOfBirth, carelevel, roomnumber, locked) " + "VALUES (?, ?, ?, ?, ?, ?)";
             preparedStatement = this.connection.prepareStatement(SQL);
             preparedStatement.setString(1, patient.getFirstName());
             preparedStatement.setString(2, patient.getSurname());
             preparedStatement.setString(3, patient.getDateOfBirth());
             preparedStatement.setString(4, patient.getCareLevel());
             preparedStatement.setString(5, patient.getRoomNumber());
-            preparedStatement.setString(6, patient.getLocked()?"1":"0"); // Set default value for locked
+            preparedStatement.setString(6, patient.getLocked() ? "1" : "0"); // Set default value for locked
         } catch (SQLException exception) {
-            System.setErr(System.err);        }
+            System.setErr(System.err);
+        }
         return preparedStatement;
     }
 
@@ -74,14 +74,7 @@ public class PatientDao extends DaoImp<Patient> {
      */
     @Override
     protected Patient getInstanceFromResultSet(ResultSet result) throws SQLException {
-        return new Patient(
-                result.getInt(1),
-                result.getString(2),
-                result.getString(3),
-                DateConverter.convertStringToLocalDate(result.getString(4)),
-                result.getString(5),
-                result.getString(6),
-                result.getBoolean(7));
+        return new Patient(result.getInt(1), result.getString(2), result.getString(3), DateConverter.convertStringToLocalDate(result.getString(4)), result.getString(5), result.getString(6), result.getBoolean(7));
     }
 
     /**
@@ -114,9 +107,7 @@ public class PatientDao extends DaoImp<Patient> {
         ArrayList<Patient> list = new ArrayList<>();
         while (result.next()) {
             LocalDate date = DateConverter.convertStringToLocalDate(result.getString(4));
-            Patient patient = new Patient(result.getInt(1), result.getString(2),
-                    result.getString(3), date,
-                    result.getString(5), result.getString(6), result.getBoolean(7));
+            Patient patient = new Patient(result.getInt(1), result.getString(2), result.getString(3), date, result.getString(5), result.getString(6), result.getBoolean(7));
             list.add(patient);
         }
         return list;
@@ -133,14 +124,7 @@ public class PatientDao extends DaoImp<Patient> {
     protected PreparedStatement getUpdateStatement(Patient patient) {
         PreparedStatement preparedStatement = null;
         try {
-            final String SQL =
-                    "UPDATE patient SET " +
-                            "firstname = ?, " +
-                            "surname = ?, " +
-                            "dateOfBirth = ?, " +
-                            "carelevel = ?, " +
-                            "roomnumber = ? " +
-                            "WHERE pid = ?";
+            final String SQL = "UPDATE patient SET " + "firstname = ?, " + "surname = ?, " + "dateOfBirth = ?, " + "carelevel = ?, " + "roomnumber = ? " + "WHERE pid = ?";
             preparedStatement = this.connection.prepareStatement(SQL);
             preparedStatement.setString(1, patient.getFirstName());
             preparedStatement.setString(2, patient.getSurname());
@@ -157,7 +141,7 @@ public class PatientDao extends DaoImp<Patient> {
     /**
      * Aktualisiert den Sperrstatus eines Patienten.
      *
-     * @param pid Die ID des Patienten.
+     * @param pid    Die ID des Patienten.
      * @param locked true, wenn der Patient gesperrt ist, andernfalls false.
      * @throws SQLException, wenn ein Datenbankzugriffsfehler auftritt.
      */
