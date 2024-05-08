@@ -254,20 +254,22 @@ public class AllPatientController {
      */
     @FXML
     public void handleAdd() {
-        String surname = this.textFieldSurname.getText();
-        String firstName = this.textFieldFirstName.getText();
-        String birthday = this.textFieldDateOfBirth.getText();
-        LocalDate date = DateConverter.convertStringToLocalDate(birthday);
-        String careLevel = this.textFieldCareLevel.getText();
-        String roomNumber = this.textFieldRoomNumber.getText();
-        boolean locked = false; // Standart Wert, Patient nicht gesperrt bei erstellung.
-        try {
-            this.dao.create(new Patient(firstName, surname, date, careLevel, roomNumber, locked));
-        } catch (SQLException exception) {
-            System.setErr(System.err);
+        if (AllPatientController.this.areInputDataValid()) {
+            String surname = this.textFieldSurname.getText();
+            String firstName = this.textFieldFirstName.getText();
+            String birthday = this.textFieldDateOfBirth.getText();
+            LocalDate date = DateConverter.convertStringToLocalDate(birthday);
+            String careLevel = this.textFieldCareLevel.getText();
+            String roomNumber = this.textFieldRoomNumber.getText();
+            boolean locked = false; // Standart Wert, Patient nicht gesperrt bei erstellung.
+            try {
+                this.dao.create(new Patient(firstName, surname, date, careLevel, roomNumber, locked));
+            } catch (SQLException exception) {
+                System.setErr(System.err);
+            }
+            readAllAndShowInTableView();
+            clearTextfields();
         }
-        readAllAndShowInTableView();
-        clearTextfields();
     }
 
     /**
@@ -291,6 +293,6 @@ public class AllPatientController {
         }
 
         return !this.textFieldFirstName.getText().isBlank() && !this.textFieldSurname.getText().isBlank() &&
-                !this.textFieldDateOfBirth.getText().isBlank() && !this.textFieldCareLevel.getText().isBlank();
+                !this.textFieldDateOfBirth.getText().isBlank() && !this.textFieldCareLevel.getText().isBlank() && !this.textFieldRoomNumber.getText().isBlank();
     }
 }

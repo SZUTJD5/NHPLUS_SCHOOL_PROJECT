@@ -19,7 +19,7 @@
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 </rowConstraints>
                 <TextField fx:id="textFieldLoginName" minWidth="200.0" prefHeight="26.0" prefWidth="200.0" promptText="User" GridPane.columnIndex="1" />
-                <TextField fx:id="textFieldPassword" minWidth="200.0" prefHeight="26.0" prefWidth="200.0" promptText="Passwort" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <TextField fx:id="textFieldPassword" minWidth="200.0" prefHeight="26.0" prefWidth="200.0" promptText="Passwort" onAction="#handleLogin" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                 <columnConstraints>
                     <ColumnConstraints />
                     <ColumnConstraints />
