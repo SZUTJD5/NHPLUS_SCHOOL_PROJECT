@@ -4,6 +4,7 @@ package de.hitec.nhplus.controller;
 import de.hitec.nhplus.datastorage.DaoFactory;
 import de.hitec.nhplus.datastorage.TreatmentDao;
 import javafx.beans.value.ChangeListener;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -133,5 +134,9 @@ public class NewTreatmentController {
             return true; // Fehlerbehandlung für ungültige Zeitformate
         }
         return this.textFieldDescription.getText().isBlank() || this.datePicker.getValue() == null; // Rückgabe, ob Beschreibung leer oder Datum nicht ausgewählt wurde
+    }
+
+    public void handleComboBoxCaregivers(ActionEvent event) {
+
     }
 }
