@@ -23,6 +23,8 @@ import java.sql.SQLException;
  */
 public class AllCaregiverController {
 
+    // ObservableList speichert die Angestellten
+    private final ObservableList<Caregiver> caregivers = FXCollections.observableArrayList();
     // Zeigt die Angestelltendaten an
     @FXML
     private TableView<Caregiver> tableView;
@@ -54,9 +56,6 @@ public class AllCaregiverController {
     @FXML
     private TextField textFieldPhoneNumber;
     private CaregiverDao dao;
-
-    // ObservableList speichert die Angestellten
-    private final ObservableList<Caregiver> caregivers = FXCollections.observableArrayList();
 
     /**
      * Wenn <code>initialize()</code> aufgerufen wird, sind alle Felder bereits initialisiert. Zum Beispiel vom FXMLLoader
@@ -92,8 +91,7 @@ public class AllCaregiverController {
         });
 
         this.buttonAdd.setDisable(true);
-        ChangeListener<String> inputNewCaregiverListener = (observableValue, oldText, newText) ->
-                AllCaregiverController.this.buttonAdd.setDisable(!AllCaregiverController.this.areInputDataValid());
+        ChangeListener<String> inputNewCaregiverListener = (observableValue, oldText, newText) -> AllCaregiverController.this.buttonAdd.setDisable(!AllCaregiverController.this.areInputDataValid());
         this.textFieldSurname.textProperty().addListener(inputNewCaregiverListener);
         this.textFieldFirstName.textProperty().addListener(inputNewCaregiverListener);
         this.textFieldPhoneNumber.textProperty().addListener(inputNewCaregiverListener);
@@ -212,8 +210,7 @@ public class AllCaregiverController {
     }
 
     private boolean areInputDataValid() {
-        return !this.textFieldFirstName.getText().isBlank() && !this.textFieldSurname.getText().isBlank() &&
-                !this.textFieldPhoneNumber.getText().isBlank();
+        return !this.textFieldFirstName.getText().isBlank() && !this.textFieldSurname.getText().isBlank() && !this.textFieldPhoneNumber.getText().isBlank();
     }
 
     @FXML

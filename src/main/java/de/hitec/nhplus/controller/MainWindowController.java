@@ -9,17 +9,17 @@ import javafx.scene.layout.BorderPane;
 
 import java.io.IOException;
 
- // Controller-Klasse für das Hauptfenster der Anwendung.
+// Controller-Klasse für das Hauptfenster der Anwendung.
 public class MainWindowController {
 
     @FXML
     private BorderPane mainBorderPane;
 
-     /**
-      * Handler-Methode zum Anzeigen aller Patienten.
-      *
-      * @param event Das ActionEvent, das den Aufruf ausgelöst hat.
-      */
+    /**
+     * Handler-Methode zum Anzeigen aller Patienten.
+     *
+     * @param event Das ActionEvent, das den Aufruf ausgelöst hat.
+     */
     @FXML
     private void handleShowAllPatient(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/AllPatientView.fxml"));
@@ -30,11 +30,11 @@ public class MainWindowController {
         }
     }
 
-     /**
-      * Handler-Methode zum Anzeigen aller Behandlungen.
-      *
-      * @param event Das ActionEvent, das den Aufruf ausgelöst hat.
-      */
+    /**
+     * Handler-Methode zum Anzeigen aller Behandlungen.
+     *
+     * @param event Das ActionEvent, das den Aufruf ausgelöst hat.
+     */
 
     @FXML
     private void handleShowAllTreatments(ActionEvent event) {
@@ -46,13 +46,13 @@ public class MainWindowController {
         }
     }
 
-     @FXML
-     public void handleShowAllCaregivers(ActionEvent event) {
-         FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/AllCaregiverView.fxml"));
-         try {
-             mainBorderPane.setCenter(loader.load());
-         } catch (IOException exception) {
-             System.setErr(System.err);
-         }
-     }
- }
+    @FXML
+    public void handleShowAllCaregivers(ActionEvent event) {
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/AllCaregiverView.fxml"));
+        try {
+            mainBorderPane.setCenter(loader.load());
+        } catch (IOException exception) {
+            System.setErr(System.err);
+        }
+    }
+}

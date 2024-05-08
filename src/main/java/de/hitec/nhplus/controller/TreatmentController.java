@@ -17,6 +17,10 @@ import java.time.LocalDate;
 // Behandlungs-Controller-Klasse
 public class TreatmentController {
 
+    public Label labelCaregiver;
+    public Label labelPhoneNumber;
+    public Button btnChange;
+    public Button btnCancel;
     // FXML-Felder, die mit den FXML-Elementen im zugehörigen FXML-Datei verbunden sind
     @FXML
     private Label labelPatientName;
@@ -69,7 +73,12 @@ public class TreatmentController {
         this.textFieldEnd.setText(this.treatment.getEnd()); // Ende der Behandlung setzten
         this.textFieldDescription.setText(this.treatment.getDescription()); // Beschreibung der Behandlung setzen
         this.textAreaRemarks.setText(this.treatment.getRemarks()); // Anmerkung der Behandlung setzen
+        // Haha 3 Stunden für diese 2 Label xD
+        this.labelCaregiver.setText(this.treatment.retrieveCaregiver(this.treatment.getCid()).getName());
+        this.labelPhoneNumber.setText(this.treatment.retrieveCaregiver(this.treatment.getCid()).getPhoneNumber());
+
     }
+
 
     // Event-Handler für Änderungen an den Behandlungsinformationen
     @FXML

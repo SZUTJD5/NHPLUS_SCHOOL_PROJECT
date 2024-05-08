@@ -18,6 +18,11 @@ public class Main extends Application {
     // Deklaration der primaryStage-Variable vom Typ Stage
     private Stage primaryStage;
 
+    // Hauptmethode, die beim Start der Anwendung aufgerufen wird
+    public static void main(String[] args) {
+        launch(args);
+    } // Starten der JavaFX-Anwendung
+
     // Startmethode der Anwendung, setzen des primaryStage und Aufruf der mainWindow-Methode
     @Override
     public void start(Stage primaryStage) {
@@ -48,9 +53,4 @@ public class Main extends Application {
             System.setErr(System.err); // Ausgabe der Fehlermeldung
         }
     }
-
-    // Hauptmethode, die beim Start der Anwendung aufgerufen wird
-    public static void main(String[] args) {
-        launch(args);
-    } // Starten der JavaFX-Anwendung
 }

@@ -25,64 +25,50 @@ import java.time.LocalDate;
  */
 public class AllPatientController {
 
+    // ObservableList speichert die Patienten
+    private final ObservableList<Patient> patients = FXCollections.observableArrayList();
     // Zeigt die Patientendaten an
     @FXML
     private TableView<Patient> tableView;
-
     // Zeigt die Patienten ID's an
     @FXML
     private TableColumn<Patient, Integer> columnId;
-
     // Zeigt den Vornamen der Patienten an
     @FXML
     private TableColumn<Patient, String> columnFirstName;
-
     // Zeigt die Nachnamen der Patienten an
     @FXML
     private TableColumn<Patient, String> columnSurname;
-
     // Zeigt die Guburtsdaten der Patienten an
     @FXML
     private TableColumn<Patient, String> columnDateOfBirth;
-
     // Zeigt das Pflegelevel der Patienten an
     @FXML
     private TableColumn<Patient, String> columnCareLevel;
-
     // Zeit die Raumnummer der Patienten an
     @FXML
     private TableColumn<Patient, String> columnRoomNumber;
-
     // Button zum Löschen von Patienten
     @FXML
     private Button buttonDelete;
-
     // Button zum hinzufügen von Patienten
     @FXML
     private Button buttonAdd;
-
     // Textfeld zum Eintragen des Nachnamen
     @FXML
     private TextField textFieldSurname;
-
     // Textfeld zum eintragen des Vornamen
     @FXML
     private TextField textFieldFirstName;
-
     // Textfeld zum eintragen des Geburtsdautm
     @FXML
     private TextField textFieldDateOfBirth;
-
     // Textfeld zum eintragen des Pflegelevels
     @FXML
     private TextField textFieldCareLevel;
-
     // Textfeld zum eintragen der Zimmernummer
     @FXML
     private TextField textFieldRoomNumber;
-
-    // ObservableList speichert die Patienten
-    private final ObservableList<Patient> patients = FXCollections.observableArrayList();
     private PatientDao dao;
     private TreatmentDao treatmentDao;
 
@@ -120,8 +106,7 @@ public class AllPatientController {
         this.tableView.getSelectionModel().selectedItemProperty().addListener((observableValue, oldPatient, newPatient) -> AllPatientController.this.buttonDelete.setDisable(newPatient == null));
 
         this.buttonAdd.setDisable(true);
-        ChangeListener<String> inputNewPatientListener = (observableValue, oldText, newText) ->
-                AllPatientController.this.buttonAdd.setDisable(!AllPatientController.this.areInputDataValid());
+        ChangeListener<String> inputNewPatientListener = (observableValue, oldText, newText) -> AllPatientController.this.buttonAdd.setDisable(!AllPatientController.this.areInputDataValid());
         this.textFieldSurname.textProperty().addListener(inputNewPatientListener);
         this.textFieldFirstName.textProperty().addListener(inputNewPatientListener);
         this.textFieldDateOfBirth.textProperty().addListener(inputNewPatientListener);
@@ -179,7 +164,7 @@ public class AllPatientController {
      * @param event Ereignis mit dem geänderten Objekt und der Änderung.
      */
     @FXML
-    public void handleOnEditRoomNumber(TableColumn.CellEditEvent<Patient, String> event){
+    public void handleOnEditRoomNumber(TableColumn.CellEditEvent<Patient, String> event) {
         event.getRowValue().setRoomNumber(event.getNewValue());
         this.doUpdate(event);
     }
@@ -193,7 +178,8 @@ public class AllPatientController {
         try {
             this.dao.update(event.getRowValue());
         } catch (SQLException exception) {
-            System.setErr(System.err);        }
+            System.setErr(System.err);
+        }
     }
 
     /**
@@ -292,7 +278,6 @@ public class AllPatientController {
             }
         }
 
-        return !this.textFieldFirstName.getText().isBlank() && !this.textFieldSurname.getText().isBlank() &&
-                !this.textFieldDateOfBirth.getText().isBlank() && !this.textFieldCareLevel.getText().isBlank() && !this.textFieldRoomNumber.getText().isBlank();
+        return !this.textFieldFirstName.getText().isBlank() && !this.textFieldSurname.getText().isBlank() && !this.textFieldDateOfBirth.getText().isBlank() && !this.textFieldCareLevel.getText().isBlank() && !this.textFieldRoomNumber.getText().isBlank();
     }
 }

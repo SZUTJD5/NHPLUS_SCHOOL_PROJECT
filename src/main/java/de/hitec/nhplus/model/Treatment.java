@@ -1,21 +1,22 @@
-// Paketanweisung und Importe
 package de.hitec.nhplus.model;
 
+import de.hitec.nhplus.datastorage.DaoFactory;
 import de.hitec.nhplus.utils.DateConverter;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-// Definition der Treatment-Klasse
 public class Treatment {
-    private final long pid; // Finale Patienten-ID
-    private long tid; // Behandlungs-ID
-    private LocalDate date; // Datum der Behandlung
-    private LocalTime begin; // Startzeit der Behandlung
-    private LocalTime end; // Endzeit der Behandlung
-    private String description; // Beschreibung der Behandlung
-    private String remarks; // Anmerkungen zur Behandlung
-    private boolean locked; // Locked Status
+    private long tid;
+    private long pid;
+    private LocalDate date;
+    private LocalTime begin;
+    private LocalTime end;
+    private String description;
+    private String remarks;
+    private boolean locked;
+    private long cid;
 
     /**
      * Konstruktor zum Initiieren eines Objekts der Klasse <code>Treatment</code> mit dem angegebenen Parameter. Verwenden Sie diesen Konstruktor
@@ -29,8 +30,7 @@ public class Treatment {
      * @param remarks     Bemerkungen zur Behandlung.
      * @param locked      Locked Status des Patienten
      */
-    public Treatment(long pid, LocalDate date, LocalTime begin,
-                     LocalTime end, String description, String remarks, boolean locked) {
+    public Treatment(long pid, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks, boolean locked, long cid) {
         this.pid = pid;
         this.date = date;
         this.begin = begin;
@@ -38,7 +38,9 @@ public class Treatment {
         this.description = description;
         this.remarks = remarks;
         this.locked = locked;
+        this.cid = cid;
     }
+
 
     /**
      * Konstruktor zum Initiieren eines Objekts der Klasse <code>Treatment</code> mit dem angegebenen Parameter. Verwenden Sie diesen Konstruktor
@@ -53,8 +55,7 @@ public class Treatment {
      * @param remarks     Bemerkungen zur Behandlung.
      * @param locked      Locked Status des Patienten
      */
-    public Treatment(long tid, long pid, LocalDate date, LocalTime begin,
-                     LocalTime end, String description, String remarks, boolean locked) {
+    public Treatment(long tid, long pid, LocalDate date, LocalTime begin, LocalTime end, String description, String remarks, boolean locked, long cid) {
         this.tid = tid;
         this.pid = pid;
         this.date = date;
@@ -63,6 +64,7 @@ public class Treatment {
         this.description = description;
         this.remarks = remarks;
         this.locked = locked;
+        this.cid = cid;
     }
 
     // Getter für Behandlungs-ID
@@ -129,14 +131,29 @@ public class Treatment {
         return locked;
     }
 
+    public long getCid() {
+        return cid;
+    }
+
+    public void setCid(long cid) {
+        this.cid = cid;
+    }
+
+    // Method to retrieve caregiver by cid
+    public Caregiver retrieveCaregiver(long cid) {
+        // Implement your logic here to retrieve the caregiver by cid
+        // You will have to use your data access layer to get the caregiver from the database
+        try {
+            System.out.println("retrieveCaregiver input " + cid);
+            return DaoFactory.getDaoFactory().createCaregiverDAO().retrieveCaregiverByCid(cid);
+        } catch (SQLException exception) {
+            System.err.println("Error retrieving caregiver: " + exception.getMessage());
+            return null;
+        }
+    }
+
     // Überschriebene toString-Methode zur Darstellung der Behandlungsinformationen
     public String toString() {
-        return "\nBehandlung" + "\nTID: " + this.tid +
-                "\nPID: " + this.pid +
-                "\nDate: " + this.date +
-                "\nBegin: " + this.begin +
-                "\nEnd: " + this.end +
-                "\nDescription: " + this.description +
-                "\nRemarks: " + this.remarks + "\n";
+        return "\nBehandlung" + "\nTID: " + this.tid + "\nPID: " + this.pid + "\nDate: " + this.date + "\nBegin: " + this.begin + "\nEnd: " + this.end + "\nDescription: " + this.description + "\nRemarks: " + this.remarks + "\n";
     }
 }

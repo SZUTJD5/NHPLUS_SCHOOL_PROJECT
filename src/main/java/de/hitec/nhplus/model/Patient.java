@@ -21,13 +21,14 @@ public class Patient extends Person {
 
     /**
      * Der Konstruktor erstellt ein neues Objekt der Klasse Patient mit den Variablen:
-     * @param firstName     Der Vorname des Patienten
-     * @param surname       Der Nachname des Patienten
-     * @param dateOfBirth   Das Geburtsdatum des Patienten.
-     * @param careLevel     Die Pflegestufe des Patienten.
-     * @param roomNumber    Die Zimmernummer des Patienten.
      *
-     * Dieser wird genutzt wenn der Patient noch kein "pid" hat.
+     * @param firstName   Der Vorname des Patienten
+     * @param surname     Der Nachname des Patienten
+     * @param dateOfBirth Das Geburtsdatum des Patienten.
+     * @param careLevel   Die Pflegestufe des Patienten.
+     * @param roomNumber  Die Zimmernummer des Patienten.
+     *                    <p>
+     *                    Dieser wird genutzt wenn der Patient noch kein "pid" hat.
      **/
     public Patient(String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomNumber, boolean locked) {
         super(firstName, surname);
@@ -38,16 +39,16 @@ public class Patient extends Person {
     }
 
     /**
-     *  Dieser Kontruktor wird genutzt wenn der Patient bereits ein "pid" hat und bereits existietren.
-     *  Er weisst dem Patienten diese Werte zu:
+     * Dieser Kontruktor wird genutzt wenn der Patient bereits ein "pid" hat und bereits existietren.
+     * Er weisst dem Patienten diese Werte zu:
      *
-     *  @param pid           Patienten ID.
-     *  @param firstName     Der Vorname des Patienten
-     *  @param surname       Der Nachname des Patienten
-     *  @param dateOfBirth   Das Geburtsdatum des Patienten.
-     *  @param careLevel     Die Pflegestufe des Patienten.
-     *  @param roomNumber    Die Zimmernummer des Patienten.
-     *  @param locked        Ob der Patient gesperrt ist oder nicht.
+     * @param pid         Patienten ID.
+     * @param firstName   Der Vorname des Patienten
+     * @param surname     Der Nachname des Patienten
+     * @param dateOfBirth Das Geburtsdatum des Patienten.
+     * @param careLevel   Die Pflegestufe des Patienten.
+     * @param roomNumber  Die Zimmernummer des Patienten.
+     * @param locked      Ob der Patient gesperrt ist oder nicht.
      **/
     public Patient(long pid, String firstName, String surname, LocalDate dateOfBirth, String careLevel, String roomNumber, boolean locked) {
         super(firstName, surname);
@@ -107,13 +108,6 @@ public class Patient extends Person {
     }
 
     public String toString() { // Gibt die Daten der Klasse als String aus.
-        return "Patient" + "\nMNID: " + this.pid +
-                "\nFirstname: " + this.getFirstName() +
-                "\nSurname: " + this.getSurname() +
-                "\nBirthday: " + this.dateOfBirth +
-                "\nCarelevel: " + this.careLevel +
-                "\nRoomnumber: " + this.roomNumber +
-                "\nLocked: " + this.locked +
-                "\n";
+        return "Patient" + "\nMNID: " + this.pid + "\nFirstname: " + this.getFirstName() + "\nSurname: " + this.getSurname() + "\nBirthday: " + this.dateOfBirth + "\nCarelevel: " + this.careLevel + "\nRoomnumber: " + this.roomNumber + "\nLocked: " + this.locked + "\n";
     }
 }

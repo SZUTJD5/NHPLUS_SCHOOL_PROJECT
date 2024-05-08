@@ -1,10 +1,12 @@
-// Paketanweisung und Importe
 package de.hitec.nhplus.controller;
 
+import de.hitec.nhplus.datastorage.CaregiverDao;
 import de.hitec.nhplus.datastorage.DaoFactory;
 import de.hitec.nhplus.datastorage.TreatmentDao;
+import de.hitec.nhplus.model.Caregiver;
 import javafx.beans.value.ChangeListener;
-import javafx.event.ActionEvent;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -16,32 +18,33 @@ import javafx.util.StringConverter;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 // Controller-Klasse für das Hinzufügen einer neuen Behandlung
 public class NewTreatmentController {
 
+    private final ObservableList<Caregiver> caregivers = FXCollections.observableArrayList();
+    private final ObservableList<String> caregiverSelection = FXCollections.observableArrayList();
+    public Button buttonCancel;
+    @FXML
+    private ComboBox<String> comboBoxCaregiverSelection; // Inject the ComboBox
     // FXML-Felder, die mit den FXML-Elementen im zugehörigen FXML-Datei verbunden sind
     @FXML
     private Label labelFirstName;
-
     @FXML
     private Label labelSurname;
-
+    @FXML
+    private Label labelPhoneNumber;
     @FXML
     private TextField textFieldBegin;
-
     @FXML
     private TextField textFieldEnd;
-
     @FXML
     private TextField textFieldDescription;
-
     @FXML
     private TextArea textAreaRemarks;
-
     @FXML
     private DatePicker datePicker;
-
     @FXML
     private Button buttonAdd;
 
@@ -59,8 +62,7 @@ public class NewTreatmentController {
         // Button "Add" deaktivieren, bis gültige Eingaben vorhanden sind
         this.buttonAdd.setDisable(true);
         // Listener für Eingabefelder hinzufügen, um die Aktivierung des "Add"-Buttons zu überwachen
-        ChangeListener<String> inputNewPatientListener = (observableValue, oldText, newText) ->
-                NewTreatmentController.this.buttonAdd.setDisable(NewTreatmentController.this.areInputDataInvalid());
+        ChangeListener<String> inputNewPatientListener = (observableValue, oldText, newText) -> NewTreatmentController.this.buttonAdd.setDisable(NewTreatmentController.this.areInputDataInvalid());
         this.textFieldBegin.textProperty().addListener(inputNewPatientListener);
         this.textFieldEnd.textProperty().addListener(inputNewPatientListener);
         this.textFieldDescription.textProperty().addListener(inputNewPatientListener);
@@ -80,6 +82,7 @@ public class NewTreatmentController {
             }
         });
         this.showPatientData();
+        createComboBoxData();
     }
 
     // Methode zur Anzeige der Patientendaten in den entsprechenden Labeln
@@ -97,12 +100,21 @@ public class NewTreatmentController {
         String description = textFieldDescription.getText(); // Abrufen der eingegebenen Behandlungsbeschreibung
         String remarks = textAreaRemarks.getText(); // Abrufen der eingegebenen Bemerkungen
         boolean locked = false;
-        Treatment treatment = new Treatment(patient.getPid(), date, begin, end, description, remarks, locked); // Erstellen eines neuen Behandlungsobjekts
+        String selectedCaregiverName = comboBoxCaregiverSelection.getSelectionModel().getSelectedItem();
+        long cid = -1; // Initialize with an invalid value
+        if (selectedCaregiverName != null) {
+            for (Caregiver caregiver : caregivers) {
+                if ((caregiver.getSurname() + ", " + caregiver.getFirstName()).equals(selectedCaregiverName)) {
+                    cid = caregiver.getCid(); // Get the caregiver id
+                    break;
+                }
+            }
+        }
+        Treatment treatment = new Treatment(patient.getPid(), date, begin, end, description, remarks, locked, cid); // Erstellen eines neuen Behandlungsobjekts
         createTreatment(treatment); // Behandlung in der Datenbank erstellen
         controller.readAllAndShowInTableView(); // Alle Behandlungen neu laden und in der Tabelle anzeigen
         stage.close(); // Fenster schließen
     }
-
 
     // Methode zum Erstellen einer neuen Behandlung in der Datenbank
     private void createTreatment(Treatment treatment) {
@@ -136,7 +148,33 @@ public class NewTreatmentController {
         return this.textFieldDescription.getText().isBlank() || this.datePicker.getValue() == null; // Rückgabe, ob Beschreibung leer oder Datum nicht ausgewählt wurde
     }
 
-    public void handleComboBoxCaregivers(ActionEvent event) {
-
+    @FXML
+    public void handleComboBoxCaregivers() {
+        String selectedCaregiverName = this.comboBoxCaregiverSelection.getSelectionModel().getSelectedItem();
+        if (selectedCaregiverName != null) {
+            for (Caregiver caregiver : caregivers) {
+                if ((caregiver.getSurname() + ", " + caregiver.getFirstName()).equals(selectedCaregiverName)) {
+                    this.labelPhoneNumber.setText(caregiver.getPhoneNumber());
+                    break;
+                }
+            }
+        }
     }
+
+    // Befüllt die ComboBox mit den Pflegekräften
+    private void createComboBoxData() {
+        CaregiverDao dao = DaoFactory.getDaoFactory().createCaregiverDAO();
+        try {
+            ArrayList<Caregiver> caregiverList = (ArrayList<Caregiver>) dao.readAll();
+            for (Caregiver caregiver : caregiverList) {
+                caregivers.add(caregiver);
+                caregiverSelection.add(caregiver.getName());
+            }
+            comboBoxCaregiverSelection.setItems(caregiverSelection);
+        } catch (SQLException exception) {
+            System.setErr(System.err);
+        }
+    }
+
+
 }
