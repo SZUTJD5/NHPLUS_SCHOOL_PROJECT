@@ -41,7 +41,7 @@ public class CaregiverDao extends DaoImp<Caregiver> {
             preparedStatement.setString(3, caregiver.getPhoneNumber());
             preparedStatement.setBoolean(4, caregiver.getLocked());
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
         return preparedStatement;
     }
@@ -60,7 +60,7 @@ public class CaregiverDao extends DaoImp<Caregiver> {
             preparedStatement = this.connection.prepareStatement(SQL);
             preparedStatement.setLong(1, pid);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
         return preparedStatement;
     }
@@ -93,7 +93,7 @@ public class CaregiverDao extends DaoImp<Caregiver> {
             final String SQL = "SELECT * FROM caregiver WHERE locked IS false";
             statement = this.connection.prepareStatement(SQL);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
         return statement;
     }
@@ -140,7 +140,7 @@ public class CaregiverDao extends DaoImp<Caregiver> {
             preparedStatement.setString(3, caregiver.getPhoneNumber());
             preparedStatement.setBoolean(4, caregiver.getLocked());
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
         return preparedStatement;
     }
@@ -170,7 +170,7 @@ public class CaregiverDao extends DaoImp<Caregiver> {
             preparedStatement = this.connection.prepareStatement(SQL);
             preparedStatement.setLong(1, cid);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
         return preparedStatement;
     }

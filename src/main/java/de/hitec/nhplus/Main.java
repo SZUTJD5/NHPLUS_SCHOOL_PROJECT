@@ -28,7 +28,7 @@ public class Main extends Application {
     // Definition der mainWindow-Methode
     public void mainWindow() {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/MainWindowView.fxml")); // Erstellen eines FXMLLoaders, um die Benutzeroberfläche zu laden
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/LoginView.fxml")); // Erstellen eines FXMLLoaders, um die Benutzeroberfläche zu laden
             BorderPane pane = loader.load(); // Laden des BorderPanes aus der FXML-Datei
 
             Scene scene = new Scene(pane); // Erstellen einer neuen Szene mit dem BorderPane
@@ -45,7 +45,7 @@ public class Main extends Application {
             });
             // Catch-Block für IOException
         } catch (IOException exception) {
-            exception.printStackTrace(); // Ausgabe der Fehlermeldung
+            System.setErr(System.err); // Ausgabe der Fehlermeldung
         }
     }
 

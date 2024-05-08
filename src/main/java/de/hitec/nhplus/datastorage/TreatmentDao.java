@@ -45,7 +45,7 @@ public class TreatmentDao extends DaoImp<Treatment> {
             preparedStatement.setString(6, treatment.getRemarks());
             preparedStatement.setBoolean(7, treatment.getLocked());
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
         return preparedStatement;
     }
@@ -93,7 +93,7 @@ public class TreatmentDao extends DaoImp<Treatment> {
             final String SQL = "SELECT * FROM treatment WHERE locked IS false";
             statement = this.connection.prepareStatement(SQL);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
         return statement;
     }
@@ -111,8 +111,7 @@ public class TreatmentDao extends DaoImp<Treatment> {
             preparedStatement = this.connection.prepareStatement(SQL);
             preparedStatement.setLong(1, pid);
         } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
+            System.setErr(System.err);        }
         return preparedStatement;
     }
 
@@ -160,7 +159,7 @@ public class TreatmentDao extends DaoImp<Treatment> {
             preparedStatement.setString(7, String.valueOf(treatment.getLocked()));
             preparedStatement.setLong(8, treatment.getTid());
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
         return preparedStatement;
     }
@@ -184,7 +183,7 @@ public class TreatmentDao extends DaoImp<Treatment> {
             preparedStatement.setLong(2, pid);
             preparedStatement.executeUpdate();
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
     }
 }

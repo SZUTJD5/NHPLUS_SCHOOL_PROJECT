@@ -42,8 +42,7 @@ public class PatientDao extends DaoImp<Patient> {
             preparedStatement.setString(5, patient.getRoomNumber());
             preparedStatement.setString(6, patient.getLocked()?"1":"0"); // Set default value for locked
         } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
+            System.setErr(System.err);        }
         return preparedStatement;
     }
 
@@ -62,7 +61,7 @@ public class PatientDao extends DaoImp<Patient> {
             preparedStatement.setLong(1, pid);
             preparedStatement.setBoolean(2, false); // Nur Patienten anzeigen die nicht gesperrt sind.
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
         return preparedStatement;
     }
@@ -98,7 +97,7 @@ public class PatientDao extends DaoImp<Patient> {
             statement = this.connection.prepareStatement(SQL);
             statement.setBoolean(1, false); // Nur Patienten anzeigen die nicht gesperrt sind.
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
         return statement;
     }
@@ -150,7 +149,7 @@ public class PatientDao extends DaoImp<Patient> {
             preparedStatement.setString(5, patient.getRoomNumber());
             preparedStatement.setLong(6, patient.getPid());
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
         return preparedStatement;
     }
@@ -186,7 +185,7 @@ public class PatientDao extends DaoImp<Patient> {
             preparedStatement = this.connection.prepareStatement(SQL);
             preparedStatement.setLong(1, pid);
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
         return preparedStatement;
     }

@@ -193,8 +193,7 @@ public class AllPatientController {
         try {
             this.dao.update(event.getRowValue());
         } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
+            System.setErr(System.err);        }
     }
 
     /**
@@ -208,7 +207,7 @@ public class AllPatientController {
         try {
             this.patients.addAll(this.dao.readAll());
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
     }
 
@@ -224,7 +223,7 @@ public class AllPatientController {
                 treatmentDao.lockAllPatientTreatments(selectedItem.getPid(), true);
                 readAllAndShowInTableView(); // Updatet die Tabelle im Programm
             } catch (SQLException exception) {
-                exception.printStackTrace();
+                System.setErr(System.err);
             }
         }
     }
@@ -243,7 +242,7 @@ public class AllPatientController {
                 DaoFactory.getDaoFactory().createPatientDAO().deleteById(selectedItem.getPid());
                 this.tableView.getItems().remove(selectedItem);
             } catch (SQLException exception) {
-                exception.printStackTrace();
+                System.setErr(System.err);
             }
         }
     }
@@ -255,20 +254,22 @@ public class AllPatientController {
      */
     @FXML
     public void handleAdd() {
-        String surname = this.textFieldSurname.getText();
-        String firstName = this.textFieldFirstName.getText();
-        String birthday = this.textFieldDateOfBirth.getText();
-        LocalDate date = DateConverter.convertStringToLocalDate(birthday);
-        String careLevel = this.textFieldCareLevel.getText();
-        String roomNumber = this.textFieldRoomNumber.getText();
-        boolean locked = false; // Standart Wert, Patient nicht gesperrt bei erstellung.
-        try {
-            this.dao.create(new Patient(firstName, surname, date, careLevel, roomNumber, locked));
-        } catch (SQLException exception) {
-            exception.printStackTrace();
+        if (AllPatientController.this.areInputDataValid()) {
+            String surname = this.textFieldSurname.getText();
+            String firstName = this.textFieldFirstName.getText();
+            String birthday = this.textFieldDateOfBirth.getText();
+            LocalDate date = DateConverter.convertStringToLocalDate(birthday);
+            String careLevel = this.textFieldCareLevel.getText();
+            String roomNumber = this.textFieldRoomNumber.getText();
+            boolean locked = false; // Standart Wert, Patient nicht gesperrt bei erstellung.
+            try {
+                this.dao.create(new Patient(firstName, surname, date, careLevel, roomNumber, locked));
+            } catch (SQLException exception) {
+                System.setErr(System.err);
+            }
+            readAllAndShowInTableView();
+            clearTextfields();
         }
-        readAllAndShowInTableView();
-        clearTextfields();
     }
 
     /**
@@ -292,6 +293,6 @@ public class AllPatientController {
         }
 
         return !this.textFieldFirstName.getText().isBlank() && !this.textFieldSurname.getText().isBlank() &&
-                !this.textFieldDateOfBirth.getText().isBlank() && !this.textFieldCareLevel.getText().isBlank();
+                !this.textFieldDateOfBirth.getText().isBlank() && !this.textFieldCareLevel.getText().isBlank() && !this.textFieldRoomNumber.getText().isBlank();
     }
 }

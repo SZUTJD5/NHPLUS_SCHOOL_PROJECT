@@ -109,7 +109,7 @@ public class NewTreatmentController {
         try {
             dao.create(treatment); // Neue Behandlung in der Datenbank erstellen
         } catch (SQLException exception) {
-            exception.printStackTrace(); // Fehlerbehandlung bei Datenbankfehlern
+            System.setErr(System.err); // Fehlerbehandlung bei Datenbankfehlern
         }
     }
 

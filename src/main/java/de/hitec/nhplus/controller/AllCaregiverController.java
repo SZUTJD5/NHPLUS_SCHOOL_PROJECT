@@ -131,7 +131,7 @@ public class AllCaregiverController {
         try {
             this.dao.update(event.getRowValue());
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
     }
 
@@ -145,7 +145,7 @@ public class AllCaregiverController {
             this.caregivers.clear();
             this.caregivers.addAll(this.dao.readAll());
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
     }
 
@@ -156,7 +156,7 @@ public class AllCaregiverController {
             try {
                 this.dao.updateLockStatus(selectedItem.getCid(), true);
             } catch (SQLException exception) {
-                exception.printStackTrace();
+                System.setErr(System.err);
             }
         }
     }
@@ -177,7 +177,7 @@ public class AllCaregiverController {
                 DaoFactory.getDaoFactory().createCaregiverDAO().deleteById(selectedItem.getCid());
                 this.tableView.getItems().remove(selectedItem);
             } catch (SQLException exception) {
-                exception.printStackTrace();
+                System.setErr(System.err);
             }
              */
         }
@@ -196,7 +196,7 @@ public class AllCaregiverController {
         try {
             this.dao.create(new Caregiver(firstName, surname, phoneNumber, locked));
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            System.setErr(System.err);
         }
         readAllAndShowInTableView();
         clearTextfields();
