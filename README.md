@@ -1,15 +1,15 @@
 #NHPLUS 
 Tasks:
 1. - [x] Vermögendsstand muss etfernt werden, aus der Datenbank
-2. - [ ] Möglichkeit einführen Behandlungen zu Sperren (Sperren Button einführen, für Patienten und alle ihre Daten, nicht einzelne Behandlungen)
-4. - [ ] Alle Patientendaten sollten gleichzeitig Sperrbar sein -> Siehe 2
+2. - [x] Möglichkeit einführen Behandlungen zu Sperren (Sperren Button einführen, für Patienten und alle ihre Daten, nicht einzelne Behandlungen)
+4. - [x] Alle Patientendaten sollten gleichzeitig Sperrbar sein -> Siehe 2
 5. - [ ] Nach 10 Jahren dürfen Daten gelöscht werden. (Täglicher check bei gesperrten Behandlunge / Patienten ob Daten 10 Jahre als sind, wenn ja -> Löschen)
 6. - [ ] Login einbauen - für berechtigte Personen (Jede Schwester und Jeder Facharzt erhält einen Login mit verschiedenen Berechtigungen)
-7. - [ ] Pflegermodul ?
+7. - [x] Pflegermodul ?
 8. - [x] Daten dürfen nicht einfach Löschbar sein. (Löschen button entfernen)
 
 8. - [ ] Berechtigungen verteilen (z.b. um Behandlungseinträge zu bearbeiten / zu erstellen)
-9. - [ ] Hover / Button für Informationen zu jeder Seite (Für Informationen zum Ausfüllen / etc)
+9. - [x] Hover / Button für Informationen zu jeder Seite (Für Informationen zum Ausfüllen / etc)
 10. - [ ] Behandlungen sollten einen LOG haben über die Person die sie erstellt hat und wer sie potentiell abgeändert hat / was geändert wurde. (Automatischen Log anfügen)
 11. - [ ] JavaDoc erstellen und Codebschreibung hinzufügen
 
@@ -22,12 +22,12 @@ Original Aufgabenstellung:
 
 - -[x] Vermögensstand muss aus der Applikation entfernt werden
 - -[ ] Behandlungen haben eine Sperrfrist von 10 Jahren
-- -[ ] Falls die Daten nicht mehr benötigt werden, können sie gesperrt werden
-- -[ ] Sperren heißt kein Delete!
+- -[x] Falls die Daten nicht mehr benötigt werden, können sie gesperrt werden
+- -[x] Sperren heißt kein Delete!
 - -[ ] Echtes Löschen erst nach 10 Jahren
-- -[ ] Login
-- -[ ] Nur berechtigte Personen (Pfleger) dürfen Zugriff haben
-- -[ ] Pflegermodul (siehe Notizen mit dem Auftraggeber)
+- -[x] Login
+- -[x] Nur berechtigte Personen (Pfleger) dürfen Zugriff haben
+- -[x] Pflegermodul (siehe Notizen mit dem Auftraggeber)
  
 Notizen aus Auftraggeber Gespräch:
 
