@@ -87,8 +87,7 @@
     </HBox>
     <Label layoutX="737.0" layoutY="51.0" text="Help">
         <tooltip>
-            <Tooltip text="Hier kann einen neuen Patienten hinzufügen.
-            Man kann Patienten mit dem „Sperren“ Button sperren."/>
+            <Tooltip text="Hier kann einen neuen Patienten hinzufügen. Man kann Patienten mit dem „Sperren“ Button sperren."/>
         </tooltip>
         <effect>
             <Reflection bottomOpacity="0.17" fraction="0.88" topOpacity="0.62"/>
