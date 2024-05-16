@@ -4,6 +4,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <BorderPane fx:id="mainBorderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="688.0" prefWidth="926.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.hitec.nhplus.controller.MainWindowController">
     <left>
@@ -28,4 +30,25 @@
             </Button>
         </VBox>
     </left>
+   <center>
+       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+           <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Hallo!">
+              <VBox.margin>
+                  <Insets left="370.0" top="290.0"/>
+              </VBox.margin>
+              <font>
+                  <Font size="24.0"/>
+              </font>
+           </Text>
+           <Text strokeType="OUTSIDE" strokeWidth="0.0"
+                 text="Bitte wähle eins der Fenster am linken Rand aus um fort zu fahren.">
+              <VBox.margin>
+                  <Insets left="70.0" top="50.0"/>
+              </VBox.margin>
+              <font>
+                  <Font size="24.0"/>
+              </font>
+           </Text>
+       </VBox>
+   </center>
 </BorderPane>
