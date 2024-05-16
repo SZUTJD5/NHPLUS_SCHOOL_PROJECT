@@ -70,9 +70,12 @@
         </Label>
     </HBox>
     <Label layoutX="737.0" layoutY="51.0" text="Help">
-        <tooltip><Tooltip text="TEXT HERE" /></tooltip>
+        <tooltip>
+            <Tooltip text="Man kann im Dropdown „Alle“ nach Patienten suchen und die jeweiligen Behandlungen sehen. Man kann mit dem Klick auf „neue Behandlung anlegen“ eine neue Behandlung anlegen.
+"/>
+        </tooltip>
         <effect>
-            <Reflection bottomOpacity="0.17" fraction="0.88" topOpacity="0.62" />
+            <Reflection bottomOpacity="0.17" fraction="0.88" topOpacity="0.62"/>
         </effect>
     </Label>
 </AnchorPane>
