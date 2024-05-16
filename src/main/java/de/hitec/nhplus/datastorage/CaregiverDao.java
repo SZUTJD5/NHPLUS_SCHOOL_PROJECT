@@ -1,13 +1,11 @@
 package de.hitec.nhplus.datastorage;
 
 import de.hitec.nhplus.model.Caregiver;
-import de.hitec.nhplus.utils.DateConverter;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -143,7 +141,7 @@ public class CaregiverDao extends DaoImp<Caregiver> {
             preparedStatement.setLong(2, cid);
             preparedStatement.executeUpdate();
         }
-        if (!hasLinkedTreatments(cid) && locked) {
+        if (hasNoLinkedTreatments(cid) && locked) {
             deleteById(cid);
         }
     }
@@ -156,7 +154,7 @@ public class CaregiverDao extends DaoImp<Caregiver> {
                 while (resultSet.next()) {
                     long cid = resultSet.getLong("cid");
                     System.out.println(cid);
-                    if (!hasLinkedTreatments(cid)) {
+                    if (hasNoLinkedTreatments(cid)) {
                         deleteById(cid);
                         System.out.println("deleted locked caregiver");
                     }
@@ -165,17 +163,17 @@ public class CaregiverDao extends DaoImp<Caregiver> {
         }
     }
 
-    private boolean hasLinkedTreatments(long cid) throws SQLException {
+    private boolean hasNoLinkedTreatments(long cid) throws SQLException {
         final String SQL = "SELECT COUNT(*) FROM treatment WHERE cid = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
             preparedStatement.setLong(1, cid);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    return resultSet.getInt(1) > 0;
+                    return resultSet.getInt(1) <= 0;
                 }
             }
         }
-        return false;
+        return true;
     }
 
     /**
