@@ -179,17 +179,6 @@ public class TreatmentDao extends DaoImp<Treatment> {
         }
     }
 
-    public PreparedStatement getLockedStatement() {
-        PreparedStatement statement = null;
-        try {
-            final String SQL = "SELECT * FROM treatment WHERE locked IS true";
-            statement = this.connection.prepareStatement(SQL);
-        } catch (SQLException exception) {
-            System.setErr(System.err);
-        }
-        return statement;
-    }
-
     public void deleteOldLockedTreatments() {
         System.out.println("HALLAOawdoawdoawidnoawiudbn");
         try {
