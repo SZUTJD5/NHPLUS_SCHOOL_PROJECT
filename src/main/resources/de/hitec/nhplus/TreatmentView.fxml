@@ -104,7 +104,7 @@
               AnchorPane.topAnchor="265.0"/>
     <Label layoutX="738.0" layoutY="47.0" text="Help">
         <tooltip>
-            <Tooltip text="Hier sind die Informationen zur Behandlung."/>
+            <Tooltip text="Hier kann man die Informationen einer Behandlung bearbeiten."/>
         </tooltip>
         <effect>
             <Reflection bottomOpacity="0.17" fraction="0.88" topOpacity="0.62"/>
