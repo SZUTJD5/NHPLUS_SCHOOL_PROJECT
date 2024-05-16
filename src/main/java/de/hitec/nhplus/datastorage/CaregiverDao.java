@@ -1,11 +1,13 @@
 package de.hitec.nhplus.datastorage;
 
 import de.hitec.nhplus.model.Caregiver;
+import de.hitec.nhplus.utils.DateConverter;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -84,13 +86,15 @@ public class CaregiverDao extends DaoImp<Caregiver> {
     protected PreparedStatement getReadAllStatement() {
         PreparedStatement statement = null;
         try {
-            final String SQL = "SELECT * FROM caregiver WHERE locked IS false";
+            checkAndDeleteUnlinkedLockedCaregivers();
+            final String SQL = "SELECT * FROM caregiver WHERE cid IN (SELECT DISTINCT cid FROM treatment)";
             statement = this.connection.prepareStatement(SQL);
         } catch (SQLException exception) {
-            System.setErr(System.err);
+            System.out.println(exception.getMessage());
         }
         return statement;
     }
+
 
     /**
      * Ordnet ein <code>ResultSet</code> aller Angestellten einer <code>ArrayList</code> von <code>Caregiver</code>-Objekten zu.
@@ -132,14 +136,46 @@ public class CaregiverDao extends DaoImp<Caregiver> {
         return preparedStatement;
     }
 
-    // Setzt locked auf true
     public void updateLockStatus(long cid, boolean locked) throws SQLException {
         final String SQL = "UPDATE caregiver SET locked = ? WHERE cid = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
-            preparedStatement.setBoolean(1, locked); // Wechselt locked auf "1"
+            preparedStatement.setBoolean(1, locked);
             preparedStatement.setLong(2, cid);
             preparedStatement.executeUpdate();
         }
+        if (!hasLinkedTreatments(cid) && locked) {
+            deleteById(cid);
+        }
+    }
+
+
+    private void checkAndDeleteUnlinkedLockedCaregivers() throws SQLException {
+        final String SQL = "SELECT cid FROM caregiver WHERE locked IS true";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    long cid = resultSet.getLong("cid");
+                    System.out.println(cid);
+                    if (!hasLinkedTreatments(cid)) {
+                        deleteById(cid);
+                        System.out.println("deleted locked caregiver");
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean hasLinkedTreatments(long cid) throws SQLException {
+        final String SQL = "SELECT COUNT(*) FROM treatment WHERE cid = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
+            preparedStatement.setLong(1, cid);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0;
+                }
+            }
+        }
+        return false;
     }
 
     /**

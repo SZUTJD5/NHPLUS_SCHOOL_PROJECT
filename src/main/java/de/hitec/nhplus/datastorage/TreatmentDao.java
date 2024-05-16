@@ -180,7 +180,6 @@ public class TreatmentDao extends DaoImp<Treatment> {
     }
 
     public void deleteOldLockedTreatments() {
-        System.out.println("HALLAOawdoawdoawidnoawiudbn");
         try {
             // Get the current date
             LocalDate currentDate = LocalDate.now();
