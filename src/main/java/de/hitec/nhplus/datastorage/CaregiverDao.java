@@ -164,7 +164,6 @@ public class CaregiverDao extends DaoImp<Caregiver> {
 
     // Retrieves a caregiver by cid
     public Caregiver retrieveCaregiverByCid(long cid) throws SQLException {
-        System.out.println(cid);
         Caregiver caregiver = null;
         final String SQL = "SELECT * FROM caregiver WHERE cid = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
@@ -175,7 +174,6 @@ public class CaregiverDao extends DaoImp<Caregiver> {
                 }
             }
         }
-        System.out.println(caregiver);
         return caregiver;
     }
 

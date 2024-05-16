@@ -144,10 +144,8 @@ public class Treatment {
         // Implement your logic here to retrieve the caregiver by cid
         // You will have to use your data access layer to get the caregiver from the database
         try {
-            System.out.println("retrieveCaregiver input " + cid);
             return DaoFactory.getDaoFactory().createCaregiverDAO().retrieveCaregiverByCid(cid);
         } catch (SQLException exception) {
-            System.err.println("Error retrieving caregiver: " + exception.getMessage());
             return null;
         }
     }
