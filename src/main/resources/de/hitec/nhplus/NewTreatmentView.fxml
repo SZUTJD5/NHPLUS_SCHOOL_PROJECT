@@ -13,6 +13,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.effect.Reflection?>
 <AnchorPane prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/20.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="de.hitec.nhplus.controller.NewTreatmentController">
@@ -100,4 +102,10 @@
     </HBox>
     <TextArea fx:id="textAreaRemarks" layoutX="50.0" layoutY="252.0" prefHeight="134.0" prefWidth="700.0"
               AnchorPane.topAnchor="265.0"/>
+    <Label layoutX="737.0" layoutY="51.0" text="Help">
+        <tooltip><Tooltip text="TEXT HERE" /></tooltip>
+        <effect>
+            <Reflection bottomOpacity="0.17" fraction="0.88" topOpacity="0.62" />
+        </effect>
+    </Label>
 </AnchorPane>
