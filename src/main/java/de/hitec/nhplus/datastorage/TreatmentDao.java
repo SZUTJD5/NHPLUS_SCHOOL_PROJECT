@@ -89,6 +89,7 @@ public class TreatmentDao extends DaoImp<Treatment> {
     protected PreparedStatement getReadAllStatement() {
         PreparedStatement statement = null;
         try {
+            deleteOldLockedTreatments();
             final String SQL = "SELECT * FROM treatment WHERE locked IS false";
             statement = this.connection.prepareStatement(SQL);
         } catch (SQLException exception) {
@@ -175,6 +176,43 @@ public class TreatmentDao extends DaoImp<Treatment> {
             preparedStatement.executeUpdate();
         } catch (SQLException exception) {
             System.setErr(System.err);
+        }
+    }
+
+    public PreparedStatement getLockedStatement() {
+        PreparedStatement statement = null;
+        try {
+            final String SQL = "SELECT * FROM treatment WHERE locked IS true";
+            statement = this.connection.prepareStatement(SQL);
+        } catch (SQLException exception) {
+            System.setErr(System.err);
+        }
+        return statement;
+    }
+
+    public void deleteOldLockedTreatments() {
+        System.out.println("HALLAOawdoawdoawidnoawiudbn");
+        try {
+            // Get the current date
+            LocalDate currentDate = LocalDate.now();
+
+            // Calculate the date 10 years ago
+            LocalDate tenYearsAgo = currentDate.minusYears(10);
+
+            // Convert LocalDate to String
+            String tenYearsAgoString = DateConverter.convertLocalDateToString(tenYearsAgo);
+
+            // SQL query to delete treatments older than 10 years and locked
+            String sql = "DELETE FROM treatment WHERE locked = true AND treatment_date < ?";
+
+            // Prepare the statement
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, tenYearsAgoString);
+
+            // Execute the delete statement
+            preparedStatement.executeUpdate();
+        } catch (SQLException exception) {
+            System.err.println("Error deleting old locked treatments: " + exception.getMessage());
         }
     }
 }
