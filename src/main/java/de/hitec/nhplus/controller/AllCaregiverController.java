@@ -4,7 +4,6 @@ import de.hitec.nhplus.datastorage.DaoFactory;
 import de.hitec.nhplus.datastorage.CaregiverDao;
 import de.hitec.nhplus.model.Caregiver;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -78,23 +77,29 @@ public class AllCaregiverController {
         this.columnPhoneNumber.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
         this.columnPhoneNumber.setCellFactory(TextFieldTableCell.forTableColumn());
 
+        ChangeListener<String> checkTableInteger = (observableValue, oldText, newText) -> {
+
+        };
+
+        this.columnPhoneNumber.textProperty().addListener(checkTableInteger);
 
         // Fügt die Daten in die TableView ein
         this.tableView.setItems(this.caregivers);
 
         this.buttonDelete.setDisable(true);
-        this.tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Caregiver>() {
-            @Override
-            public void changed(ObservableValue<? extends Caregiver> observableValue, Caregiver oldCaregiver, Caregiver newCaregiver) {
-                AllCaregiverController.this.buttonDelete.setDisable(newCaregiver == null);
-            }
-        });
+        this.tableView.getSelectionModel().selectedItemProperty().addListener((observableValue, oldCaregiver, newCaregiver) -> AllCaregiverController.this.buttonDelete.setDisable(newCaregiver == null));
 
         this.buttonAdd.setDisable(true);
         ChangeListener<String> inputNewCaregiverListener = (observableValue, oldText, newText) -> AllCaregiverController.this.buttonAdd.setDisable(!AllCaregiverController.this.areInputDataValid());
         this.textFieldSurname.textProperty().addListener(inputNewCaregiverListener);
         this.textFieldFirstName.textProperty().addListener(inputNewCaregiverListener);
         this.textFieldPhoneNumber.textProperty().addListener(inputNewCaregiverListener);
+        ChangeListener<String> checkInputInteger = (observableValue, oldText, newText) -> {
+            if (!newText.matches("\\d*")) {
+                textFieldPhoneNumber.setText(newText.replaceAll("[^\\d]", ""));
+            }
+        };
+        this.textFieldPhoneNumber.textProperty().addListener(checkInputInteger);
 
     }
 
@@ -200,7 +205,11 @@ public class AllCaregiverController {
 
     @FXML
     public void handleOnEditPhoneNumber(TableColumn.CellEditEvent<Caregiver, String> event) {
-        event.getRowValue().setPhoneNumber(event.getNewValue());
-        this.doUpdate(event);
+        String newValue = event.getNewValue();
+        if (!newValue.matches("\\d*")) {
+            event.getRowValue().setPhoneNumber(newValue.replaceAll("[^\\d]", ""));
+            columnPhoneNumber.setText(newValue.replaceAll("[^\\d]", ""));
+            this.doUpdate(event);
+        }
     }
 }
