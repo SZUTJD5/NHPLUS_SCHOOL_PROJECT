@@ -85,7 +85,7 @@ public class CaregiverDao extends DaoImp<Caregiver> {
         try {
             checkAndDeleteUnlinkedLockedCaregivers();
             // Select all caregivers who are not locked
-            final String SQL = "SELECT * FROM caregiver WHERE locked IS false";
+            final String SQL = "SELECT * FROM caregiver WHERE locked IS false AND cid >= 1";
             statement = this.connection.prepareStatement(SQL);
         } catch (SQLException exception) {
             System.out.println(exception.getMessage());
