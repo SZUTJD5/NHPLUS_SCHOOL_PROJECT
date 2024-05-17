@@ -41,7 +41,7 @@
             <TextField fx:id="textFieldSurname" minWidth="200.0" prefHeight="26.0" prefWidth="200.0" promptText="Nachname" GridPane.columnIndex="1" />
             <TextField fx:id="textFieldFirstName" minWidth="200.0" prefHeight="26.0" prefWidth="200.0" promptText="Vorname" />
             <TextField fx:id="textFieldPhoneNumber" minWidth="160.0" prefWidth="160.0" promptText="Telefon" GridPane.columnIndex="2" />
-            <Button fx:id="buttonDelete" mnemonicParsing="false" onAction="#handleDelete" prefWidth="120.0" text="Löschen / Sperren" GridPane.rowIndex="1" />
+            <Button fx:id="buttonDelete" mnemonicParsing="false" onAction="#handleDeleteOrLock" prefWidth="120.0" text="Löschen / Sperren" GridPane.rowIndex="1" />
             <Button fx:id="buttonAdd" mnemonicParsing="false" onAction="#handleAdd" prefWidth="90.0" text="Hinzufügen" GridPane.columnIndex="2" GridPane.rowIndex="1" />
         </GridPane>
         <HBox alignment="TOP_CENTER" prefWidth="190.0" spacing="10.0" />

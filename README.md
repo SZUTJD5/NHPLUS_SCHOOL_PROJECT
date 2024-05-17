@@ -3,7 +3,7 @@ Tasks:
 1. - [x] Vermögendsstand muss etfernt werden, aus der Datenbank
 2. - [x] Möglichkeit einführen Behandlungen zu Sperren (Sperren Button einführen, für Patienten und alle ihre Daten, nicht einzelne Behandlungen)
 4. - [x] Alle Patientendaten sollten gleichzeitig Sperrbar sein -> Siehe 2
-5. - [ ] Nach 10 Jahren dürfen Daten gelöscht werden. (Täglicher check bei gesperrten Behandlunge / Patienten ob Daten 10 Jahre als sind, wenn ja -> Löschen)
+5. - [x] Nach 10 Jahren dürfen Daten gelöscht werden. (Täglicher check bei gesperrten Behandlunge / Patienten ob Daten 10 Jahre als sind, wenn ja -> Löschen)
 6. - [ ] Login einbauen - für berechtigte Personen (Jede Schwester und Jeder Facharzt erhält einen Login mit verschiedenen Berechtigungen)
 7. - [x] Pflegermodul ?
 8. - [x] Daten dürfen nicht einfach Löschbar sein. (Löschen button entfernen)
@@ -21,10 +21,10 @@ Tasks:
 Original Aufgabenstellung:
 
 - -[x] Vermögensstand muss aus der Applikation entfernt werden
-- -[ ] Behandlungen haben eine Sperrfrist von 10 Jahren
+- -[x] Behandlungen haben eine Sperrfrist von 10 Jahren
 - -[x] Falls die Daten nicht mehr benötigt werden, können sie gesperrt werden
 - -[x] Sperren heißt kein Delete!
-- -[ ] Echtes Löschen erst nach 10 Jahren
+- -[x] Echtes Löschen erst nach 10 Jahren
 - -[x] Login
 - -[x] Nur berechtigte Personen (Pfleger) dürfen Zugriff haben
 - -[x] Pflegermodul (siehe Notizen mit dem Auftraggeber)

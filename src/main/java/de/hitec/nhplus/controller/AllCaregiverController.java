@@ -147,8 +147,13 @@ public class AllCaregiverController {
         }
     }
 
+    /**
+     * Diese Methode behandelt Ereignisse, die vom Button zum Löschen von Angestellten ausgelöst werden. Sie ruft {@link CaregiverDao} auf, um den
+     * Angestellten aus der Datenbank zu löschen und entfernt das Objekt aus der Liste, die die Datenquelle der
+     * <code>TableView</code> ist.
+     */
     @FXML
-    public void handleLock() {
+    public void handleDeleteOrLock() {
         Caregiver selectedItem = this.tableView.getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
             try {
@@ -156,30 +161,10 @@ public class AllCaregiverController {
             } catch (SQLException exception) {
                 System.setErr(System.err);
             }
+            readAllAndShowInTableView();
         }
     }
 
-    /**
-     * Diese Methode behandelt Ereignisse, die vom Button zum Löschen von Angestellten ausgelöst werden. Sie ruft {@link CaregiverDao} auf, um den
-     * Angestellten aus der Datenbank zu löschen und entfernt das Objekt aus der Liste, die die Datenquelle der
-     * <code>TableView</code> ist.
-     */
-    @FXML
-    public void handleDelete() {
-        Caregiver selectedItem = this.tableView.getSelectionModel().getSelectedItem();
-        if (selectedItem != null) {
-            handleLock();
-            readAllAndShowInTableView();
-            /*
-            try {
-                DaoFactory.getDaoFactory().createCaregiverDAO().deleteById(selectedItem.getCid());
-                this.tableView.getItems().remove(selectedItem);
-            } catch (SQLException exception) {
-                System.setErr(System.err);
-            }
-             */
-        }
-    }
 
     /**
      * Diese Methode behandelt die Ereignisse, die durch den Button zum Hinzufügen eines Angestellten ausgelöst werden. Sie sammelt die Daten von den

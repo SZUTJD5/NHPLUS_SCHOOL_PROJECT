@@ -1,11 +1,10 @@
 package de.hitec.nhplus.datastorage;
 
 import de.hitec.nhplus.model.Caregiver;
+import de.hitec.nhplus.utils.DateConverter;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -84,13 +83,16 @@ public class CaregiverDao extends DaoImp<Caregiver> {
     protected PreparedStatement getReadAllStatement() {
         PreparedStatement statement = null;
         try {
+            checkAndDeleteUnlinkedLockedCaregivers();
+            // Select all caregivers who are not locked
             final String SQL = "SELECT * FROM caregiver WHERE locked IS false";
             statement = this.connection.prepareStatement(SQL);
         } catch (SQLException exception) {
-            System.setErr(System.err);
+            System.out.println(exception.getMessage());
         }
         return statement;
     }
+
 
     /**
      * Ordnet ein <code>ResultSet</code> aller Angestellten einer <code>ArrayList</code> von <code>Caregiver</code>-Objekten zu.
@@ -132,14 +134,135 @@ public class CaregiverDao extends DaoImp<Caregiver> {
         return preparedStatement;
     }
 
-    // Setzt locked auf true
     public void updateLockStatus(long cid, boolean locked) throws SQLException {
         final String SQL = "UPDATE caregiver SET locked = ? WHERE cid = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
-            preparedStatement.setBoolean(1, locked); // Wechselt locked auf "1"
+            preparedStatement.setBoolean(1, locked);
             preparedStatement.setLong(2, cid);
             preparedStatement.executeUpdate();
         }
+        if (hasNoLinkedTreatments(cid) && locked) {
+            System.out.println("Found reason to delete 1");
+            if (deleteByCid(cid)) {
+                System.out.println("Caregiver was deleted since there were no treatments linked to them\n");
+            } else {
+                System.out.println("Error autodelete 1\n");
+            }
+        } else if (isNewestTreatmentOlderThanTenYears(cid) && locked) {
+            System.out.println("Found reason to delete 2");
+            if (deleteByCid(cid)) {
+                System.out.println("Caregiver was deleted since there were no treatments linked to them within the last 10 years\n");
+
+            } else {
+                System.out.println("Error autodelete 2\n");
+            }
+        } else {
+            System.out.println("Caregiver was locked\n");
+        }
+    }
+
+    private void checkAndDeleteUnlinkedLockedCaregivers() throws SQLException {
+        final String SQL = "SELECT * FROM caregiver WHERE locked IS true";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    boolean isLocked = resultSet.getBoolean("locked");
+                    long cid = resultSet.getLong("cid");
+                    System.out.println("Seletec cid " + cid);
+                    System.out.println("Boolean isLocked: " + isLocked);
+                    System.out.println("All treatments are 10+ Y.o.: " + isNewestTreatmentOlderThanTenYears(cid));
+                    if (isNewestTreatmentOlderThanTenYears(cid) && isLocked) {
+                        System.out.println("Found reason to delete 4");
+                        if (deleteByCid(cid)) {
+                            System.out.println("(AUTO) Deleted locked caregiver cause no treatments were newer than 10 years\n");
+                        } else {
+                            System.out.println("Error autodelete 4\n");
+                        }
+                    }else if (hasNoLinkedTreatments(cid) && isLocked) {
+                        System.out.println("Found reason to delete 3");
+                        if (deleteByCid(cid)) {
+                            System.out.println("(AUTO) deleted locked caregiver since there were no treatments linked to them\n");
+                        } else {
+                            System.out.println("Error autodelete 3\n");
+                        }
+                    }else {
+                        System.out.println("Found no reason to delete");
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean isNewestTreatmentOlderThanTenYears(long cid) throws SQLException {
+        // Get the current date
+        LocalDate currentDate = LocalDate.now();
+
+        // Calculate the date 10 years ago
+        LocalDate tenYearsAgo = currentDate.minusYears(10);
+
+        // Convert LocalDate to String
+        String tenYearsAgoString = DateConverter.convertLocalDateToString(tenYearsAgo);
+
+        // SQL query to select the amount of treatments that are newer than 10 years
+        String sql = "SELECT COUNT(*) FROM treatment WHERE treatment_date > ? AND cid = ?";
+
+        // Prepare the statement
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1, tenYearsAgoString);
+        preparedStatement.setLong(2, cid);
+
+        // Execute the query and store in result set
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        // Get the result count
+        int count = 0;
+        if (resultSet.next()) {
+            count = resultSet.getInt(1);
+        }
+        System.out.println("cid: " + cid + " " + "\nAmount of linked treatments newer than 10 years: " + count + " " + "\nDate 10 Years ago: " + tenYearsAgoString);
+
+        return count == 0;
+    }
+
+    private boolean deleteByCid(long cid) {
+        try {
+            // Replaces the cid of the caregiver in treatment with -1
+            final String updateSQL = "UPDATE treatment SET cid = 0 WHERE cid = ?";
+            PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
+            updateStatement.setLong(1, cid);
+            System.out.println("Attempting to change caregiverid to -1 ");
+            updateStatement.executeUpdate();
+            System.out.println("Changed cid");
+
+            // Deletes the caregiver
+            final String deleteSQL = "DELETE FROM caregiver WHERE cid = ?";
+            PreparedStatement deleteStatement = connection.prepareStatement(deleteSQL);
+            deleteStatement.setLong(1, cid);
+            deleteStatement.executeUpdate();
+
+            System.out.println("Caregiver with cid " + cid + " deleted successfully.");
+            return true;
+        } catch (SQLException exception) {
+            System.out.println("Error deleting caregiver: " + exception.getMessage());
+            return false;
+        }
+    }
+
+
+    private boolean hasNoLinkedTreatments(long cid) throws SQLException {
+        final String SQL = "SELECT COUNT(*) FROM treatment WHERE cid = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
+            preparedStatement.setLong(1, cid);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    if (resultSet.getInt(1) <= 0){
+                        System.out.println("This cid has 0 linked treatments");
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     /**

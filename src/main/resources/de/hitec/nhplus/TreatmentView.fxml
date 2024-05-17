@@ -69,11 +69,6 @@
                 <Font name="System Bold" size="13.0"/>
             </font>
         </Label>
-        <Label text="Pflegekraft:" GridPane.columnIndex="2">
-            <font>
-                <Font name="System Bold" size="13.0"/>
-            </font>
-        </Label>
         <Label text="Telefon:" GridPane.columnIndex="2" GridPane.rowIndex="1">
             <font>
                 <Font name="System Bold" size="13.0"/>

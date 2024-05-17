@@ -68,6 +68,8 @@ public class NewTreatmentController {
         this.textFieldDescription.textProperty().addListener(inputNewPatientListener);
         this.textAreaRemarks.textProperty().addListener(inputNewPatientListener);
         this.datePicker.valueProperty().addListener((observableValue, localDate, t1) -> NewTreatmentController.this.buttonAdd.setDisable(NewTreatmentController.this.areInputDataInvalid()));
+        comboBoxCaregiverSelection.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> buttonAdd.setDisable(areInputDataInvalid()));
+
 
         // Konverter für die Umwandlung von LocalDate zu String und umgekehrt für den DatePicker setzen
         this.datePicker.setConverter(new StringConverter<>() {
@@ -136,6 +138,9 @@ public class NewTreatmentController {
         if (this.textFieldBegin.getText() == null || this.textFieldEnd.getText() == null) {
             return true; // Wenn Start- oder Endzeit nicht eingegeben wurden, sind die Daten ungültig
         }
+        if (textAreaRemarks.getText() == null) {
+            return true;
+        }
         try {
             LocalTime begin = DateConverter.convertStringToLocalTime(this.textFieldBegin.getText());
             LocalTime end = DateConverter.convertStringToLocalTime(this.textFieldEnd.getText());
@@ -144,6 +149,9 @@ public class NewTreatmentController {
             }
         } catch (Exception exception) {
             return true; // Fehlerbehandlung für ungültige Zeitformate
+        }
+        if (comboBoxCaregiverSelection.getSelectionModel().getSelectedItem() == null) {
+            return true;
         }
         return this.textFieldDescription.getText().isBlank() || this.datePicker.getValue() == null; // Rückgabe, ob Beschreibung leer oder Datum nicht ausgewählt wurde
     }
