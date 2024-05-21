@@ -3,6 +3,7 @@ package de.hitec.nhplus.controller;
 import de.hitec.nhplus.datastorage.CaregiverDao;
 import de.hitec.nhplus.datastorage.DaoFactory;
 import de.hitec.nhplus.datastorage.TreatmentDao;
+import de.hitec.nhplus.model.ActiveAcount;
 import de.hitec.nhplus.model.Caregiver;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -184,6 +185,15 @@ public class NewTreatmentController {
                 caregiverSelection.add(caregiver.getName());
             }
             comboBoxCaregiverSelection.setItems(caregiverSelection);
+            ActiveAcount activeAccount = ActiveAcount.getInstance(null);
+            if (activeAccount != null) {
+                for (String caregiver : caregiverSelection) {
+                    if (activeAccount.getName().equals(caregiver)) {
+                        comboBoxCaregiverSelection.getSelectionModel().select(caregiverSelection.indexOf(caregiver));
+                    }
+                }
+            }
+            handleComboBoxCaregivers();
         } catch (SQLException exception) {
             System.setErr(System.err);
         }
