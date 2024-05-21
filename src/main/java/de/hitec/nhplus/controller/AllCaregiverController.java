@@ -212,9 +212,10 @@ public class AllCaregiverController {
     @FXML
     public void handleOnEditPhoneNumber(TableColumn.CellEditEvent<Caregiver, String> event) {
         String newValue = event.getNewValue();
-        if (!newValue.matches("\\d*")) {
-            event.getRowValue().setPhoneNumber(newValue.replaceAll("[^\\d]", ""));
-            columnPhoneNumber.setText(newValue.replaceAll("[^\\d]", ""));
+        if (!newValue.matches("\\d*")) { //"\\d*" prüft ob es sich um eine Ziffer von 0 -9. Und der * sagt, dass es 0 oder mehr vorkommen muss
+            String temp = newValue.replaceAll("[^\\d]", "");
+            event.getRowValue().setPhoneNumber(temp); // ^ ändert alle nicht Ziffern ins "".
+            columnPhoneNumber.setText(temp);
             this.doUpdate(event);
         }
     }
