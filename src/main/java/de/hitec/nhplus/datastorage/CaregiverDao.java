@@ -1,5 +1,6 @@
 package de.hitec.nhplus.datastorage;
 
+import de.hitec.nhplus.controller.PasswordHashingController;
 import de.hitec.nhplus.model.Caregiver;
 import de.hitec.nhplus.utils.DateConverter;
 import javafx.scene.control.TextField;
@@ -143,14 +144,12 @@ public class CaregiverDao extends DaoImp<Caregiver> {
             preparedStatement.executeUpdate();
         }
         if (hasNoLinkedTreatments(cid) && locked) {
-            System.out.println("Found reason to delete 1");
             if (deleteByCid(cid)) {
                 System.out.println("Caregiver was deleted since there were no treatments linked to them\n");
             } else {
                 System.out.println("Error autodelete 1\n");
             }
         } else if (isNewestTreatmentOlderThanTenYears(cid) && locked) {
-            System.out.println("Found reason to delete 2");
             if (deleteByCid(cid)) {
                 System.out.println("Caregiver was deleted since there were no treatments linked to them within the last 10 years\n");
 
@@ -169,18 +168,13 @@ public class CaregiverDao extends DaoImp<Caregiver> {
                 while (resultSet.next()) {
                     boolean isLocked = resultSet.getBoolean("locked");
                     long cid = resultSet.getLong("cid");
-                    System.out.println("Seletec cid " + cid);
-                    System.out.println("Boolean isLocked: " + isLocked);
-                    System.out.println("All treatments are 10+ Y.o.: " + isNewestTreatmentOlderThanTenYears(cid));
                     if (isNewestTreatmentOlderThanTenYears(cid) && isLocked) {
-                        System.out.println("Found reason to delete 4");
                         if (deleteByCid(cid)) {
                             System.out.println("(AUTO) Deleted locked caregiver cause no treatments were newer than 10 years\n");
                         } else {
                             System.out.println("Error autodelete 4\n");
                         }
                     }else if (hasNoLinkedTreatments(cid) && isLocked) {
-                        System.out.println("Found reason to delete 3");
                         if (deleteByCid(cid)) {
                             System.out.println("(AUTO) deleted locked caregiver since there were no treatments linked to them\n");
                         } else {
@@ -220,7 +214,6 @@ public class CaregiverDao extends DaoImp<Caregiver> {
         if (resultSet.next()) {
             count = resultSet.getInt(1);
         }
-        System.out.println("cid: " + cid + " " + "\nAmount of linked treatments newer than 10 years: " + count + " " + "\nDate 10 Years ago: " + tenYearsAgoString);
 
         return count == 0;
     }
@@ -231,18 +224,21 @@ public class CaregiverDao extends DaoImp<Caregiver> {
             final String updateSQL = "UPDATE treatment SET cid = 0 WHERE cid = ?";
             PreparedStatement updateStatement = connection.prepareStatement(updateSQL);
             updateStatement.setLong(1, cid);
-            System.out.println("Attempting to change caregiverid to -1 ");
             updateStatement.executeUpdate();
-            System.out.println("Changed cid");
+
+            //Deletes the Caregiver Login
+            final String deleteLoginSQL = "DELETE FROM logins WHERE name = ?";
+            PreparedStatement deleteLoginStatement = connection.prepareStatement(deleteLoginSQL);
+            deleteLoginStatement.setString(1,retrieveCaregiverByCid(cid).getLoginName());
+            deleteLoginStatement.executeUpdate();
 
             // Deletes the caregiver
             final String deleteSQL = "DELETE FROM caregiver WHERE cid = ?";
             PreparedStatement deleteStatement = connection.prepareStatement(deleteSQL);
             deleteStatement.setLong(1, cid);
             deleteStatement.executeUpdate();
-
-            System.out.println("Caregiver with cid " + cid + " deleted successfully.");
             return true;
+
         } catch (SQLException exception) {
             System.out.println("Error deleting caregiver: " + exception.getMessage());
             return false;
@@ -257,7 +253,6 @@ public class CaregiverDao extends DaoImp<Caregiver> {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     if (resultSet.getInt(1) <= 0){
-                        System.out.println("This cid has 0 linked treatments");
                         return true;
                     }
                 }
@@ -305,7 +300,8 @@ public class CaregiverDao extends DaoImp<Caregiver> {
     public void addLogin(Caregiver caregiver, TextField textFieldPassword) {
         String loginName = caregiver.getFirstName() + "," + caregiver.getSurname();
         String password = textFieldPassword.getText();
-        System.out.println(password);
+        PasswordHashingController passwordHashingController = new PasswordHashingController();
+        password = passwordHashingController.hashPassword(password);
 
         final String SQL = "INSERT INTO logins (name, password) VALUES (?, ?)";
 
@@ -313,9 +309,8 @@ public class CaregiverDao extends DaoImp<Caregiver> {
             preparedStatement.setString(1, loginName);
             preparedStatement.setString(2, password);
             preparedStatement.executeUpdate();
-            System.out.println("Added new caregiver login to database");
         } catch (SQLException exception) {
-            System.err.println("Error adding login: " + exception.getMessage());
+            System.out.println("Error adding login: " + exception.getMessage());
         }
     }
 

@@ -38,36 +38,65 @@ public class LoginController {
         final String password = textFieldPassword.getText();
 
         if (loginName.isEmpty() || password.isEmpty()) {
-            alert(new Exception(), "Nutzername oder Password fehlt!", "Bitte gebe einen Benutzernamen und Password ein!");
+            alert(new Exception(), "Nutzername oder Password fehlt!", "Bitte geben Sie einen Benutzernamen und Password ein!");
             return;
         }
 
-        final String SQL = "SELECT login_ID FROM logins WHERE name = ? AND password = ?";
-        try (Connection connection = ConnectionBuilder.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
+        // In Datenbank gespeichertes Passwort über login Namen erhalten
+        String hashedPassword = getPassword(loginName);
+        PasswordHashingController passwordHashingController = new PasswordHashingController();
 
-            if (connection.isClosed()) {
-                alert(new SQLException("Failed to establish a database connection."), "Fehler!", "Konnte keine Verbindung zur Datenbank aufbauen!");
+            // Bezieht die Login_ID um nach erfolgreicher anmeldung den Nutzer festzulegen
+            ConnectionBuilder.closeConnection();
+            final String SQL = "SELECT login_ID FROM logins WHERE name = ?";
+            try (Connection connection = ConnectionBuilder.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
+
+                // Falls das Passwort korrekt ist wird der Login vorgang fortgeführt.
+                if (hashedPassword != null && passwordHashingController.verifyPassword(password, hashedPassword)) {
+                    if (connection.isClosed()) {
+                        alert(new SQLException("Failed to establish a database connection."), "Fehler!", "Konnte keine Verbindung zur Datenbank aufbauen!");
+                    }
+
+                    preparedStatement.setString(1, loginName);
+
+                    try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                        if (resultSet.next()) {
+                            //Creat Singleton for use in NewTreatmentController.java
+                            ActiveAcount activeAccount = ActiveAcount.getInstance(loginName);
+                            System.out.println("Successfully logged in: " + activeAccount.getFirstName() + " " + activeAccount.getSurname() + "!");
+                            // Proceed with the successful login process, e.g., load the main window
+                            loadMainWindow();
+                        } else {
+                            alert(new Exception(), "Login fehlgeschlagen", "Ungültiger Nutzername oder Passwort!");
+                            ConnectionBuilder.closeConnection();
+                        }
+                    }
+                } else {
+                    ConnectionBuilder.closeConnection();
+                    alert(new Exception(), "Falscher Benutzername oder Passwort!", "Überprüfen Sie bitte ihre Eingaben");
+                }
+
+
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+                alert(e, "Datenbankfehler", "Es ist ein Fehler bei der Datenbankabfrage aufgetreten.");
             }
+    }
 
+    private static String getPassword(String loginName) {
+        String hashedPassword = null;
+        final String passwordSQL = "SELECT password FROM logins WHERE name = ?";
+        try (Connection connection = ConnectionBuilder.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(passwordSQL)) {
             preparedStatement.setString(1, loginName);
-            preparedStatement.setString(2, password);
-
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    //Creat Singleton for use in NewTreatmentController.java
-                    ActiveAcount activeAccount = ActiveAcount.getInstance(loginName);
-                    System.out.println("Successfully Logged in: " + activeAccount.getName());
-                    // Proceed with the successful login process, e.g., load the main window
-                    loadMainWindow();
-                } else {
-                    alert(new Exception(), "Login fehlgeschlagen", "Ungültiger Nutzername oder Passwort!");
-                    ConnectionBuilder.closeConnection();
+                    hashedPassword = resultSet.getString("password");
                 }
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            alert(e, "Datenbankfehler", "Ein Fehler ist bei der Datenbankabfrage aufgetreten.");
+            throw new RuntimeException(e);
         }
+        return hashedPassword;
     }
 
     private void loadMainWindow() {

@@ -59,10 +59,10 @@
             <HBox.margin>
                 <Insets/>
             </HBox.margin>
-            <TextField fx:id="textFieldSurname" maxWidth="150.0" minWidth="150.0" prefHeight="26.0" prefWidth="150.0"
-                       promptText="Nachname" GridPane.columnIndex="1"/>
             <TextField fx:id="textFieldFirstName" maxWidth="150.0" minWidth="150.0" prefHeight="26.0" prefWidth="150.0"
                        promptText="Vorname"/>
+            <TextField fx:id="textFieldSurname" maxWidth="150.0" minWidth="150.0" prefHeight="26.0" prefWidth="150.0"
+                       promptText="Nachname" GridPane.columnIndex="1"/>
             <TextField fx:id="textFieldPhoneNumber" maxWidth="150.0" minWidth="150.0" prefHeight="26.0"
                        prefWidth="150.0" promptText="Telefon" GridPane.columnIndex="2"/>
             <TextField fx:id="textFieldPassword" maxWidth="150.0" minWidth="150.0" prefHeight="26.0" prefWidth="150.0" promptText="Passwort"

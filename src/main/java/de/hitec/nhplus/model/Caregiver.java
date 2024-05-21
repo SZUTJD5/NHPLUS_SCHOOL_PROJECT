@@ -65,4 +65,8 @@ public class Caregiver extends Person {
     public String getName() {
         return this.getSurname() + ", " + this.getFirstName();
     }
+
+    public String getLoginName() {
+        return this.getFirstName() + "," + this.getSurname();
+    }
 }
