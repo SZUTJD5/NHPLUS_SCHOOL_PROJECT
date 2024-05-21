@@ -215,26 +215,6 @@ public class AllPatientController {
     }
 
     /**
-     * Diese Methode behandelt Ereignisse, die vom Button zum Löschen von Patienten ausgelöst werden. Sie ruft {@link PatientDao} auf, um den
-     * Patienten aus der Datenbank zu löschen und entfernt das Objekt aus der Liste, die die Datenquelle der
-     * <code>TableView</code> ist.
-     */
-
-    @FXML
-    public void handleDelete() {
-        Patient selectedItem = this.tableView.getSelectionModel().getSelectedItem();
-        if (selectedItem != null) {
-            try {
-                DaoFactory.getDaoFactory().createPatientDAO().deleteById(selectedItem.getPid());
-                this.tableView.getItems().remove(selectedItem);
-            } catch (SQLException exception) {
-                System.setErr(System.err);
-            }
-        }
-    }
-
-
-    /**
      * Diese Methode behandelt die Ereignisse, die durch den Button zum Hinzufügen eines Patienten ausgelöst werden. Sie sammelt die Daten von den
      * <code>TextField</code>s, erstellt ein Objekt der Klasse <code>Patient</code> und übergibt das Objekt an {@link PatientDao}, um die Daten zu speichern.
      */
