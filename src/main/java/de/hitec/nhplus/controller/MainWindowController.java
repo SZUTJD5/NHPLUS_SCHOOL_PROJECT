@@ -2,10 +2,11 @@
 package de.hitec.nhplus.controller;
 
 import de.hitec.nhplus.Main;
-import javafx.event.ActionEvent;
+import de.hitec.nhplus.model.ActiveAcount;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 
@@ -13,15 +14,22 @@ import java.io.IOException;
 public class MainWindowController {
 
     @FXML
+    public Text HalloText;
+    @FXML
     private BorderPane mainBorderPane;
+
+    @FXML
+    private void initialize(){
+        ActiveAcount activeAccount = ActiveAcount.getInstance(null);
+        HalloText.setText("Hallo " + activeAccount.getFirstName() + "!");
+    }
 
     /**
      * Handler-Methode zum Anzeigen aller Patienten.
      *
-     * @param event Das ActionEvent, das den Aufruf ausgelöst hat.
      */
     @FXML
-    private void handleShowAllPatient(ActionEvent event) {
+    private void handleShowAllPatient() {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/AllPatientView.fxml"));
         try {
             mainBorderPane.setCenter(loader.load());
@@ -33,11 +41,10 @@ public class MainWindowController {
     /**
      * Handler-Methode zum Anzeigen aller Behandlungen.
      *
-     * @param event Das ActionEvent, das den Aufruf ausgelöst hat.
      */
 
     @FXML
-    private void handleShowAllTreatments(ActionEvent event) {
+    private void handleShowAllTreatments() {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/AllTreatmentView.fxml"));
         try {
             mainBorderPane.setCenter(loader.load());
@@ -47,7 +54,7 @@ public class MainWindowController {
     }
 
     @FXML
-    public void handleShowAllCaregivers(ActionEvent event) {
+    public void handleShowAllCaregivers() {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/AllCaregiverView.fxml"));
         try {
             mainBorderPane.setCenter(loader.load());

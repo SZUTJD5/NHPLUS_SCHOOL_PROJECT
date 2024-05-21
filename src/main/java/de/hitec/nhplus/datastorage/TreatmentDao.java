@@ -200,7 +200,7 @@ public class TreatmentDao extends DaoImp<Treatment> {
             // Execute the delete statement
             preparedStatement.executeUpdate();
         } catch (SQLException exception) {
-            System.err.println("Error deleting old locked treatments: " + exception.getMessage());
+            System.out.println("Error deleting old locked treatments: " + exception.getMessage());
         }
     }
 }

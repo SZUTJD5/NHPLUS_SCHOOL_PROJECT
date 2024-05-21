@@ -43,3 +43,10 @@ Notizen aus Auftraggeber Gespräch:
     Beim Löschen einer Pflegekraft muss ebenfalls die 10 Jahresregelung berücksichtigt werden, d.h. nicht mehr aktive Pfleger werden auf Wunsch gesperrt, 
     sofern sie noch Behandlungen durchgeführt haben, die jünger als 10 Jahre sind. Sind nur noch Behandlungen, die 10 Jahre zurückliegen, wird die Pflegekraft gelöscht. 
     Die durchgeführten Behandlungen sollen weiter angezeigt werden. 
+
+
+PASSWÖRTER ZUM LOGIN!
+1. LoginName: Jannis,Dinklage Passwort: Ha77o!%e
+2. LoginName: Rajbir,Singh    Passwort: kv&!,?w
+3. LoginName: Bernd,Heidemann Passwort: SZut-01?
+4.  TEMPNAME: 1,1               Passwort: 1
