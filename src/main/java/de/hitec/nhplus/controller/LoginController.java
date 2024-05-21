@@ -2,6 +2,7 @@ package de.hitec.nhplus.controller;
 
 import de.hitec.nhplus.Main;
 import de.hitec.nhplus.datastorage.ConnectionBuilder;
+import de.hitec.nhplus.model.ActiveAcount;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -22,7 +23,6 @@ public class LoginController {
     public TextField textFieldPassword;
     public BorderPane loginBorderPane;
     public Button buttonLogin;
-    public int loggedInCaregiver;
 
     private static void alert(Exception e, String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -54,8 +54,9 @@ public class LoginController {
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    loggedInCaregiver = resultSet.getInt("login_ID");
-                    System.out.println(loggedInCaregiver);
+                    //Creat Singleton for use in NewTreatmentController.java
+                    ActiveAcount activeAccount = ActiveAcount.getInstance(loginName);
+                    System.out.println("Successfully Logged in: " + activeAccount.getName());
                     // Proceed with the successful login process, e.g., load the main window
                     loadMainWindow();
                 } else {
