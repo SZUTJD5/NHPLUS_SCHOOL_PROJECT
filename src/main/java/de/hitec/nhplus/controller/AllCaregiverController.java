@@ -54,6 +54,8 @@ public class AllCaregiverController {
     // Textfeld zum eintragen der Handynummer
     @FXML
     private TextField textFieldPhoneNumber;
+    @FXML
+    private TextField textFieldPassword;
     private CaregiverDao dao;
 
     /**
@@ -94,6 +96,7 @@ public class AllCaregiverController {
         this.textFieldSurname.textProperty().addListener(inputNewCaregiverListener);
         this.textFieldFirstName.textProperty().addListener(inputNewCaregiverListener);
         this.textFieldPhoneNumber.textProperty().addListener(inputNewCaregiverListener);
+        this.textFieldPassword.textProperty().addListener(inputNewCaregiverListener);
         ChangeListener<String> checkInputInteger = (observableValue, oldText, newText) -> {
             if (!newText.matches("\\d*")) {
                 textFieldPhoneNumber.setText(newText.replaceAll("[^\\d]", ""));
@@ -182,7 +185,9 @@ public class AllCaregiverController {
         String phoneNumber = this.textFieldPhoneNumber.getText();
         boolean locked = false;
         try {
-            this.dao.create(new Caregiver(firstName, surname, phoneNumber, locked));
+            Caregiver caregiver = new Caregiver(firstName, surname, phoneNumber, locked);
+            this.dao.create(caregiver);
+            this.dao.addLogin(caregiver, this.textFieldPassword);
         } catch (SQLException exception) {
             System.setErr(System.err);
         }
@@ -197,10 +202,11 @@ public class AllCaregiverController {
         this.textFieldFirstName.clear();
         this.textFieldSurname.clear();
         this.textFieldPhoneNumber.clear();
+        this.textFieldPassword.clear();
     }
 
     private boolean areInputDataValid() {
-        return !this.textFieldFirstName.getText().isBlank() && !this.textFieldSurname.getText().isBlank() && !this.textFieldPhoneNumber.getText().isBlank();
+        return !this.textFieldFirstName.getText().isBlank() && !this.textFieldSurname.getText().isBlank() && !this.textFieldPhoneNumber.getText().isBlank() && !this.textFieldPassword.getText().isBlank();
     }
 
     @FXML

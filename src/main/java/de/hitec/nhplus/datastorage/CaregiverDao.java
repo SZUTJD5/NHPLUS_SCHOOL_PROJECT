@@ -2,6 +2,7 @@ package de.hitec.nhplus.datastorage;
 
 import de.hitec.nhplus.model.Caregiver;
 import de.hitec.nhplus.utils.DateConverter;
+import javafx.scene.control.TextField;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -300,5 +301,22 @@ public class CaregiverDao extends DaoImp<Caregiver> {
         return caregiver;
     }
 
+
+    public void addLogin(Caregiver caregiver, TextField textFieldPassword) {
+        String loginName = caregiver.getFirstName() + "," + caregiver.getSurname();
+        String password = textFieldPassword.getText();
+        System.out.println(password);
+
+        final String SQL = "INSERT INTO logins (name, password) VALUES (?, ?)";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
+            preparedStatement.setString(1, loginName);
+            preparedStatement.setString(2, password);
+            preparedStatement.executeUpdate();
+            System.out.println("Added new caregiver login to database");
+        } catch (SQLException exception) {
+            System.err.println("Error adding login: " + exception.getMessage());
+        }
+    }
 
 }
