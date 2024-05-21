@@ -67,6 +67,7 @@ public class NewTreatmentController {
         this.textFieldEnd.textProperty().addListener(inputNewPatientListener);
         this.textFieldDescription.textProperty().addListener(inputNewPatientListener);
         this.textAreaRemarks.textProperty().addListener(inputNewPatientListener);
+        this.datePicker.setValue(LocalDate.now());
         this.datePicker.valueProperty().addListener((observableValue, localDate, t1) -> NewTreatmentController.this.buttonAdd.setDisable(NewTreatmentController.this.areInputDataInvalid()));
         comboBoxCaregiverSelection.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> buttonAdd.setDisable(areInputDataInvalid()));
 
@@ -134,27 +135,31 @@ public class NewTreatmentController {
         stage.close();
     } // Fenster schließen
 
-    private boolean areInputDataInvalid() { // Methode zur Überprüfung, ob die eingegebenen Daten gültig sind
-        if (this.textFieldBegin.getText() == null || this.textFieldEnd.getText() == null) {
-            return true; // Wenn Start- oder Endzeit nicht eingegeben wurden, sind die Daten ungültig
-        }
-        if (textAreaRemarks.getText() == null) {
+    private boolean areInputDataInvalid() {
+        // Schaut ob mindestens ein der textfelder nicht beschrieben ist.
+        if (textFieldBegin.getText().isEmpty() ||
+                textFieldEnd.getText().isEmpty() ||
+                textAreaRemarks.getText().isEmpty() ||
+                textFieldDescription.getText().isEmpty()) {
             return true;
         }
+
+        // Wenn Start- oder Endzeit nicht eingegeben wurden, sind die Daten ungültig
         try {
-            LocalTime begin = DateConverter.convertStringToLocalTime(this.textFieldBegin.getText());
-            LocalTime end = DateConverter.convertStringToLocalTime(this.textFieldEnd.getText());
+            LocalTime begin = DateConverter.convertStringToLocalTime(textFieldBegin.getText());
+            LocalTime end = DateConverter.convertStringToLocalTime(textFieldEnd.getText());
             if (!end.isAfter(begin)) {
-                return true; // Wenn Endzeit vor oder gleich Startzeit ist, sind die Daten ungültig
+                return true;
             }
         } catch (Exception exception) {
-            return true; // Fehlerbehandlung für ungültige Zeitformate
-        }
-        if (comboBoxCaregiverSelection.getSelectionModel().getSelectedItem() == null) {
             return true;
         }
-        return this.textFieldDescription.getText().isBlank() || this.datePicker.getValue() == null; // Rückgabe, ob Beschreibung leer oder Datum nicht ausgewählt wurde
+
+        // Schaut ob ein Angestellter ausgewählt wurde.
+        return comboBoxCaregiverSelection.getSelectionModel().getSelectedItem() == null ||
+                datePicker.getValue() == null;
     }
+
 
     @FXML
     public void handleComboBoxCaregivers() {
