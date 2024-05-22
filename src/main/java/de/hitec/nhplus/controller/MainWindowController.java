@@ -37,7 +37,7 @@ public class MainWindowController {
     /**
      * Handler-Methode zum Anzeigen aller Patienten.
      * Diese Methode wird aufgerufen, wenn der Benutzer die Option zum Anzeigen aller Patienten auswählt.
-     * Lädt die Patientenansicht in das zentrale Bereich des Hauptfensters.
+     * Lädt die Patientenansicht in den zentralen Bereich des Hauptfensters.
      */
     @FXML
     private void handleShowAllPatient() {
@@ -52,7 +52,7 @@ public class MainWindowController {
     /**
      * Handler-Methode zum Anzeigen aller Behandlungen.
      * Diese Methode wird aufgerufen, wenn der Benutzer die Option zum Anzeigen aller Behandlungen auswählt.
-     * Lädt die Behandlungsansicht in das zentrale Bereich des Hauptfensters.
+     * Lädt die Behandlungsansicht in den zentralen Bereich des Hauptfensters.
      */
     @FXML
     private void handleShowAllTreatments() {
@@ -67,7 +67,7 @@ public class MainWindowController {
     /**
      * Handler-Methode zum Anzeigen aller Pflegekräfte.
      * Diese Methode wird aufgerufen, wenn der Benutzer die Option zum Anzeigen aller Pflegekräfte auswählt.
-     * Lädt die Pflegekräfteansicht in das zentrale Bereich des Hauptfensters.
+     * Lädt die Pflegekräfteansicht in den zentralen Bereich des Hauptfensters.
      */
     @FXML
     public void handleShowAllCaregivers() {

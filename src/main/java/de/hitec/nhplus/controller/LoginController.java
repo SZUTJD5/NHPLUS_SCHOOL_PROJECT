@@ -88,7 +88,7 @@ public class LoginController {
         String hashedPassword = getPassword(loginName);
         PasswordHashingController passwordHashingController = new PasswordHashingController();
 
-        // Bezieht die Login_ID um nach erfolgreicher anmeldung den Nutzer festzulegen
+        // Bezieht die Login_ID, um nach erfolgreicher anmeldung den Nutzer festzulegen
         ConnectionBuilder.closeConnection();
         final String SQL = "SELECT login_ID FROM logins WHERE name = ?";
         try (Connection connection = ConnectionBuilder.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {

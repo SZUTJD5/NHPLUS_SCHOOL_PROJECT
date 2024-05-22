@@ -27,7 +27,7 @@ public class CaregiverDao extends DaoImp<Caregiver> {
     /**
      * Erzeugt ein <code>PreparedStatement</code>, um das angegebene Objekt von <code>Caregiver</code> beizubehalten.
      *
-     * @param caregiver Objekt von <code>Caregiver</code>, das bestehen bleiben soll.
+     * @param caregiver Objekt von <code>Caregiver</code>, das Bestehen bleiben soll.
      * @return <code>   PreparedStatement</code> zum Einfügen des angegebenen Angestellten.
      */
     @Override
@@ -238,7 +238,7 @@ public class CaregiverDao extends DaoImp<Caregiver> {
     }
 
     /**
-     * Löscht einen Pflegekraft und verknüpfte Einträge anhand der Pflegekraft-ID (cid).
+     * Löscht eine Pflegekraft und verknüpfte Einträge anhand der Pflegekraft-ID (cid).
      *
      * @param cid ID der zu löschenden Pflegekraft.
      * @return <code>true</code>, wenn die Pflegekraft erfolgreich gelöscht wurde, andernfalls <code>false</code>.

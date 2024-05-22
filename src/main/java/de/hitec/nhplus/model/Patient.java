@@ -126,7 +126,7 @@ public class Patient extends Person {
     /**
      * Legt die Zimmernummer des Patienten fest.
      *
-     * @param roomNumber Die neue Zimmernummer des Patient
+     * @param roomNumber Die neue Zimmernummer des Patienten
      */
     public void setRoomNumber(String roomNumber) { // Setzt die Zimmernummer des Patienten auf die des Input Strings (setter).
         this.roomNumber.set(roomNumber);

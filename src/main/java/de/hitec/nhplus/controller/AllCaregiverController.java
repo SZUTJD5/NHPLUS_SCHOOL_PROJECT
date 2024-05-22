@@ -99,7 +99,7 @@ public class AllCaregiverController {
         this.buttonDelete.setDisable(true);
         this.tableView.getSelectionModel().selectedItemProperty().addListener((observableValue, oldCaregiver, newCaregiver) -> AllCaregiverController.this.buttonDelete.setDisable(newCaregiver == null));
 
-        // Deaktiviert den Hinzufügebutton, wenn die Eingabefelder leer sind
+        // Deaktiviert den Hinzufüge Button, wenn die Eingabefelder leer sind
         this.buttonAdd.setDisable(true);
         ChangeListener<String> inputNewCaregiverListener = (observableValue, oldText, newText) -> AllCaregiverController.this.buttonAdd.setDisable(!AllCaregiverController.this.areInputDataValid());
         this.textFieldSurname.textProperty().addListener(inputNewCaregiverListener);

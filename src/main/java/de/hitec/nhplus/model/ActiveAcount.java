@@ -1,7 +1,7 @@
 package de.hitec.nhplus.model;
 
 /**
- * Die Klasse <code>ActiveAcount</code> repräsentiert den Account des Angemeldeten Nutzers und erbt von der Klasse <code>Person</code>.
+ * Die Klasse <code>ActiveAcount</code> repräsentiert den Account des angemeldeten Nutzers und erbt von der Klasse <code>Person</code>.
  * Es wird als Singleton implementiert, sodass nur eine Instanzversion der Klasse zu einer Zeit existiert.
  */
 public class ActiveAcount extends Person {
