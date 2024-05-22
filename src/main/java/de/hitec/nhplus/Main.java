@@ -1,4 +1,6 @@
-// Paketanweisung und Importe
+/**
+ * Dieses Paket enthält die Hauptklasse und weitere Klassen für die NHPlus-Anwendung.
+ */
 package de.hitec.nhplus;
 
 import de.hitec.nhplus.datastorage.ConnectionBuilder;
@@ -12,25 +14,35 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-// Definition der Main-Klasse, die von Application erbt
+/**
+ * Die Hauptklasse der NHPlus-Anwendung, die von Application erbt.
+ */
 public class Main extends Application {
 
     // Deklaration der primaryStage-Variable vom Typ Stage
     private Stage primaryStage;
 
-    // Hauptmethode, die beim Start der Anwendung aufgerufen wird
+    /**
+     * Die Hauptmethode, die beim Start der Anwendung aufgerufen wird.
+     * @param args Die Argumente für die Anwendung.
+     */
     public static void main(String[] args) {
         launch(args);
     } // Starten der JavaFX-Anwendung
 
-    // Startmethode der Anwendung, setzen des primaryStage und Aufruf der mainWindow-Methode
+    /**
+     * Startet die JavaFX-Anwendung.
+     * @param primaryStage Die primäre Stage der Anwendung.
+     */
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         mainWindow();
     }
 
-    // Definition der mainWindow-Methode
+    /**
+     * Öffnet das Hauptfenster der Anwendung.
+     */
     public void mainWindow() {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/LoginView.fxml")); // Erstellen eines FXMLLoaders, um die Benutzeroberfläche zu laden

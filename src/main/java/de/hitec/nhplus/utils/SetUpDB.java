@@ -15,15 +15,17 @@ import static de.hitec.nhplus.utils.DateConverter.convertStringToLocalDate;
 import static de.hitec.nhplus.utils.DateConverter.convertStringToLocalTime;
 
 /**
- * Der Aufruf einer statischen Klasse stellt statische Methoden zum Einrichten und Löschen der Datenbank bereit. Es verwendet die Klasse ConnectionBuilder
- * und dessen Pfad zum Aufbau der Verbindung zur Datenbank. Die Klasse ist ausführbar. Durch Ausführen der Klasse wird erstellt
- * stellt eine Verbindung zur Datenbank her und ruft setUpDb() auf, um die Datenbank zu löschen, eine saubere Datenbank aufzubauen und die Datenbank zu füllen
+ * Der Aufruf einer statischen Klasse stellt statische Methoden zum Einrichten und Löschen der Datenbank bereit.
+ * Es verwendet die Klasse ConnectionBuilder und dessen Pfad zum Aufbau der Verbindung zur Datenbank.
+ * Die Klasse ist ausführbar. Durch Ausführen der Klasse wird erstellt stellt eine Verbindung zur Datenbank her
+ * und ruft setUpDb() auf, um die Datenbank zu löschen, eine saubere Datenbank aufzubauen und die Datenbank zu füllen
  * Datenbank mit einigen Testdaten.
  */
 public class SetUpDB {
 
     /**
-     * Diese Methode löscht die Datenbank durch Löschen der Tabellen. Dann ruft die Methode DDL-Anweisungen auf, um sie aufzubauen
+     * Diese Methode löscht die Datenbank durch Löschen der Tabellen.
+     * Dann ruft die Methode DDL-Anweisungen auf, um sie aufzubauen
      * Scratch- und DML-Anweisungen zum Füllen der Datenbank mit hartcodierten Testdaten.
      */
     public static void setUpDb() { // Ablauf der Klasse, ruft die funktionen auf.
@@ -36,7 +38,7 @@ public class SetUpDB {
     }
 
     /**
-     * Löscht / leert vorhandene Datenbanken patient und tratment
+     * Löscht / leert vorhandene Datenbanken patient und treatment
      **/
     public static void wipeDb(Connection connection) {
         try (Statement statement = connection.createStatement()) {
@@ -90,7 +92,7 @@ public class SetUpDB {
     }
 
     /**
-     * Diese Funktion erstellt mehrere Objekte der Klasse Treatment und fügt sie der Tabelle treatment hinzu.
+     * Diese Funktion erstellt mehrere Objekte der Klasse Patient und fügt sie der Tabelle patient hinzu.
      **/
     private static void setUpTreatments() {
         try {
@@ -111,7 +113,7 @@ public class SetUpDB {
     }
 
     /**
-     * Die main Methode wird ausgeführt wenn diese Java Datei ausgeführt wird unf ruft die setUpDb Methode auf.
+     * Die main Methode wird ausgeführt wenn diese Java Datei ausgeführt wird und ruft die setUpDb Methode auf.
      **/
     public static void main(String[] args) {
         SetUpDB.setUpDb();
