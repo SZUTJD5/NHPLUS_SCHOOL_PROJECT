@@ -335,5 +335,4 @@ public class CaregiverDao extends DaoImp<Caregiver> {
             System.out.println("Error adding login: " + exception.getMessage());
         }
     }
-
 }

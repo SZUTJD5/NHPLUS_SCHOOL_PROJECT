@@ -111,6 +111,49 @@ public class NewTreatmentController {
     }
 
     /**
+     * Befüllt die ComboBox mit den Pflegekräften.
+     */
+    private void createComboBoxData() {
+        CaregiverDao dao = DaoFactory.getDaoFactory().createCaregiverDAO();
+        try {
+            ArrayList<Caregiver> caregiverList = (ArrayList<Caregiver>) dao.readAll();
+            for (Caregiver caregiver : caregiverList) {
+                caregivers.add(caregiver);
+                caregiverSelection.add(caregiver.getName());
+            }
+            comboBoxCaregiverSelection.setItems(caregiverSelection);
+            ActiveAcount activeAccount = ActiveAcount.getInstance(null);
+            if (activeAccount != null) {
+                for (String caregiver : caregiverSelection) {
+                    if (activeAccount.getName().equals(caregiver)) {
+                        comboBoxCaregiverSelection.getSelectionModel().select(caregiverSelection.indexOf(caregiver));
+                    }
+                }
+            }
+            handleComboBoxCaregivers();
+        } catch (SQLException exception) {
+            System.setErr(System.err);
+        }
+    }
+
+    /**
+     * Event-Handler-Methode für die Auswahl einer Pflegekraft in der ComboBox.
+     * Diese Methode wird aufgerufen, wenn der Benutzer eine Pflegekraft auswählt.
+     */
+    @FXML
+    public void handleComboBoxCaregivers() {
+        String selectedCaregiverName = this.comboBoxCaregiverSelection.getSelectionModel().getSelectedItem();
+        if (selectedCaregiverName != null) {
+            for (Caregiver caregiver : caregivers) {
+                if ((caregiver.getSurname() + ", " + caregiver.getFirstName()).equals(selectedCaregiverName)) {
+                    this.labelPhoneNumber.setText(caregiver.getPhoneNumber());
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
      * Event-Handler-Methode für das Hinzufügen einer neuen Behandlung.
      * Diese Methode wird aufgerufen, wenn der Benutzer auf "Add" klickt.
      */
@@ -168,10 +211,7 @@ public class NewTreatmentController {
      */
     private boolean areInputDataInvalid() {
         // Schaut ob mindestens ein der textfelder nicht beschrieben ist.
-        if (textFieldBegin.getText().isEmpty() ||
-                textFieldEnd.getText().isEmpty() ||
-                textAreaRemarks.getText().isEmpty() ||
-                textFieldDescription.getText().isEmpty()) {
+        if (textFieldBegin.getText().isEmpty() || textFieldEnd.getText().isEmpty() || textAreaRemarks.getText().isEmpty() || textFieldDescription.getText().isEmpty()) {
             return true;
         }
 
@@ -187,52 +227,6 @@ public class NewTreatmentController {
         }
 
         // Schaut ob ein Angestellter ausgewählt wurde und ob das Datum gesetzt ist..
-        return comboBoxCaregiverSelection.getSelectionModel().getSelectedItem() == null ||
-                datePicker.getValue() == null;
+        return comboBoxCaregiverSelection.getSelectionModel().getSelectedItem() == null || datePicker.getValue() == null;
     }
-
-    /**
-     * Event-Handler-Methode für die Auswahl einer Pflegekraft in der ComboBox.
-     * Diese Methode wird aufgerufen, wenn der Benutzer eine Pflegekraft auswählt.
-     */
-    @FXML
-    public void handleComboBoxCaregivers() {
-        String selectedCaregiverName = this.comboBoxCaregiverSelection.getSelectionModel().getSelectedItem();
-        if (selectedCaregiverName != null) {
-            for (Caregiver caregiver : caregivers) {
-                if ((caregiver.getSurname() + ", " + caregiver.getFirstName()).equals(selectedCaregiverName)) {
-                    this.labelPhoneNumber.setText(caregiver.getPhoneNumber());
-                    break;
-                }
-            }
-        }
-    }
-
-    /**
-     * Befüllt die ComboBox mit den Pflegekräften.
-     */
-    private void createComboBoxData() {
-        CaregiverDao dao = DaoFactory.getDaoFactory().createCaregiverDAO();
-        try {
-            ArrayList<Caregiver> caregiverList = (ArrayList<Caregiver>) dao.readAll();
-            for (Caregiver caregiver : caregiverList) {
-                caregivers.add(caregiver);
-                caregiverSelection.add(caregiver.getName());
-            }
-            comboBoxCaregiverSelection.setItems(caregiverSelection);
-            ActiveAcount activeAccount = ActiveAcount.getInstance(null);
-            if (activeAccount != null) {
-                for (String caregiver : caregiverSelection) {
-                    if (activeAccount.getName().equals(caregiver)) {
-                        comboBoxCaregiverSelection.getSelectionModel().select(caregiverSelection.indexOf(caregiver));
-                    }
-                }
-            }
-            handleComboBoxCaregivers();
-        } catch (SQLException exception) {
-            System.setErr(System.err);
-        }
-    }
-
-
 }

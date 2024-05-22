@@ -216,7 +216,6 @@ public class AllTreatmentController {
      *
      * @param treatment Die Behandlung, deren Details angezeigt werden sollen.
      */
-
     public void treatmentWindow(Treatment treatment) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/TreatmentView.fxml"));

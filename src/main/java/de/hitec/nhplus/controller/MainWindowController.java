@@ -29,7 +29,7 @@ public class MainWindowController {
      * Setzt die Begrüßungsnachricht basierend auf den Informationen des aktuell angemeldeten Benutzers.
      */
     @FXML
-    private void initialize(){
+    private void initialize() {
         ActiveAcount activeAccount = ActiveAcount.getInstance(null);
         HalloText.setText("Hallo " + activeAccount.getFirstName() + "!");
     }

@@ -118,6 +118,20 @@ public class AllCaregiverController {
     }
 
     /**
+     * Schreibt alle Angestellten in die Tabelle, indem die Liste aller Angestellten gelöscht und erneut mit allen gespeicherten
+     * Angestellten, geliefert von {@link CaregiverDao}, gefüllt wird.
+     */
+    private void readAllAndShowInTableView() {
+        this.dao = DaoFactory.getDaoFactory().createCaregiverDAO();
+        try {
+            this.caregivers.clear();
+            this.caregivers.addAll(this.dao.readAll());
+        } catch (SQLException exception) {
+            System.setErr(System.err);
+        }
+    }
+
+    /**
      * Falls eine Zelle der Spalte mit den Vornamen geändert wurde, wird diese Methode aufgerufen, um die Änderung zu speichern.
      *
      * @param event Ereignis mit dem geänderten Objekt und der Änderung.
@@ -140,6 +154,22 @@ public class AllCaregiverController {
     }
 
     /**
+     * Falls eine Zelle der Spalte mit der Handynummer geändert wurde, wird diese Methode aufgerufen, um die Änderung zu speichern.
+     *
+     * @param event Ereignis mit dem geänderten Objekt und der Änderung.
+     */
+    @FXML
+    public void handleOnEditPhoneNumber(TableColumn.CellEditEvent<Caregiver, String> event) {
+        String newValue = event.getNewValue();
+        if (!newValue.matches("\\d*")) { //"\\d*" prüft ob es sich um eine Ziffer von 0 -9. Und der * sagt, dass es 0 oder mehr vorkommen muss
+            String temp = newValue.replaceAll("[^\\d]", "");// ^ ändert alle nicht Ziffern ins "".
+            event.getRowValue().setPhoneNumber(temp);
+            columnPhoneNumber.setText(temp);
+            this.doUpdate(event);
+        }
+    }
+
+    /**
      * Updated einen Angestellten, indem die Methode <code>update()</code> von {@link CaregiverDao} aufgerufen wird.
      *
      * @param event Ereignis mit dem geänderten Objekt und der Änderung.
@@ -147,20 +177,6 @@ public class AllCaregiverController {
     private void doUpdate(TableColumn.CellEditEvent<Caregiver, String> event) {
         try {
             this.dao.update(event.getRowValue());
-        } catch (SQLException exception) {
-            System.setErr(System.err);
-        }
-    }
-
-    /**
-     * Schreibt alle Angestellten in die Tabelle, indem die Liste aller Angestellten gelöscht und erneut mit allen gespeicherten
-     * Angestellten, geliefert von {@link CaregiverDao}, gefüllt wird.
-     */
-    private void readAllAndShowInTableView() {
-        this.dao = DaoFactory.getDaoFactory().createCaregiverDAO();
-        try {
-            this.caregivers.clear();
-            this.caregivers.addAll(this.dao.readAll());
         } catch (SQLException exception) {
             System.setErr(System.err);
         }
@@ -183,7 +199,6 @@ public class AllCaregiverController {
             readAllAndShowInTableView();
         }
     }
-
 
     /**
      * Diese Methode behandelt die Ereignisse, die durch den Button zum Hinzufügen eines Angestellten ausgelöst werden. Sie sammelt die Daten von den
@@ -218,25 +233,10 @@ public class AllCaregiverController {
 
     /**
      * Überprüft, ob alle Eingabedaten gültig sind.
+     *
      * @return true, wenn alle Eingabedaten gültig sind, andernfalls false.
      */
     private boolean areInputDataValid() {
         return !this.textFieldFirstName.getText().isBlank() && !this.textFieldSurname.getText().isBlank() && !this.textFieldPhoneNumber.getText().isBlank() && !this.textFieldPassword.getText().isBlank();
-    }
-
-    /**
-     * Falls eine Zelle der Spalte mit der Handynummer geändert wurde, wird diese Methode aufgerufen, um die Änderung zu speichern.
-     *
-     * @param event Ereignis mit dem geänderten Objekt und der Änderung.
-     */
-    @FXML
-    public void handleOnEditPhoneNumber(TableColumn.CellEditEvent<Caregiver, String> event) {
-        String newValue = event.getNewValue();
-        if (!newValue.matches("\\d*")) { //"\\d*" prüft ob es sich um eine Ziffer von 0 -9. Und der * sagt, dass es 0 oder mehr vorkommen muss
-            String temp = newValue.replaceAll("[^\\d]", "");// ^ ändert alle nicht Ziffern ins "".
-            event.getRowValue().setPhoneNumber(temp);
-            columnPhoneNumber.setText(temp);
-            this.doUpdate(event);
-        }
     }
 }
