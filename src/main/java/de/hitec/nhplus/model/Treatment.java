@@ -1,3 +1,5 @@
+// Paketanweisung und Importe
+
 package de.hitec.nhplus.model;
 
 import de.hitec.nhplus.datastorage.DaoFactory;
