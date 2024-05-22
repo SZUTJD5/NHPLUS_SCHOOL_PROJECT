@@ -1,52 +1,60 @@
-#NHPLUS 
-Tasks:
-1. - [x] Vermögendsstand muss etfernt werden, aus der Datenbank
-2. - [x] Möglichkeit einführen Behandlungen zu Sperren (Sperren Button einführen, für Patienten und alle ihre Daten, nicht einzelne Behandlungen)
-4. - [x] Alle Patientendaten sollten gleichzeitig Sperrbar sein -> Siehe 2
-5. - [x] Nach 10 Jahren dürfen Daten gelöscht werden. (Täglicher check bei gesperrten Behandlunge / Patienten ob Daten 10 Jahre als sind, wenn ja -> Löschen)
-6. - [ ] Login einbauen - für berechtigte Personen (Jede Schwester und Jeder Facharzt erhält einen Login mit verschiedenen Berechtigungen)
-7. - [x] Pflegermodul ?
-8. - [x] Daten dürfen nicht einfach Löschbar sein. (Löschen button entfernen)
+## Features:
 
-8. - [ ] Berechtigungen verteilen (z.b. um Behandlungseinträge zu bearbeiten / zu erstellen)
-9. - [x] Hover / Button für Informationen zu jeder Seite (Für Informationen zum Ausfüllen / etc)
-10. - [ ] Behandlungen sollten einen LOG haben über die Person die sie erstellt hat und wer sie potentiell abgeändert hat / was geändert wurde. (Automatischen Log anfügen)
-11. - [ ] JavaDoc erstellen und Codebschreibung hinzufügen
+**Dokumentation:**
 
-// Potentiell (nicht teil des MVP)
-12. - [ ] Anklicktbare vorlagen für wiederkehrende tätigkeiten (Vorgeschriebene Texte werden eingefügt mit Rot makierten Bereichen zum Ausfüllen der Daten)
-13. - [ ] Datenbanken müssen generell verschlüsselt sein und werden nach Login entschlüsselt. 
-14. - [ ]Behandlungen sollten vorgeplant werden können. (Z.B. Alle 4 Stunden / Tage idc, Medikament B verabreichen. / Alle 4 Stunden IV Beutel tauschen etc etc)
+* Javadoc wurde für den Code erstellt.
 
-Original Aufgabenstellung:
+**Verbesserungen der Benutzeroberfläche:**
 
-- -[x] Vermögensstand muss aus der Applikation entfernt werden
-- -[x] Behandlungen haben eine Sperrfrist von 10 Jahren
-- -[x] Falls die Daten nicht mehr benötigt werden, können sie gesperrt werden
-- -[x] Sperren heißt kein Delete!
-- -[x] Echtes Löschen erst nach 10 Jahren
-- -[x] Login
-- -[x] Nur berechtigte Personen (Pfleger) dürfen Zugriff haben
-- -[x] Pflegermodul (siehe Notizen mit dem Auftraggeber)
- 
-Notizen aus Auftraggeber Gespräch:
+* Die Tab-Reihenfolge in den Fenstern wurde angepasst.
+* Ein Hilfe-Hover-Button wurde hinzugefügt, der Informationen zu jeder Seite bereitstellt.
 
-    Die Navigationsleiste am linken Rand der Anwendung soll einen weiteren Button bekommen, über den zu einer Ansicht gewechselt wird, 
-    die alle Pfleger/Pflegerinnen mit ihrer ID, ihrem Nach- und Vornamen sowie ihrer Telefonnummer angezeigt werden.
-    Diese Ansicht wurde bereits im letzten Sprint in der Datei AllCaregiverView.fxml fertiggestellt und wurde vom Auftraggeber so abgenommen).
-    
-    Die Anzeige einer einzelnen Behandlung soll um die Daten des Pflegers/in (der Name im Format Nachname, 
-    Vorname sowie Telefon in einem eigenem Label) ergänzt werden, der/die die Behandlung durchgeführt hat.
-    
-    Beim Anlegen einer neuen Behandlung soll die entsprechende Pflegekraft mit Hilfe einer Combobox ausgewählt werden können.
-    
-    Beim Löschen einer Pflegekraft muss ebenfalls die 10 Jahresregelung berücksichtigt werden, d.h. nicht mehr aktive Pfleger werden auf Wunsch gesperrt, 
-    sofern sie noch Behandlungen durchgeführt haben, die jünger als 10 Jahre sind. Sind nur noch Behandlungen, die 10 Jahre zurückliegen, wird die Pflegekraft gelöscht. 
-    Die durchgeführten Behandlungen sollen weiter angezeigt werden. 
+**Datenverwaltung:**
+
+* Die Löschfunktion wurde durch eine Sperrfunktion ersetzt für:
+    * Patienten
+    * Behandlungen
+    * Angestellte
+* Gesperrte Daten bleiben in der Datenbank, werden aber nicht mehr angezeigt.
+* Patienten und Behandlungen werden nach 10 Jahren nach dem Erstelldatum gelöscht, wenn sie gesperrt sind.
+* Angestellte werden gelöscht, wenn sie:
+    * Gesperrt sind und:
+        * Ihre neueste Behandlung mehr als 10 Jahre alt ist oder
+        * Sie mit keiner Behandlung mehr verbunden sind.
+    * Gesperrt sind und:
+        * Ihre letzte verknüpfte Behandlung gelöscht wird oder
+        * Ihre letzte verknüpfte Behandlung 10 Jahre alt wird.
+* Behandlungen eines Patienten werden mit ihm zusammen gesperrt, wenn er gesperrt wird.
+
+**Behandlungen:**
+
+* Pfleger können in Behandlungen eingetragen werden.
+* Handynummer von ausgewählten Pflegern werden automatisch in neue Behandlungen eingetragen.
+* Einzelnes Löschen von Behandlungen ist nicht mehr möglich.
+* Das Datum des aktuellen Tages wird im Fenster für neue Behandlungen automatisch ausgewählt.
+* Wenn der aktuelle Benutzer ein Pfleger ist, wird er bei der Erstellung einer neuen Behandlung automatisch ausgewählt.
+
+**Pflegerverwaltung:**
+
+* Eine Pflegertabelle wurde erstellt.
+* Pfleger können erstellt werden.
+* Die Pflegertabelle ist im Programm einsehbar.
+* Jeder Pfleger erhält einen Login.
+* Pfleger erhalten beim Erstellen ein Login und Passwort für das Programm.
+* Die Handynummer des Pflegers darf nur aus Ziffern bestehen.
+
+**Login-System:**
+
+* Ein Login-System wurde erstellt.
+* Das Login-Fenster wird beim Programmstart anstelle des MainWindowView angezeigt.
+* Passwörter werden beim Erstellen eines Pflegers verschlüsselt in der Datenbank gespeichert.
+* Beim Login wird das Passwort gehasht und mit dem Hash des gespeicherten Passworts verglichen, um den Login zu verifizieren.
+* Das Passwort wird beim Login maskiert.
+* Der Login vergleicht Benutzername und Passwort mit der Datenbank.
+* Der Login legt den angemeldeten Pfleger fest.
 
 
 PASSWÖRTER ZUM LOGIN!
-1. LoginName: Jannis,Dinklage Passwort: Ha77o!%e
+1. LoginName: Jannis,Dinklage Passwort: Ha77o!%e (Kein Pfleger)
 2. LoginName: Rajbir,Singh    Passwort: kv&!,?w
 3. LoginName: Bernd,Heidemann Passwort: SZut-01?
-4.  TEMPNAME: 1,1               Passwort: 1
