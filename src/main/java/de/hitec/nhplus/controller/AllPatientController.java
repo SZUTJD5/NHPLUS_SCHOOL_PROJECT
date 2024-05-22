@@ -120,6 +120,21 @@ public class AllPatientController {
     }
 
     /**
+     * Schreibt alle Patienten in die Tabelle, indem die Liste aller Patienten gelöscht und erneut mit allen gespeicherten
+     * Patienten, geliefert von {@link PatientDao}, gefüllt wird.
+     */
+    private void readAllAndShowInTableView() {
+        this.patients.clear();
+        this.dao = DaoFactory.getDaoFactory().createPatientDAO();
+        this.treatmentDao = DaoFactory.getDaoFactory().createTreatmentDao();
+        try {
+            this.patients.addAll(this.dao.readAll());
+        } catch (SQLException exception) {
+            System.setErr(System.err);
+        }
+    }
+
+    /**
      * Falls eine Zelle der Spalte mit den Vornamen geändert wurde, wird diese Methode aufgerufen, um die Änderung zu speichern.
      *
      * @param event Ereignis mit dem geänderten Objekt und der Änderung.
@@ -188,22 +203,7 @@ public class AllPatientController {
     }
 
     /**
-     * Schreibt alle Patienten in die Tabelle, indem die Liste aller Patienten gelöscht und erneut mit allen gespeicherten
-     * Patienten, geliefert von {@link PatientDao}, gefüllt wird.
-     */
-    private void readAllAndShowInTableView() {
-        this.patients.clear();
-        this.dao = DaoFactory.getDaoFactory().createPatientDAO();
-        this.treatmentDao = DaoFactory.getDaoFactory().createTreatmentDao();
-        try {
-            this.patients.addAll(this.dao.readAll());
-        } catch (SQLException exception) {
-            System.setErr(System.err);
-        }
-    }
-
-    /*
-        Neue Methode zum Sperren der Daten. Verschied die Daten aus dieser Tabelle in die "lockedpatient" Tabelle.
+     * Neue Methode zum Sperren der Daten. Verschied die Daten aus dieser Tabelle in die "lockedpatient" Tabelle.
      */
     @FXML
     public void handleLock() {
@@ -239,14 +239,14 @@ public class AllPatientController {
                 System.setErr(System.err);
             }
             readAllAndShowInTableView();
-            clearTextfields();
+            clearTextFields();
         }
     }
 
     /**
      * Löscht alle Inhalte aus allen vorhandenen <code>TextField</code>ern.
      */
-    private void clearTextfields() {
+    private void clearTextFields() {
         this.textFieldFirstName.clear();
         this.textFieldSurname.clear();
         this.textFieldDateOfBirth.clear();

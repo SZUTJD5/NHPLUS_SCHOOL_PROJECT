@@ -24,6 +24,7 @@ public class Main extends Application {
 
     /**
      * Die Hauptmethode, die beim Start der Anwendung aufgerufen wird.
+     *
      * @param args Die Argumente für die Anwendung.
      */
     public static void main(String[] args) {
@@ -32,6 +33,7 @@ public class Main extends Application {
 
     /**
      * Startet die JavaFX-Anwendung.
+     *
      * @param primaryStage Die primäre Stage der Anwendung.
      */
     @Override

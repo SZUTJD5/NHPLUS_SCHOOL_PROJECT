@@ -49,61 +49,6 @@ public class LoginController {
     }
 
     /**
-     * Behandelt den Anmeldevorgang.
-     * Überprüft die Eingaben des Benutzers und vergleicht das Passwort mit dem in der Datenbank gespeicherten Hash.
-     */
-    @FXML
-    private void handleLogin() {
-        final String loginName = textFieldLoginName.getText();
-        final String password = textFieldPassword.getText();
-
-        if (loginName.isEmpty() || password.isEmpty()) {
-            alert(new Exception(), "Nutzername oder Password fehlt!", "Bitte geben Sie einen Benutzernamen und Password ein!");
-            return;
-        }
-
-        // In Datenbank gespeichertes Passwort über login Namen erhalten
-        String hashedPassword = getPassword(loginName);
-        PasswordHashingController passwordHashingController = new PasswordHashingController();
-
-            // Bezieht die Login_ID um nach erfolgreicher anmeldung den Nutzer festzulegen
-            ConnectionBuilder.closeConnection();
-            final String SQL = "SELECT login_ID FROM logins WHERE name = ?";
-            try (Connection connection = ConnectionBuilder.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
-
-                // Falls das Passwort korrekt ist, wird der Login vorgang fortgeführt.
-                if (hashedPassword != null && passwordHashingController.verifyPassword(password, hashedPassword)) {
-                    if (connection.isClosed()) {
-                        alert(new SQLException("Failed to establish a database connection."), "Fehler!", "Konnte keine Verbindung zur Datenbank aufbauen!");
-                    }
-
-                    preparedStatement.setString(1, loginName);
-
-                    try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                        if (resultSet.next()) {
-                            // Erstellt ein Singleton für die Verwendung im NewTreatmentController
-                            ActiveAcount activeAccount = ActiveAcount.getInstance(loginName);
-                            System.out.println("Successfully logged in: " + activeAccount.getFirstName() + " " + activeAccount.getSurname() + "!");
-                            // Fortfahren mit dem erfolgreichen Anmeldevorgang, z.B. das Hauptfenster laden
-                            loadMainWindow();
-                        } else {
-                            alert(new Exception(), "Login fehlgeschlagen", "Ungültiger Nutzername oder Passwort!");
-                            ConnectionBuilder.closeConnection();
-                        }
-                    }
-                } else {
-                    ConnectionBuilder.closeConnection();
-                    alert(new Exception(), "Falscher Benutzername oder Passwort!", "Überprüfen Sie bitte ihre Eingaben");
-                }
-
-
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-                alert(e, "Datenbankfehler", "Es ist ein Fehler bei der Datenbankabfrage aufgetreten.");
-            }
-    }
-
-    /**
      * Ruft das in der Datenbank gespeicherte Passwort für einen gegebenen Login-Namen ab.
      *
      * @param loginName Der Login-Name des Benutzers.
@@ -123,6 +68,61 @@ public class LoginController {
             throw new RuntimeException(e);
         }
         return hashedPassword;
+    }
+
+    /**
+     * Behandelt den Anmeldevorgang.
+     * Überprüft die Eingaben des Benutzers und vergleicht das Passwort mit dem in der Datenbank gespeicherten Hash.
+     */
+    @FXML
+    private void handleLogin() {
+        final String loginName = textFieldLoginName.getText();
+        final String password = textFieldPassword.getText();
+
+        if (loginName.isEmpty() || password.isEmpty()) {
+            alert(new Exception(), "Nutzername oder Password fehlt!", "Bitte geben Sie einen Benutzernamen und Password ein!");
+            return;
+        }
+
+        // In Datenbank gespeichertes Passwort über login Namen erhalten
+        String hashedPassword = getPassword(loginName);
+        PasswordHashingController passwordHashingController = new PasswordHashingController();
+
+        // Bezieht die Login_ID um nach erfolgreicher anmeldung den Nutzer festzulegen
+        ConnectionBuilder.closeConnection();
+        final String SQL = "SELECT login_ID FROM logins WHERE name = ?";
+        try (Connection connection = ConnectionBuilder.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
+
+            // Falls das Passwort korrekt ist, wird der Login vorgang fortgeführt.
+            if (hashedPassword != null && passwordHashingController.verifyPassword(password, hashedPassword)) {
+                if (connection.isClosed()) {
+                    alert(new SQLException("Failed to establish a database connection."), "Fehler!", "Konnte keine Verbindung zur Datenbank aufbauen!");
+                }
+
+                preparedStatement.setString(1, loginName);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        // Erstellt ein Singleton für die Verwendung im NewTreatmentController
+                        ActiveAcount activeAccount = ActiveAcount.getInstance(loginName);
+                        System.out.println("Successfully logged in: " + activeAccount.getFirstName() + " " + activeAccount.getSurname() + "!");
+                        // Fortfahren mit dem erfolgreichen Anmeldevorgang, z.B. das Hauptfenster laden
+                        loadMainWindow();
+                    } else {
+                        alert(new Exception(), "Login fehlgeschlagen", "Ungültiger Nutzername oder Passwort!");
+                        ConnectionBuilder.closeConnection();
+                    }
+                }
+            } else {
+                ConnectionBuilder.closeConnection();
+                alert(new Exception(), "Falscher Benutzername oder Passwort!", "Überprüfen Sie bitte ihre Eingaben");
+            }
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            alert(e, "Datenbankfehler", "Es ist ein Fehler bei der Datenbankabfrage aufgetreten.");
+        }
     }
 
     /**

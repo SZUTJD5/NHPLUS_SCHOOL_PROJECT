@@ -23,18 +23,18 @@ public interface Dao<T> {
     T read(long key) throws SQLException;
 
     /**
-     * Liest alle Datensätze aus der Datenbank und gibt sie als Liste zurück.
-     *
-     * @return Eine Liste mit allen Datensätzen.
-     * @throws SQLException bei SQL-Fehlern.
-     */
-    List<T> readAll() throws SQLException;
-
-    /**
      * Aktualisiert einen bestehenden Datensatz in der Datenbank.
      *
      * @param t Das zu aktualisierende Objekt.
      * @throws SQLException bei SQL-Fehlern.
      */
     void update(T t) throws SQLException;
+
+    /**
+     * Liest alle Datensätze aus der Datenbank und gibt sie als Liste zurück.
+     *
+     * @return Eine Liste mit allen Datensätzen.
+     * @throws SQLException bei SQL-Fehlern.
+     */
+    List<T> readAll() throws SQLException;
 }
