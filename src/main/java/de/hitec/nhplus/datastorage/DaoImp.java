@@ -62,7 +62,7 @@ public abstract class DaoImp<T> implements Dao<T> {
     }
 
     /**
-     * Wandelt einen ResultSet in ein Objekt vom Typ T um.
+     * Gibt eine Instanz von ResultSet aus.
      *
      * @param set Das ResultSet, das die Daten enthält.
      * @return Das erstellte Objekt.

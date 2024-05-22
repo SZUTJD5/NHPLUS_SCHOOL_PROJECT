@@ -183,7 +183,7 @@ public class PatientDao extends DaoImp<Patient> {
     }
 
     /**
-     * Aktualisiert den Sperrstatus eines Patienten.
+     * Aktualisiert den lockedstatus eines Patienten.
      *
      * @param pid    Die ID des Patienten.
      * @param locked true, wenn der Patient gesperrt ist, andernfalls false.
