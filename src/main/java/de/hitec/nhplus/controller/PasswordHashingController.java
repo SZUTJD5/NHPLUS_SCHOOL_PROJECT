@@ -1,3 +1,4 @@
+// Paketanweisung und Importe
 package de.hitec.nhplus.controller;
 
 import java.security.NoSuchAlgorithmException;
@@ -9,28 +10,38 @@ import javax.crypto.spec.PBEKeySpec;
 import java.util.Base64;
 import java.util.Arrays;
 
+/**
+ * Die Klasse <code>PasswordHashingController</code> ist verantwortlich für das Hashen und Verifizieren von Passwörtern.
+ * Sie verwendet den PBKDF2-Algorithmus mit einem HMAC-SHA1-Hasher für eine sichere Passwort-Hashing-Funktionalität.
+ */
 public class PasswordHashingController {
 
+    /**
+     * Hashes a password using PBKDF2 algorithm with HMAC-SHA1 hasher.
+     *
+     * @param password The password to be hashed
+     * @return A concatenated string of salt and hash, separated by ':'
+     */
     public String hashPassword(String password) {
 
         try {
-            // Generate a random salt
+            // Generiert ein zufälliges Salt
             SecureRandom random = new SecureRandom();
             byte[] salt = new byte[16];
             random.nextBytes(salt);
 
-            // Specify the key specification
+            // Spezifiziert die Schlüsselspezifikation
             KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
 
-            // Generate the hash
+            // Generiert den Hash
             byte[] hash = factory.generateSecret(spec).getEncoded();
 
-            // Convert the hash and salt to Base64 for storage
+            // Konvertiert den Hash und das Salt zu Base64 für die Speicherung
             String saltBase64 = Base64.getEncoder().encodeToString(salt);
             String hashBase64 = Base64.getEncoder().encodeToString(hash);
 
-            // Return the concatenated string of salt and hash
+            // Gibt den konkatenierten String von Salt und Hash zurück
             return saltBase64 + ":" + hashBase64;
 
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
@@ -39,21 +50,28 @@ public class PasswordHashingController {
         }
     }
 
+    /**
+     * Überprüft, ob das eingegebene Passwort dem gespeicherten gehashten Passwort entspricht.
+     *
+     * @param inputPassword     Das zu überprüfende Passwort
+     * @param storedSaltAndHash Der gespeicherte Salt- und Hash-Wert als konkatenierter String
+     * @return True, wenn die Passwörter übereinstimmen, sonst False
+     */
     public boolean verifyPassword(String inputPassword, String storedSaltAndHash) {
 
-        // Split the storedSaltAndHash into salt and hash parts
+        // Teilt storedSaltAndHash in Salt- und Hash-Teile auf
         String[] parts = storedSaltAndHash.split(":");
         if (parts.length != 2) {
-            // Invalid format
+            // Teilt storedSaltAndHash in Salt- und Hash-Teile auf
             return false;
         }
 
-        // Decode the Base64 encoded salt and hash
+        // Dekodiert das Base64-kodierte Salt und den Hash
         byte[] salt = Base64.getDecoder().decode(parts[0]);
         byte[] storedHash = Base64.getDecoder().decode(parts[1]);
 
         try {
-            // Generate the hash for the input password using the same salt and parameters
+            // Generiert den Hash für das eingegebene Passwort unter Verwendung des gleichen Salzes und der gleichen Parameter
             KeySpec spec = new PBEKeySpec(inputPassword.toCharArray(), salt, 65536, 128);
             SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             byte[] inputHash = factory.generateSecret(spec).getEncoded();

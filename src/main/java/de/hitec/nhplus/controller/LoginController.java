@@ -1,3 +1,5 @@
+// Paketanweisung und Importe
+
 package de.hitec.nhplus.controller;
 
 import de.hitec.nhplus.Main;
@@ -18,12 +20,26 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Der <code>LoginController</code> verwaltet den Anmeldevorgang der Anwendung.
+ * Er überprüft die Eingaben der Benutzer und leitet sie bei erfolgreicher Anmeldung zur Hauptansicht weiter.
+ */
 public class LoginController {
+    // Textfelder für die Eingabe des Benutzernamens und des Passworts
     public TextField textFieldLoginName;
     public TextField textFieldPassword;
+    // BorderPane des Login-Fensters
     public BorderPane loginBorderPane;
+    // Anmeldebutton
     public Button buttonLogin;
 
+    /**
+     * Zeigt einen Fehler-Dialog an.
+     *
+     * @param e       Die Ausnahme, die den Fehler verursacht hat.
+     * @param title   Der Titel des Dialogs.
+     * @param message Die Nachricht des Dialogs.
+     */
     private static void alert(Exception e, String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -32,6 +48,10 @@ public class LoginController {
         alert.showAndWait();
     }
 
+    /**
+     * Behandelt den Anmeldevorgang.
+     * Überprüft die Eingaben des Benutzers und vergleicht das Passwort mit dem in der Datenbank gespeicherten Hash.
+     */
     @FXML
     private void handleLogin() {
         final String loginName = textFieldLoginName.getText();
@@ -51,7 +71,7 @@ public class LoginController {
             final String SQL = "SELECT login_ID FROM logins WHERE name = ?";
             try (Connection connection = ConnectionBuilder.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
 
-                // Falls das Passwort korrekt ist wird der Login vorgang fortgeführt.
+                // Falls das Passwort korrekt ist, wird der Login vorgang fortgeführt.
                 if (hashedPassword != null && passwordHashingController.verifyPassword(password, hashedPassword)) {
                     if (connection.isClosed()) {
                         alert(new SQLException("Failed to establish a database connection."), "Fehler!", "Konnte keine Verbindung zur Datenbank aufbauen!");
@@ -61,10 +81,10 @@ public class LoginController {
 
                     try (ResultSet resultSet = preparedStatement.executeQuery()) {
                         if (resultSet.next()) {
-                            //Creat Singleton for use in NewTreatmentController.java
+                            // Erstellt ein Singleton für die Verwendung im NewTreatmentController
                             ActiveAcount activeAccount = ActiveAcount.getInstance(loginName);
                             System.out.println("Successfully logged in: " + activeAccount.getFirstName() + " " + activeAccount.getSurname() + "!");
-                            // Proceed with the successful login process, e.g., load the main window
+                            // Fortfahren mit dem erfolgreichen Anmeldevorgang, z.B. das Hauptfenster laden
                             loadMainWindow();
                         } else {
                             alert(new Exception(), "Login fehlgeschlagen", "Ungültiger Nutzername oder Passwort!");
@@ -83,6 +103,12 @@ public class LoginController {
             }
     }
 
+    /**
+     * Ruft das in der Datenbank gespeicherte Passwort für einen gegebenen Login-Namen ab.
+     *
+     * @param loginName Der Login-Name des Benutzers.
+     * @return Das gehashte Passwort des Benutzers.
+     */
     private static String getPassword(String loginName) {
         String hashedPassword = null;
         final String passwordSQL = "SELECT password FROM logins WHERE name = ?";
@@ -99,12 +125,15 @@ public class LoginController {
         return hashedPassword;
     }
 
+    /**
+     * Lädt das Hauptfenster der Anwendung nach erfolgreicher Anmeldung.
+     */
     private void loadMainWindow() {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/MainWindowView.fxml"));
             BorderPane mainBorderPane = loader.load();
 
-            // Get the stage and adjust its size to fit the content
+            // Holt die aktuelle Bühne und passt ihre Größe an den Inhalt an
             Stage stage = (Stage) loginBorderPane.getScene().getWindow();
             Scene scene = new Scene(mainBorderPane);
             stage.setScene(scene);

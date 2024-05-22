@@ -14,13 +14,20 @@ import de.hitec.nhplus.utils.DateConverter;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-// Behandlungs-Controller-Klasse
+/**
+ * Die Klasse `TreatmentController` ist verantwortlich für die Steuerung der Benutzeroberfläche zur Anzeige und Bearbeitung von Behandlungsinformationen.
+ */
 public class TreatmentController {
 
+    //  Label für den Namen der Pflegekraft
     public Label labelCaregiver;
+    // Label für die Telefonnummer der Pflegekraft.
     public Label labelPhoneNumber;
+    // Button zum Ändern der Behandlungsinformationen
     public Button btnChange;
+    // Button zum Abbrechen der Bearbeitung
     public Button btnCancel;
+
     // FXML-Felder, die mit den FXML-Elementen im zugehörigen FXML-Datei verbunden sind
     @FXML
     private Label labelPatientName;
@@ -49,7 +56,13 @@ public class TreatmentController {
     private Patient patient;
     private Treatment treatment;
 
-    // Initialisierungsmethode des Controllers
+    /**
+     * Initialisiert den Controller mit der übergebenen AllTreatmentController-Instanz, Stage und Behandlungsobjekt.
+     *
+     * @param controller Die AllTreatmentController-Instanz, zu der dieser Controller gehört.
+     * @param stage      Die Stage, auf der die Benutzeroberfläche angezeigt wird.
+     * @param treatment  Das Behandlungsobjekt, das bearbeitet werden soll.
+     */
     public void initializeController(AllTreatmentController controller, Stage stage, Treatment treatment) {
         this.stage = stage;
         this.controller = controller;
@@ -63,7 +76,9 @@ public class TreatmentController {
         }
     }
 
-    // Methode zum Anzeigen der Daten des Patienten und der Behandlung
+    /**
+     * Zeigt die Daten des Patienten und der Behandlung in den entsprechenden Feldern der Benutzeroberfläche an.
+     */
     private void showData() {
         this.labelPatientName.setText(patient.getSurname() + ", " + patient.getFirstName()); // Patientenname anzeigen
         this.labelCareLevel.setText(patient.getCareLevel()); // Pflegestufe anzeigen
@@ -80,7 +95,9 @@ public class TreatmentController {
     }
 
 
-    // Event-Handler für Änderungen an den Behandlungsinformationen
+    /**
+     * Aktualisiert die Behandlungsinformationen basierend auf den Benutzereingaben.
+     */
     @FXML
     public void handleChange() {
         this.treatment.setDate(this.datePicker.getValue().toString()); // Datum aktualisieren
@@ -103,7 +120,9 @@ public class TreatmentController {
         }
     }
 
-    // Event-Handler für Abbruch des Bearbeitungsvorgangs
+    /**
+     * Schließt die Stage und bricht den Bearbeitungsvorgang ab.
+     */
     @FXML
     public void handleCancel() {
         stage.close();

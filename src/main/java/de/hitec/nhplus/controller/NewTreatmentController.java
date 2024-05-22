@@ -1,3 +1,4 @@
+// Paketanweisung und Importe
 package de.hitec.nhplus.controller;
 
 import de.hitec.nhplus.datastorage.CaregiverDao;
@@ -21,14 +22,19 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-// Controller-Klasse für das Hinzufügen einer neuen Behandlung
+/**
+ * Der <code>NewTreatmentController</code> verwaltet die Ansicht zum Hinzufügen einer neuen Behandlung.
+ * Er stellt Methoden zum Einfügen und Abbrechen des Vorgangs bereit.
+ */
 public class NewTreatmentController {
 
+    // Listen zur Verwaltung der Pflegekräfte und deren Namen
     private final ObservableList<Caregiver> caregivers = FXCollections.observableArrayList();
     private final ObservableList<String> caregiverSelection = FXCollections.observableArrayList();
+
     public Button buttonCancel;
     @FXML
-    private ComboBox<String> comboBoxCaregiverSelection; // Inject the ComboBox
+    private ComboBox<String> comboBoxCaregiverSelection; //Injizieren der ComboBox
     // FXML-Felder, die mit den FXML-Elementen im zugehörigen FXML-Datei verbunden sind
     @FXML
     private Label labelFirstName;
@@ -54,7 +60,13 @@ public class NewTreatmentController {
     private Patient patient;
     private Stage stage;
 
-    // Initialisierungsmethode des Controllers
+    /**
+     * Initialisiert den Controller mit den benötigten Referenzen und Einstellungen.
+     *
+     * @param controller Referenz zum übergeordneten Controller
+     * @param stage      Referenz zur aktuellen Stage
+     * @param patient    Patient, für den die Behandlung hinzugefügt wird
+     */
     public void initialize(AllTreatmentController controller, Stage stage, Patient patient) {
         this.controller = controller;
         this.patient = patient;
@@ -85,17 +97,23 @@ public class NewTreatmentController {
                 return DateConverter.convertStringToLocalDate(localDate);
             }
         });
+        // Patientendaten anzeigen und Pflegekräfte-Daten laden
         this.showPatientData();
         createComboBoxData();
     }
 
-    // Methode zur Anzeige der Patientendaten in den entsprechenden Labeln
+    /**
+     * Zeigt die Patientendaten in den entsprechenden Labels an.
+     */
     private void showPatientData() {
         this.labelFirstName.setText(patient.getFirstName()); // Setzen des Vornamens Patienten
         this.labelSurname.setText(patient.getSurname()); // Setzen des Nachnamens des Patienten
     }
 
-    // Event-Handler-Methode für das Hinzufügen einer neuen Behandlung
+    /**
+     * Event-Handler-Methode für das Hinzufügen einer neuen Behandlung.
+     * Diese Methode wird aufgerufen, wenn der Benutzer auf "Add" klickt.
+     */
     @FXML
     public void handleAdd() {
         LocalDate date = this.datePicker.getValue(); // Abrufen des ausgewählten Datums
@@ -103,13 +121,13 @@ public class NewTreatmentController {
         LocalTime end = DateConverter.convertStringToLocalTime(textFieldEnd.getText()); // Konvertieren der eingegebenen Endzeit
         String description = textFieldDescription.getText(); // Abrufen der eingegebenen Behandlungsbeschreibung
         String remarks = textAreaRemarks.getText(); // Abrufen der eingegebenen Bemerkungen
-        boolean locked = false;
-        String selectedCaregiverName = comboBoxCaregiverSelection.getSelectionModel().getSelectedItem();
-        long cid = -1; // Initialize with an invalid value
+        boolean locked = false; // Standardwert für das "locked" Feld
+        String selectedCaregiverName = comboBoxCaregiverSelection.getSelectionModel().getSelectedItem(); // Ausgewählte Pflegekraft abrufen
+        long cid = -1;  // Initialisieren mit einem ungültigen Wert
         if (selectedCaregiverName != null) {
             for (Caregiver caregiver : caregivers) {
                 if ((caregiver.getSurname() + ", " + caregiver.getFirstName()).equals(selectedCaregiverName)) {
-                    cid = caregiver.getCid(); // Get the caregiver id
+                    cid = caregiver.getCid();// ID der Pflegekraft abrufen
                     break;
                 }
             }
@@ -120,7 +138,11 @@ public class NewTreatmentController {
         stage.close(); // Fenster schließen
     }
 
-    // Methode zum Erstellen einer neuen Behandlung in der Datenbank
+    /**
+     * Erstellt eine neue Behandlung in der Datenbank.
+     *
+     * @param treatment Die zu erstellende Behandlung
+     */
     private void createTreatment(Treatment treatment) {
         TreatmentDao dao = DaoFactory.getDaoFactory().createTreatmentDao(); // DAO-Objekt für Behandlung erstellen
         try {
@@ -130,12 +152,20 @@ public class NewTreatmentController {
         }
     }
 
-    // Event-Handler-Methode für das Abbrechen des Hinzufügens einer neuen Behandlung
+    /**
+     * Event-Handler-Methode für das Abbrechen des Hinzufügens einer neuen Behandlung.
+     * Diese Methode wird aufgerufen, wenn der Benutzer auf "Cancel" klickt.
+     */
     @FXML
     public void handleCancel() {
         stage.close();
     } // Fenster schließen
 
+    /**
+     * Überprüft, ob die Eingabedaten ungültig sind.
+     *
+     * @return true, wenn die Eingabedaten ungültig sind, sonst false
+     */
     private boolean areInputDataInvalid() {
         // Schaut ob mindestens ein der textfelder nicht beschrieben ist.
         if (textFieldBegin.getText().isEmpty() ||
@@ -156,12 +186,15 @@ public class NewTreatmentController {
             return true;
         }
 
-        // Schaut ob ein Angestellter ausgewählt wurde.
+        // Schaut ob ein Angestellter ausgewählt wurde und ob das Datum gesetzt ist..
         return comboBoxCaregiverSelection.getSelectionModel().getSelectedItem() == null ||
                 datePicker.getValue() == null;
     }
 
-
+    /**
+     * Event-Handler-Methode für die Auswahl einer Pflegekraft in der ComboBox.
+     * Diese Methode wird aufgerufen, wenn der Benutzer eine Pflegekraft auswählt.
+     */
     @FXML
     public void handleComboBoxCaregivers() {
         String selectedCaregiverName = this.comboBoxCaregiverSelection.getSelectionModel().getSelectedItem();
@@ -175,7 +208,9 @@ public class NewTreatmentController {
         }
     }
 
-    // Befüllt die ComboBox mit den Pflegekräften
+    /**
+     * Befüllt die ComboBox mit den Pflegekräften.
+     */
     private void createComboBoxData() {
         CaregiverDao dao = DaoFactory.getDaoFactory().createCaregiverDAO();
         try {

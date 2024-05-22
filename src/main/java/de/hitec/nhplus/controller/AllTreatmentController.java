@@ -1,3 +1,4 @@
+// Paketanweisung und Importe
 package de.hitec.nhplus.controller;
 
 import de.hitec.nhplus.Main;
@@ -21,6 +22,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Der <code>AllTreatmentController</code> verwaltet die Anzeige und Bearbeitung von Behandlungen in der Anwendung.
+ * Er ermöglicht das Anzeigen, Hinzufügen und Bearbeiten von Behandlungsdaten und das Filtern nach Patienten.
+ */
 public class AllTreatmentController {
 
     // ObservableList Speichert die Behandlungen, welche in der TableView angezeigt werden sollen.
@@ -106,7 +111,9 @@ public class AllTreatmentController {
     }
 
 
-    // Behandelt die selektierte ComboBox
+    /**
+     * Behandelt die Auswahl in der ComboBox und zeigt die entsprechenden Behandlungen an.
+     */
     @FXML
     public void handleComboBox() {
         String selectedPatient = this.comboBoxPatientSelection.getSelectionModel().getSelectedItem();
@@ -131,6 +138,12 @@ public class AllTreatmentController {
         }
     }
 
+    /**
+     * Sucht in der Patientenliste nach einem Patienten mit dem gegebenen Nachnamen.
+     *
+     * @param surname Der Nachname des gesuchten Patienten.
+     * @return Der Patient mit dem gegebenen Nachnamen, oder null, wenn kein solcher Patient existiert.
+     */
     private Patient searchInList(String surname) {
         for (Patient patient : this.patientList) {
             if (patient.getSurname().equals(surname)) {
@@ -140,24 +153,10 @@ public class AllTreatmentController {
         return null;
     }
 
-    /* // MIT SPERREN MECHANIK ERSETZEN!
 
-    // Löscht die selektierte Zeile nach Klick auf den Löschen Button
-    @FXML
-    public void handleDelete() {
-        int index = this.tableView.getSelectionModel().getSelectedIndex();
-        Treatment t = this.treatments.remove(index);
-        TreatmentDao dao = DaoFactory.getDaoFactory().createTreatmentDao();
-        try {
-            dao.deleteById(t.getTid());
-        } catch (SQLException exception) {
-            System.setErr(System.err);
-        }
-    }
-
+    /**
+     * Behandelt das Hinzufügen einer neuen Behandlung. Öffnet ein neues Fenster für die Eingabe der Behandlungsdetails.
      */
-
-    // Fügt eine neuen Behandlung ein. Nutzt die Daten aus den Eingabe Feldern.
     @FXML
     public void handleNewTreatment() {
         try {
@@ -173,7 +172,9 @@ public class AllTreatmentController {
         }
     }
 
-    // Setzt die Zeile auf die geklickt wurde als selektiertes Element
+    /**
+     * Behandelt einen Doppelklick auf eine Zeile in der TableView und öffnet ein Fenster zur Anzeige der Details der Behandlung.
+     */
     @FXML
     public void handleMouseClick() {
         tableView.setOnMouseClicked(event -> {
@@ -185,14 +186,18 @@ public class AllTreatmentController {
         });
     }
 
-    // Öffnet das Fenster für eine neue Behandlung
+    /**
+     * Öffnet ein neues Fenster für die Eingabe der Details einer neuen Behandlung.
+     *
+     * @param patient Der Patient, für den die neue Behandlung hinzugefügt wird.
+     */
     public void newTreatmentWindow(Patient patient) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/NewTreatmentView.fxml"));
             AnchorPane pane = loader.load();
             Scene scene = new Scene(pane);
 
-            // the primary stage should stay in the background
+            // Das Hauptfenster bleibt im Hintergrund
             Stage stage = new Stage();
 
             NewTreatmentController controller = loader.getController();
@@ -206,14 +211,19 @@ public class AllTreatmentController {
         }
     }
 
-    // Öffnet das Fenster einer bereits existierenden Behandlung zur auslesung der Details
+    /**
+     * Öffnet ein Fenster zur Anzeige der Details einer bereits existierenden Behandlung.
+     *
+     * @param treatment Die Behandlung, deren Details angezeigt werden sollen.
+     */
+
     public void treatmentWindow(Treatment treatment) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/TreatmentView.fxml"));
             AnchorPane pane = loader.load();
             Scene scene = new Scene(pane);
 
-            // the primary stage should stay in the background
+            // Das Hauptfenster bleibt im Hintergrund
             Stage stage = new Stage();
             TreatmentController controller = loader.getController();
             controller.initializeController(this, stage, treatment);

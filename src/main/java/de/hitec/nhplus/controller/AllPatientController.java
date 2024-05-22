@@ -1,3 +1,4 @@
+// Paketanweisung und Importe
 package de.hitec.nhplus.controller;
 
 import de.hitec.nhplus.datastorage.DaoFactory;
@@ -69,7 +70,9 @@ public class AllPatientController {
     // Textfeld zum eintragen der Zimmernummer
     @FXML
     private TextField textFieldRoomNumber;
+    // DAO für den Zugriff auf Patientendaten
     private PatientDao dao;
+    // DAO für den Zugriff auf Behandlungsdaten
     private TreatmentDao treatmentDao;
 
     /**
@@ -102,9 +105,11 @@ public class AllPatientController {
         // Fügt die Daten in die TableView ein
         this.tableView.setItems(this.patients);
 
+        // Deaktiviert den Löschbutton, wenn kein Element ausgewählt ist
         this.buttonDelete.setDisable(true);
         this.tableView.getSelectionModel().selectedItemProperty().addListener((observableValue, oldPatient, newPatient) -> AllPatientController.this.buttonDelete.setDisable(newPatient == null));
 
+        // Deaktiviert den Hinzufügebutton, wenn die Eingabefelder leer sind
         this.buttonAdd.setDisable(true);
         ChangeListener<String> inputNewPatientListener = (observableValue, oldText, newText) -> AllPatientController.this.buttonAdd.setDisable(!AllPatientController.this.areInputDataValid());
         this.textFieldSurname.textProperty().addListener(inputNewPatientListener);
@@ -249,6 +254,11 @@ public class AllPatientController {
         this.textFieldRoomNumber.clear();
     }
 
+    /**
+     * Überprüft, ob die Eingabedaten gültig sind.
+     *
+     * @return true, wenn alle Eingabedaten gültig sind, andernfalls false.
+     */
     private boolean areInputDataValid() {
         if (!this.textFieldDateOfBirth.getText().isBlank()) {
             try {
