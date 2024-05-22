@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
- * Implementiert die Schnittstelle <code>DaoImp</code>. Überschreibt Methoden, um bestimmte <code>PreparedStatements</code> zu generieren.
+ * Implementiert die Schnittstelle <code>DaoImp</code>. Überschreibt Methoden, um bestimmte <code>PreparedStatements</code> zu generieren,
  * um die spezifischen SQL-Anweisungen auszuführen.
  */
 public class CaregiverDao extends DaoImp<Caregiver> {
@@ -28,7 +28,7 @@ public class CaregiverDao extends DaoImp<Caregiver> {
      * Erzeugt ein <code>PreparedStatement</code>, um das angegebene Objekt von <code>Caregiver</code> beizubehalten.
      *
      * @param caregiver Objekt von <code>Caregiver</code>, das bestehen bleiben soll.
-     * @return <code>PreparedStatement</code> zum Einfügen des angegebenen Angestellten.
+     * @return <code>   PreparedStatement</code> zum Einfügen des angegebenen Angestellten.
      */
     @Override
     protected PreparedStatement getCreateStatement(Caregiver caregiver) {
@@ -95,7 +95,6 @@ public class CaregiverDao extends DaoImp<Caregiver> {
         return statement;
     }
 
-
     /**
      * Ordnet ein <code>ResultSet</code> aller Angestellten einer <code>ArrayList</code> von <code>Caregiver</code>-Objekten zu.
      *
@@ -136,6 +135,14 @@ public class CaregiverDao extends DaoImp<Caregiver> {
         return preparedStatement;
     }
 
+    /**
+     * Aktualisiert den Sperrstatus eines Pflegepersonals anhand seiner ID (cid).
+     * Löscht den Patienten, wenn keine zugeordneten Behandlungen vorhanden sind oder wenn die neueste Behandlung älter als zehn Jahre ist.
+     *
+     * @param cid    ID des Pflegepersonals, dessen Sperrstatus aktualisiert werden soll.
+     * @param locked Neuer Sperrstatus.
+     * @throws SQLException bei SQL-Fehlern.
+     */
     public void updateLockStatus(long cid, boolean locked) throws SQLException {
         final String SQL = "UPDATE caregiver SET locked = ? WHERE cid = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
@@ -161,6 +168,11 @@ public class CaregiverDao extends DaoImp<Caregiver> {
         }
     }
 
+    /**
+     * Überprüft und löscht (automatisch) gesperrte Pflegekräfte, die keine verknüpften Behandlungen haben oder deren neueste Behandlung älter als zehn Jahre ist.
+     *
+     * @throws SQLException bei SQL-Fehlern.
+     */
     private void checkAndDeleteUnlinkedLockedCaregivers() throws SQLException {
         final String SQL = "SELECT * FROM caregiver WHERE locked IS true";
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
@@ -174,13 +186,13 @@ public class CaregiverDao extends DaoImp<Caregiver> {
                         } else {
                             System.out.println("Error autodelete 4\n");
                         }
-                    }else if (hasNoLinkedTreatments(cid) && isLocked) {
+                    } else if (hasNoLinkedTreatments(cid) && isLocked) {
                         if (deleteByCid(cid)) {
                             System.out.println("(AUTO) deleted locked caregiver since there were no treatments linked to them\n");
                         } else {
                             System.out.println("Error autodelete 3\n");
                         }
-                    }else {
+                    } else {
                         System.out.println("Found no reason to delete");
                     }
                 }
@@ -188,6 +200,13 @@ public class CaregiverDao extends DaoImp<Caregiver> {
         }
     }
 
+    /**
+     * Überprüft, ob die neueste Behandlung einer Pflegekraft älter als zehn Jahre ist.
+     *
+     * @param cid ID des Pflegepersonals.
+     * @return <code>true</code>, wenn die neueste Behandlung älter als zehn Jahre ist, andernfalls <code>false</code>.
+     * @throws SQLException bei SQL-Fehlern.
+     */
     private boolean isNewestTreatmentOlderThanTenYears(long cid) throws SQLException {
         // Get the current date
         LocalDate currentDate = LocalDate.now();
@@ -218,6 +237,12 @@ public class CaregiverDao extends DaoImp<Caregiver> {
         return count == 0;
     }
 
+    /**
+     * Löscht einen Pflegekraft und verknüpfte Einträge anhand der Pflegekraft-ID (cid).
+     *
+     * @param cid ID der zu löschenden Pflegekraft.
+     * @return <code>true</code>, wenn die Pflegekraft erfolgreich gelöscht wurde, andernfalls <code>false</code>.
+     */
     private boolean deleteByCid(long cid) {
         try {
             // Replaces the cid of the caregiver in treatment with -1
@@ -226,10 +251,10 @@ public class CaregiverDao extends DaoImp<Caregiver> {
             updateStatement.setLong(1, cid);
             updateStatement.executeUpdate();
 
-            //Deletes the Caregiver Login
+            // Deletes the Caregiver Login
             final String deleteLoginSQL = "DELETE FROM logins WHERE name = ?";
             PreparedStatement deleteLoginStatement = connection.prepareStatement(deleteLoginSQL);
-            deleteLoginStatement.setString(1,retrieveCaregiverByCid(cid).getLoginName());
+            deleteLoginStatement.setString(1, retrieveCaregiverByCid(cid).getLoginName());
             deleteLoginStatement.executeUpdate();
 
             // Deletes the caregiver
@@ -245,14 +270,20 @@ public class CaregiverDao extends DaoImp<Caregiver> {
         }
     }
 
-
+    /**
+     * Überprüft, ob eine Pflegekraft keine verknüpften Behandlungen hat.
+     *
+     * @param cid ID der Pflegekraft.
+     * @return <code>true</code>, wenn keine verknüpften Behandlungen vorhanden sind, andernfalls <code>false</code>.
+     * @throws SQLException bei SQL-Fehlern.
+     */
     private boolean hasNoLinkedTreatments(long cid) throws SQLException {
         final String SQL = "SELECT COUNT(*) FROM treatment WHERE cid = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL)) {
             preparedStatement.setLong(1, cid);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    if (resultSet.getInt(1) <= 0){
+                    if (resultSet.getInt(1) <= 0) {
                         return true;
                     }
                 }
@@ -262,26 +293,12 @@ public class CaregiverDao extends DaoImp<Caregiver> {
     }
 
     /**
-     * Erzeugt ein <code>PreparedStatement</code>, um einen Angestellten mit der angegebenen ID zu löschen.
+     * Ruft einen Pflegekraftdatensatz anhand der Pflegekraft-ID (cid) ab.
      *
-     * @param cid-ID des zu löschenden Angestellten.
-     * @return <code>PreparedStatement</code>, um den Angestellten mit der angegebenen ID zu löschen.
+     * @param cid ID der Pflegekraft.
+     * @return <code>Caregiver</code>-Objekt mit den Daten der Pflegekraft.
+     * @throws SQLException bei SQL-Fehlern.
      */
-
-    @Override
-    protected PreparedStatement getDeleteStatement(long cid) {
-        PreparedStatement preparedStatement = null;
-        try {
-            final String SQL = "DELETE FROM caregiver WHERE cid = ?";
-            preparedStatement = this.connection.prepareStatement(SQL);
-            preparedStatement.setLong(1, cid);
-        } catch (SQLException exception) {
-            System.setErr(System.err);
-        }
-        return preparedStatement;
-    }
-
-    // Retrieves a caregiver by cid
     public Caregiver retrieveCaregiverByCid(long cid) throws SQLException {
         Caregiver caregiver = null;
         final String SQL = "SELECT * FROM caregiver WHERE cid = ?";
@@ -296,7 +313,12 @@ public class CaregiverDao extends DaoImp<Caregiver> {
         return caregiver;
     }
 
-
+    /**
+     * Fügt einer Pflegekraft einen neuen Login hinzu.
+     *
+     * @param caregiver         Pflegekraft, der der Login hinzugefügt wird.
+     * @param textFieldPassword Passwortfeld mit dem neuen Passwort.
+     */
     public void addLogin(Caregiver caregiver, TextField textFieldPassword) {
         String loginName = caregiver.getFirstName() + "," + caregiver.getSurname();
         String password = textFieldPassword.getText();

@@ -11,12 +11,25 @@ public abstract class DaoImp<T> implements Dao<T> {
         this.connection = connection;
     }
 
-    @Override // Diese Methode erstellt einen neuen Datensatz in der Datenbank.
+    /**
+     * Fügt einen neuen Datensatz in die Datenbank ein.
+     *
+     * @param t Das einzufügende Objekt.
+     * @throws SQLException bei SQL-Fehlern.
+     */
+    @Override
     public void create(T t) throws SQLException {
         getCreateStatement(t).executeUpdate();
     }
 
-    @Override // Diese Methode liest einen Datensatz aus der Datenbank anhand des übergebenen Schlüssels (key).
+    /**
+     * Liest einen Datensatz aus der Datenbank anhand des übergebenen Schlüssels (key).
+     *
+     * @param key Der Schlüssel des zu lesenden Datensatzes.
+     * @return Das gelesene Objekt oder null, falls kein Datensatz gefunden wurde.
+     * @throws SQLException bei SQL-Fehlern.
+     */
+    @Override
     public T read(long key) throws SQLException {
         T object = null;
         ResultSet result = getReadByIDStatement(key).executeQuery();
@@ -26,39 +39,78 @@ public abstract class DaoImp<T> implements Dao<T> {
         return object;
     }
 
-    @Override // Diese Methode liest alle Datensätze aus der Datenbank.
+    /**
+     * Liest alle Datensätze aus der Datenbank.
+     *
+     * @return Eine Liste mit allen gelesenen Objekten.
+     * @throws SQLException bei SQL-Fehlern.
+     */
+    @Override
     public List<T> readAll() throws SQLException {
         return getListFromResultSet(getReadAllStatement().executeQuery());
     }
 
-    @Override // Diese Methode aktualisiert einen vorhandenen Datensatz in der Datenbank.
+    /**
+     * Aktualisiert einen vorhandenen Datensatz in der Datenbank.
+     *
+     * @param t Das zu aktualisierende Objekt.
+     * @throws SQLException bei SQL-Fehlern.
+     */
+    @Override
     public void update(T t) throws SQLException {
         getUpdateStatement(t).executeUpdate();
     }
 
-    @Override // Diese Methode löscht einen Datensatz aus der Datenbank anhand des übergebenen Schlüssels (key).
-    public void deleteById(long key) throws SQLException {
-        getDeleteStatement(key).executeUpdate();
-    }
-
-    // Diese abstrakte Methode wandelt einen ResultSet in ein Objekt vom Typ T um.
+    /**
+     * Wandelt einen ResultSet in ein Objekt vom Typ T um.
+     *
+     * @param set Das ResultSet, das die Daten enthält.
+     * @return Das erstellte Objekt.
+     * @throws SQLException bei SQL-Fehlern.
+     */
     protected abstract T getInstanceFromResultSet(ResultSet set) throws SQLException;
 
-    // Diese abstrakte Methode wandelt einen ResultSet in eine Liste von Objekten vom Typ T um.
+    /**
+     * Wandelt einen ResultSet in eine Liste von Objekten vom Typ T um.
+     *
+     * @param set Das ResultSet, das die Daten enthält.
+     * @return Eine Liste mit den erstellten Objekten.
+     * @throws SQLException bei SQL-Fehlern.
+     */
     protected abstract ArrayList<T> getListFromResultSet(ResultSet set) throws SQLException;
 
-    // Diese abstrakte Methode gibt ein PreparedStatement zurück, das verwendet wird, um einen neuen Datensatz in der Datenbank zu erstellen.
-    protected abstract PreparedStatement getCreateStatement(T t);
+    /**
+     * Gibt ein PreparedStatement zurück, das verwendet wird, um einen neuen Datensatz in der Datenbank zu erstellen.
+     *
+     * @param t Das einzufügende Objekt.
+     * @return Das erstellte PreparedStatement.
+     * @throws SQLException bei SQL-Fehlern.
+     */
+    protected abstract PreparedStatement getCreateStatement(T t) throws SQLException;
 
-    // Diese abstrakte Methode gibt ein PreparedStatement zurück, das verwendet wird, um einen Datensatz aus der Datenbank anhand des übergebenen Schlüssels zu lesen.
-    protected abstract PreparedStatement getReadByIDStatement(long key);
+    /**
+     * Gibt ein PreparedStatement zurück, das verwendet wird, um einen Datensatz aus der Datenbank anhand des übergebenen Schlüssels zu lesen.
+     *
+     * @param key Der Schlüssel des zu lesenden Datensatzes.
+     * @return Das erstellte PreparedStatement.
+     * @throws SQLException bei SQL-Fehlern.
+     */
+    protected abstract PreparedStatement getReadByIDStatement(long key) throws SQLException;
 
-    // Diese abstrakte Methode gibt ein PreparedStatement zurück, das verwendet wird, um alle Datensätze aus der Datenbank zu lesen.
-    protected abstract PreparedStatement getReadAllStatement();
+    /**
+     * Gibt ein PreparedStatement zurück, das verwendet wird, um alle Datensätze aus der Datenbank zu lesen.
+     *
+     * @return Das erstellte PreparedStatement.
+     * @throws SQLException bei SQL-Fehlern.
+     */
+    protected abstract PreparedStatement getReadAllStatement() throws SQLException;
 
-    // Diese abstrakte Methode gibt ein PreparedStatement zurück, das verwendet wird, um einen vorhandenen Datensatz in der Datenbank zu aktualisieren.
-    protected abstract PreparedStatement getUpdateStatement(T t);
-
-    // Diese abstrakte Methode gibt ein PreparedStatement zurück, das verwendet wird, um einen Datensatz aus der Datenbank anhand des übergebenen Schlüssels zu löschen.
-    protected abstract PreparedStatement getDeleteStatement(long key);
+    /**
+     * Gibt ein PreparedStatement zurück, das verwendet wird, um einen vorhandenen Datensatz in der Datenbank zu aktualisieren.
+     *
+     * @param t Das zu aktualisierende Objekt.
+     * @return Das erstellte PreparedStatement.
+     * @throws SQLException bei SQL-Fehlern.
+     */
+    protected abstract PreparedStatement getUpdateStatement(T t) throws SQLException;
 }
