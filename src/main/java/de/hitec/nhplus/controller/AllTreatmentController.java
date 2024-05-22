@@ -28,40 +28,70 @@ import java.util.List;
  */
 public class AllTreatmentController {
 
-    // ObservableList speichert die Behandlungen, welche in der TableView angezeigt werden sollen.
+    /**
+     * ObservableList speichert die Behandlungen, welche in der TableView angezeigt werden sollen.
+     */
     private final ObservableList<Treatment> treatments = FXCollections.observableArrayList();
-    // Enthält die Patienten Namen
+    /**
+     * Enthält die Patienten Namen
+     */
     private final ObservableList<String> patientSelection = FXCollections.observableArrayList();
+    /**
+     * Button zum initieren des Verfahren das Fenster zum erstellen einer neuen Behandlung zu öffnen.
+     */
     public Button buttonNewTreament;
-    // Zeigt die Behandlungsdaten an
+    /**
+     * Zeigt die Behandlungsdaten an
+     */
     @FXML
     private TableView<Treatment> tableView;
-    // Zeigt die Behandlungs IDs an
+    /**
+     * Zeigt die Behandlungs IDs an
+     */
     @FXML
     private TableColumn<Treatment, Integer> columnId;
-    // Zeigt die Patienten IDs an
+    /**
+     * Zeigt die Patienten IDs an
+     */
     @FXML
     private TableColumn<Treatment, Integer> columnPid;
-    // Zeigt das Datum der Behandlung an
+    /**
+     * Zeigt das Datum der Behandlung an
+     */
     @FXML
     private TableColumn<Treatment, String> columnDate;
-    // Zeit die Zeit an wann die Behandlung begonnen hat
+    /**
+     * Zeit die Zeit an wann die Behandlung begonnen hat
+     */
     @FXML
     private TableColumn<Treatment, String> columnBegin;
-    // Zeigt die Zeit an wann die Behandlung abgeschlossen wurde
+    /**
+     * Zeigt die Zeit an wann die Behandlung abgeschlossen wurde
+     */
     @FXML
     private TableColumn<Treatment, String> columnEnd;
-    // Zeigt die Behandlungsbeschreibung an
+    /**
+     * Zeigt die Behandlungsbeschreibung an
+     */
     @FXML
     private TableColumn<Treatment, String> columnDescription;
-    // ComboBox zur Auswahl von Patienten
+    /**
+     * ComboBox zur Auswahl von Patienten
+     */
     @FXML
     private ComboBox<String> comboBoxPatientSelection;
+    /**
+     * Datenbank-Typ
+     */
     private TreatmentDao dao;
-    // Liste aller Patienten
+    /**
+     * Liste aller Patienten
+     */
     private ArrayList<Patient> patientList;
 
-    // Initialisierung des Controllers
+    /**
+     * Initialisierung des Controllers
+     */
     public void initialize() {
         // Liest alle Behandlungen aus und fügt sie ein
         readAllAndShowInTableView();
@@ -83,7 +113,10 @@ public class AllTreatmentController {
         this.createComboBoxData();
     }
 
-    // Liest alle Behandlungen aus der Datenbank aus und fügt sie der TableView an.
+
+    /**
+     * Liest alle Behandlungen aus der Datenbank aus und fügt sie der TableView an.
+     */
     public void readAllAndShowInTableView() {
         comboBoxPatientSelection.getSelectionModel().select(0);
         this.dao = DaoFactory.getDaoFactory().createTreatmentDao();

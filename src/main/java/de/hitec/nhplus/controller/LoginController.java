@@ -25,12 +25,22 @@ import java.sql.SQLException;
  * Er überprüft die Eingaben der Benutzer und leitet sie bei erfolgreicher Anmeldung zur Hauptansicht weiter.
  */
 public class LoginController {
-    // Textfelder für die Eingabe des Benutzernamens und des Passworts
+    /**
+     * Textfeld für die Eingabe des Benutzernamens
+     */
     public TextField textFieldLoginName;
+    /**
+     * Textfeld für die Eingabe des Passworts
+     */
     public TextField textFieldPassword;
-    // BorderPane des Login-Fensters
+
+    /**
+     * BorderPane des Login-Fensters
+     */
     public BorderPane loginBorderPane;
-    // Anmeldebutton
+    /**
+     * Button zum Anmelden
+     */
     public Button buttonLogin;
 
     /**

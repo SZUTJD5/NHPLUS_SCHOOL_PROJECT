@@ -6,6 +6,9 @@ import java.sql.SQLException;
 
 import org.sqlite.SQLiteConfig;
 
+/**
+ * Klasse zum Verbinden von Java und der SqLite Datenbank
+ */
 public class ConnectionBuilder {
 
     private static final String DB_NAME = "nursingHome.db"; // Name der Datenbank

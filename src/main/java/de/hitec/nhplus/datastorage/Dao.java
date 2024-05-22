@@ -3,6 +3,11 @@ package de.hitec.nhplus.datastorage;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Interface zum Interagieren mit der Dantenbank
+ *
+ * @param <T> Typ der Dantenbank
+ */
 public interface Dao<T> {
 
     /**

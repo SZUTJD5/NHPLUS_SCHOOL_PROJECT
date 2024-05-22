@@ -1,3 +1,6 @@
+/**
+ * Modul des NHPlus Projekts
+ */
 module de.hitec.nhplus {
     requires javafx.controls;
     requires javafx.fxml;

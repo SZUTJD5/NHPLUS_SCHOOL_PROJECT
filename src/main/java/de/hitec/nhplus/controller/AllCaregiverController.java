@@ -19,7 +19,8 @@ import java.sql.SQLException;
 
 
 /**
- * Der <code>AllCaregiverController</code> enthält die gesamte Logik der Angestelltenansicht. Er bestimmt, welche Daten angezeigt werden und wie auf Ereignisse reagiert wird.
+ * Der <code>AllCaregiverController</code> enthält die gesamte Logik der Angestelltenansicht.
+ * Er bestimmt, welche Daten angezeigt werden und wie auf Ereignisse reagiert wird.
  */
 public class AllCaregiverController {
 

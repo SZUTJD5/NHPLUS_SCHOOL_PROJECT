@@ -19,7 +19,8 @@ public class Caregiver extends Person {
      *
      * @param firstName   Der Vorname des Angestellten
      * @param surname     Der Nachname des Angestellten
-     * @param phoneNumber Die Telefonnummer des Angestellten.
+     * @param phoneNumber Die Telefonnummer des Angestellten
+     * @param locked      Der locked Status des Caregivers
      *                    <p>
      *                    Dieser wird genutzt, wenn der Caregiver noch kein "pid" hat.
      **/
@@ -32,6 +33,7 @@ public class Caregiver extends Person {
     /**
      * Erzeugt eine neue Instanz der Klasse `Caregiver` mit den angegebenen Parametern.
      *
+     * @param cid         Die Caregiver id des Pflegers.
      * @param firstName   Der Vorname der Pflegekraft.
      * @param surname     Der Nachname der Pflegekraft.
      * @param phoneNumber Die Telefonnummer der Pflegekraft.

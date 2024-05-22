@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+
 /**
  * Der <code>NewTreatmentController</code> verwaltet die Ansicht zum Hinzufügen einer neuen Behandlung.
  * Er stellt Methoden zum Einfügen und Abbrechen des Vorgangs bereit.
@@ -32,6 +33,9 @@ public class NewTreatmentController {
     private final ObservableList<Caregiver> caregivers = FXCollections.observableArrayList();
     private final ObservableList<String> caregiverSelection = FXCollections.observableArrayList();
 
+    /**
+     * Button zum Abbrechen des Vorgangs
+     */
     public Button buttonCancel;
     @FXML
     private ComboBox<String> comboBoxCaregiverSelection; //Injizieren der ComboBox

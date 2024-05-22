@@ -19,13 +19,21 @@ import java.time.LocalDate;
  */
 public class TreatmentController {
 
-    //  Label für den Namen der Pflegekraft
+    /**
+     * Label für den Namen der Pflegekraft
+     */
     public Label labelCaregiver;
-    // Label für die Telefonnummer der Pflegekraft.
+    /**
+     * Label für die Telefonnummer der Pflegekraft.
+     */
     public Label labelPhoneNumber;
-    // Button zum Ändern der Behandlungsinformationen
+    /**
+     * Button zum Ändern der Behandlungsinformationen
+     */
     public Button btnChange;
-    // Button zum Abbrechen der Bearbeitung
+    /**
+     * Button zum Abbrechen der Bearbeitung
+     */
     public Button btnCancel;
 
     // FXML-Felder, die mit den FXML-Elementen im zugehörigen FXML-Datei verbunden sind

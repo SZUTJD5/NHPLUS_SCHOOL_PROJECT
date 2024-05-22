@@ -10,6 +10,7 @@ import javax.crypto.spec.PBEKeySpec;
 import java.util.Base64;
 import java.util.Arrays;
 
+
 /**
  * Die Klasse <code>PasswordHashingController</code> ist verantwortlich für das Hashen und Verifizieren von Passwörtern.
  * Sie verwendet den PBKDF2-Algorithmus mit einem HMAC-SHA1-Hasher für eine sichere Passwort-Hashing-Funktionalität.

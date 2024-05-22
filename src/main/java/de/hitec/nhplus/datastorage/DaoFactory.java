@@ -1,5 +1,8 @@
 package de.hitec.nhplus.datastorage;
 
+/**
+ * Klasse zum erstellen einer neuen DAO
+ */
 public class DaoFactory {
 
     private static DaoFactory instance;

@@ -4,9 +4,23 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Abstrakte Klasse, implementiert Dao T.
+ *
+ * @param <T> Typ des Objekts
+ */
 public abstract class DaoImp<T> implements Dao<T> {
+    /**
+     * Verbindung zur Kommunikation mit der Datenbank
+     */
     protected Connection connection;
 
+    /**
+     * Baut Verbidnung zur Datenbank auf
+     *
+     * @param connection Verbindung zur Datenbank
+     */
     public DaoImp(Connection connection) {
         this.connection = connection;
     }

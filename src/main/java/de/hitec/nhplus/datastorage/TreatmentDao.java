@@ -121,6 +121,7 @@ public class TreatmentDao extends DaoImp<Treatment> {
      *
      * @param pid Die Patienten-ID zur Abfrage aller Behandlungen, die auf diese ID verweisen.
      * @return Eine <code>ArrayList</code> von <code>Treatment</code>-Objekten mit allen Zeilen im <code>ResultSet</code>.
+     * @throws SQLException bei Query-Fehler
      */
     public List<Treatment> readTreatmentsByPid(long pid) throws SQLException {
         ResultSet result = getReadAllTreatmentsOfOnePatientByPid(pid).executeQuery();

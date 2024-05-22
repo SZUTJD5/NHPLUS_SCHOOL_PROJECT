@@ -10,16 +10,21 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 
+
 /**
  * Der <code>MainWindowController</code> verwaltet das Hauptfenster der Anwendung.
  * Er bietet Methoden zum Anzeigen verschiedener Ansichten und zeigt eine Begrüßungsnachricht an.
  */
 public class MainWindowController {
 
-    // Textfeld zur Anzeige einer Begrüßungsnachricht
+    /**
+     * Textfeld zur Anzeige einer Begrüßungsnachricht
+     */
     @FXML
     public Text HalloText;
-    // Haupt-BorderPane des Fensters
+    /**
+     * Haupt-BorderPane des Fensters
+     */
     @FXML
     private BorderPane mainBorderPane;
 
