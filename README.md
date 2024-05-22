@@ -52,6 +52,7 @@
 * Das Passwort wird beim Login maskiert.
 * Der Login vergleicht Benutzername und Passwort mit der Datenbank.
 * Der Login legt den angemeldeten Pfleger fest.
+* Login wird nach Löschen des Pflegers gelöscht
 
 
 PASSWÖRTER ZUM LOGIN!
