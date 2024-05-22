@@ -173,7 +173,7 @@ public class TreatmentDao extends DaoImp<Treatment> {
 
 
     /**
-     * Berechnet das Datum von heute vor 10 Jahren und schaut ob es gesperrte Behandlungen gibt welche älter als zehn Jahre sind.
+     * Berechnet das Datum von heute vor 10 Jahren und schaut, ob es gesperrte Behandlungen gibt welche älter als zehn Jahre sind.
      * Löscht gesperrte Behandlungen die älter als zehn Jahre sind.
      */
     public void deleteOldLockedTreatments() {

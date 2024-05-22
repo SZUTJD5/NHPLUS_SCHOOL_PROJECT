@@ -21,10 +21,10 @@ public class DateConverter {
     private static final String TIME_FORMAT = "HH:mm";
 
     /**
-     * Wandelt einen Datum-String in ein lokales Datumobjekt um und gibt dieses zurück.
+     * Wandelt einen Datum-String in ein lokales Datum-Objekt um und gibt dieses zurück.
      *
      * @param date Der Datum-String im Format "yyyy-MM-dd".
-     * @return Das lokale Datumobjekt.
+     * @return Das lokale Datum-Objekt.
      */
     public static LocalDate convertStringToLocalDate(String date) {
         return LocalDate.parse(date, DateTimeFormatter.ofPattern(DATE_FORMAT));
@@ -41,9 +41,9 @@ public class DateConverter {
     }
 
     /**
-     * Wandelt ein lokales Datumobjekt in einen String um und gibt diesen zurück.
+     * Wandelt ein lokales Datum-Objekt in einen String um und gibt diesen zurück.
      *
-     * @param date Das lokale Datumobjekt.
+     * @param date Das lokale Datum-Objekt.
      * @return Der Datum-String im Format "yyyy-MM-dd".
      */
     public static String convertLocalDateToString(LocalDate date) {

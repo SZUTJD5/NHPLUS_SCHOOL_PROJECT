@@ -10,7 +10,7 @@ public class DaoFactory {
     /**
      * Gibt eine Instanz der DaoFactory-Klasse zurück.
      * Falls noch keine Instanz vorhanden ist, wird eine neue erstellt.
-     * Nutzt das Singleton-Muster, um sicherzustellen, dass nur eine Instanz zur Zeit existiert.
+     * Nutzt das Singleton-Muster, um sicherzustellen, dass nur eine Instanz zurzeit existiert.
      *
      * @return die Singleton-Instanz der DaoFactory.
      */

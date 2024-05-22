@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class AllTreatmentController {
 
-    // ObservableList Speichert die Behandlungen, welche in der TableView angezeigt werden sollen.
+    // ObservableList speichert die Behandlungen, welche in der TableView angezeigt werden sollen.
     private final ObservableList<Treatment> treatments = FXCollections.observableArrayList();
     // Enthält die Patienten Namen
     private final ObservableList<String> patientSelection = FXCollections.observableArrayList();
@@ -36,10 +36,10 @@ public class AllTreatmentController {
     // Zeigt die Behandlungsdaten an
     @FXML
     private TableView<Treatment> tableView;
-    // Zeigt die Behandlungs ID's an
+    // Zeigt die Behandlungs IDs an
     @FXML
     private TableColumn<Treatment, Integer> columnId;
-    // Zeigt die Patienten ID's an
+    // Zeigt die Patienten IDs an
     @FXML
     private TableColumn<Treatment, Integer> columnPid;
     // Zeigt das Datum der Behandlung an
@@ -63,7 +63,7 @@ public class AllTreatmentController {
 
     // Initialisierung des Controllers
     public void initialize() {
-        // Ließt alle Behandlungen aus und fügt sie ein
+        // Liest alle Behandlungen aus und fügt sie ein
         readAllAndShowInTableView();
         // Richtet die ComboBox für die Patientennamen ein
         comboBoxPatientSelection.setItems(patientSelection);
@@ -83,7 +83,7 @@ public class AllTreatmentController {
         this.createComboBoxData();
     }
 
-    // Ließt alle Behandlungen aus der Datenbank aus und fügt sie der TableView an.
+    // Liest alle Behandlungen aus der Datenbank aus und fügt sie der TableView an.
     public void readAllAndShowInTableView() {
         comboBoxPatientSelection.getSelectionModel().select(0);
         this.dao = DaoFactory.getDaoFactory().createTreatmentDao();

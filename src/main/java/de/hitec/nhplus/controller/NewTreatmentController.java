@@ -210,7 +210,7 @@ public class NewTreatmentController {
      * @return true, wenn die Eingabedaten ungültig sind, sonst false
      */
     private boolean areInputDataInvalid() {
-        // Schaut ob mindestens ein der textfelder nicht beschrieben ist.
+        // Schaut, ob mindestens ein der textfelder nicht beschrieben ist.
         if (textFieldBegin.getText().isEmpty() || textFieldEnd.getText().isEmpty() || textAreaRemarks.getText().isEmpty() || textFieldDescription.getText().isEmpty()) {
             return true;
         }
@@ -226,7 +226,7 @@ public class NewTreatmentController {
             return true;
         }
 
-        // Schaut ob ein Angestellter ausgewählt wurde und ob das Datum gesetzt ist..
+        // Schaut, ob ein Angestellter ausgewählt wurde und ob das Datum gesetzt ist.
         return comboBoxCaregiverSelection.getSelectionModel().getSelectedItem() == null || datePicker.getValue() == null;
     }
 }

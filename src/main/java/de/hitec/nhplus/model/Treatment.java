@@ -22,7 +22,7 @@ public class Treatment {
 
     /**
      * Konstruktor zum Initiieren eines Objekts der Klasse <code>Treatment</code> mit dem angegebenen Parameter. Verwenden Sie diesen Konstruktor
-     * um Objekte zu initiieren, die noch nicht persistent sind, da sie keine Behandlungs-ID (tid) haben.
+     * um Objekte zu initiieren, die noch nicht persistent sind, da sie keine Behandlung-ID (tid) haben.
      *
      * @param pid         Id des behandelten Patienten.
      * @param date        Datum der Behandlung.
@@ -46,7 +46,7 @@ public class Treatment {
 
     /**
      * Konstruktor zum Initiieren eines Objekts der Klasse <code>Treatment</code> mit dem angegebenen Parameter. Verwenden Sie diesen Konstruktor
-     * um Objekte zu initiieren, die bereits persistiert sind und eine Behandlungs-ID (tid) haben.
+     * um Objekte zu initiieren, die bereits persistiert sind und eine Behandlung-ID (tid) haben.
      *
      * @param tid         ID der Behandlung.
      * @param pid         Id des behandelten Patienten.
@@ -69,7 +69,7 @@ public class Treatment {
         this.cid = cid;
     }
 
-    // Getter für Behandlungs-ID
+    // Getter für Behandlung-ID
     public long getTid() {
         return tid;
     }

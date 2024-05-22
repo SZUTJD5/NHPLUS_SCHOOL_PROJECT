@@ -40,7 +40,7 @@ public class AllPatientController {
     // Zeigt die Nachnamen der Patienten an
     @FXML
     private TableColumn<Patient, String> columnSurname;
-    // Zeigt die Guburtsdaten der Patienten an
+    // Zeigt die Geburtsdaten der Patienten an
     @FXML
     private TableColumn<Patient, String> columnDateOfBirth;
     // Zeigt das Pflegelevel der Patienten an
@@ -52,22 +52,22 @@ public class AllPatientController {
     // Button zum Löschen von Patienten
     @FXML
     private Button buttonDelete;
-    // Button zum hinzufügen von Patienten
+    // Button zum Hinzufügen von Patienten
     @FXML
     private Button buttonAdd;
     // Textfeld zum Eintragen des Nachnamen
     @FXML
     private TextField textFieldSurname;
-    // Textfeld zum eintragen des Vornamen
+    // Textfeld zum Eintragen des Vornamen
     @FXML
     private TextField textFieldFirstName;
-    // Textfeld zum eintragen des Geburtsdautm
+    // Textfeld zum Eintragen des Geburtsdatum
     @FXML
     private TextField textFieldDateOfBirth;
-    // Textfeld zum eintragen des Pflegelevels
+    // Textfeld zum Eintragen des Pflegelevels
     @FXML
     private TextField textFieldCareLevel;
-    // Textfeld zum eintragen der Zimmernummer
+    // Textfeld zum Eintragen der Zimmernummer
     @FXML
     private TextField textFieldRoomNumber;
     // DAO für den Zugriff auf Patientendaten
@@ -109,7 +109,7 @@ public class AllPatientController {
         this.buttonDelete.setDisable(true);
         this.tableView.getSelectionModel().selectedItemProperty().addListener((observableValue, oldPatient, newPatient) -> AllPatientController.this.buttonDelete.setDisable(newPatient == null));
 
-        // Deaktiviert den Hinzufügebutton, wenn die Eingabefelder leer sind
+        // Deaktiviert den hinzufüge Button, wenn die Eingabefelder leer sind
         this.buttonAdd.setDisable(true);
         ChangeListener<String> inputNewPatientListener = (observableValue, oldText, newText) -> AllPatientController.this.buttonAdd.setDisable(!AllPatientController.this.areInputDataValid());
         this.textFieldSurname.textProperty().addListener(inputNewPatientListener);
@@ -232,7 +232,7 @@ public class AllPatientController {
             LocalDate date = DateConverter.convertStringToLocalDate(birthday);
             String careLevel = this.textFieldCareLevel.getText();
             String roomNumber = this.textFieldRoomNumber.getText();
-            boolean locked = false; // Standart Wert, Patient nicht gesperrt bei erstellung.
+            boolean locked = false; // Standard Wert, Patient nicht gesperrt bei erstellung.
             try {
                 this.dao.create(new Patient(firstName, surname, date, careLevel, roomNumber, locked));
             } catch (SQLException exception) {
